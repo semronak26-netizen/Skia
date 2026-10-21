@@ -42,7 +42,7 @@
 
   <main class="max-w-5xl mx-auto px-5 pt-8 pb-16 w-full">
 
-    <!-- 2. CONVERSATIONAL HERO (INCLUSIVE OF APPAREL & OBJECTS) -->
+    <!-- 2. HERO -->
     <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
       <div class="p-6 sm:p-10 pb-4">
         <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
@@ -61,7 +61,7 @@
       </div>
     </section>
 
-    <!-- 3. OPTION B CONVERSATIONAL SECTIONS -->
+    <!-- 3. SECTIONS -->
     <section class="pb-6">
       <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
         <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
@@ -85,7 +85,7 @@
     </div>
     <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
 
-    <!-- 5. PRIVACY & STUDIO PROMISE STRIP -->
+    <!-- 5. PRIVACY & STUDIO PROMISE -->
     <section class="mt-16 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
       <div>
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01 / PRIVACY FIRST</span>
@@ -105,7 +105,7 @@
     </section>
   </main>
 
-  <!-- 6. PITCH-BLACK FIRE FOOTER -->
+  <!-- 6. FOOTER -->
   <div class="w-full overflow-hidden leading-none pt-4">
     <svg class="w-full h-12 sm:h-16 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
       <path d="M0,120 L0,70 C40,95 70,30 110,75 C150,25 190,85 240,40 C280,85 330,15 380,70 C420,30 470,90 520,35 C570,85 620,10 670,70 C720,25 760,85 810,40 C860,90 910,20 960,70 C1010,30 1060,85 1110,40 C1150,75 1180,50 1200,80 L1200,120 Z"/>
@@ -116,11 +116,11 @@
     <p class="text-neutral-400 text-[11px]">To Wear · To Hold & Keep · Studio Indore</p>
   </footer>
 
-  <!-- 7. SMART 2-MODE CONVERSATIONAL DRAWER -->
+  <!-- 7. DYNAMIC CONVERSATIONAL DRAWER -->
   <div id="custom-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white w-full max-w-md border-t-4 sm:border-2 border-black p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-[8px_8px_0px_#000000]">
       
-      <div id="modal-header" class="flex justify-between items-center pb-4 border-b-2 border-black">
+      <div class="flex justify-between items-center pb-4 border-b-2 border-black">
         <div>
           <p id="step-indicator" class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Step 1 of 3</p>
           <h2 id="modal-title" class="font-serif-luxury text-2xl font-bold">Product</h2>
@@ -131,69 +131,36 @@
         </div>
       </div>
 
-      <!-- STEP 1: AUTOMATICALLY ADAPTS TO WEARABLE vs NON-CLOTHING OBJECT -->
+      <!-- STEP 1: DYNAMICALLY BUILT FROM ADMIN CHECKBOXES -->
       <div id="step-1" class="py-5 space-y-5">
-        <p id="step-1-greeting" class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
+        <p class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
 
-        <!-- Shade Dots -->
+        <!-- Dynamic Shades -->
         <div>
-          <p class="text-xs font-semibold mb-2">Shade / Base: <span id="selected-color-name" class="font-normal">Pitch Black</span></p>
-          <div class="flex gap-3">
-            <button type="button" onclick="selectColor('Pitch Black', this)" class="color-dot w-8 h-8 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
-            <button type="button" onclick="selectColor('Pure White', this)" class="color-dot w-8 h-8 rounded-full bg-white border-2 border-black"></button>
-            <button type="button" onclick="selectColor('Charcoal / Matte', this)" class="color-dot w-8 h-8 rounded-full bg-neutral-700"></button>
-            <button type="button" onclick="selectColor('Espresso / Warm', this)" class="color-dot w-8 h-8 rounded-full bg-[#3A2D28]"></button>
+          <p class="text-xs font-semibold mb-2">1. Pick Shade</p>
+          <div id="dynamic-shades" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Dynamic Sizes or Object Editions -->
+        <div>
+          <p id="size-label" class="text-xs font-semibold mb-2">2. Pick Size / Edition</p>
+          <div id="dynamic-sizes" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Placement (For Wearables) -->
+        <div id="placement-box">
+          <p class="text-xs font-semibold mb-2">3. Placement</p>
+          <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
+            <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill py-2 border-2 border-black bg-black text-white">Front</button>
+            <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill py-2 border-2 border-black bg-white">Back</button>
+            <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill py-2 border-2 border-black bg-white">Both +₹150</button>
           </div>
         </div>
 
-        <!-- MODE A: WEARABLE OPTIONS (Sizes + Front/Back + Puff/Stitch) -->
-        <div id="wearable-options" class="space-y-4">
-          <div>
-            <p class="text-xs font-semibold mb-2">Size</p>
-            <div class="flex gap-2">
-              <button type="button" onclick="selectSize('S', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">S</button>
-              <button type="button" onclick="selectSize('M', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-black text-white">M</button>
-              <button type="button" onclick="selectSize('L', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">L</button>
-              <button type="button" onclick="selectSize('XL', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">XL</button>
-              <button type="button" onclick="selectSize('XXL', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">XXL</button>
-            </div>
-          </div>
-
-          <div class="pt-2 border-t border-neutral-200">
-            <p class="text-xs font-semibold mb-2">Placement</p>
-            <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
-              <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill py-2 border-2 border-black bg-black text-white">Front</button>
-              <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill py-2 border-2 border-black bg-white">Back</button>
-              <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill py-2 border-2 border-black bg-white">Both +₹150</button>
-            </div>
-          </div>
-
-          <div>
-            <p class="text-xs font-semibold mb-2">Craft Finish</p>
-            <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
-              <button type="button" onclick="selectFinish(0, 'HD Ink', this)" class="finish-pill py-2 border-2 border-black bg-black text-white">HD Ink</button>
-              <button type="button" onclick="selectFinish(100, '3D Puff', this)" class="finish-pill py-2 border-2 border-black bg-white">3D Puff +₹100</button>
-              <button type="button" onclick="selectFinish(150, 'Embroidery', this)" class="finish-pill py-2 border-2 border-black bg-white">Stitch +₹150</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- MODE B: NON-CLOTHING OBJECT OPTIONS (Cups, Totes, Posters, Desk Mats) -->
-        <div id="object-options" class="hidden space-y-4 pt-2 border-t border-neutral-200">
-          <div>
-            <p class="text-xs font-semibold mb-2">How should your image sit on this piece?</p>
-            <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-              <button type="button" onclick="selectPlacement(0, 'Center Focus', this)" class="place-pill py-2.5 px-2 border-2 border-black bg-black text-white">Center Focus</button>
-              <button type="button" onclick="selectPlacement(0, 'Full Wrap / Edge-to-Edge', this)" class="place-pill py-2.5 px-2 border-2 border-black bg-white">Full Wrap / Edge</button>
-            </div>
-          </div>
-          <div>
-            <p class="text-xs font-semibold mb-2">Edition Upgrade</p>
-            <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-              <button type="button" onclick="selectFinish(0, 'Standard High-Def', this)" class="finish-pill py-2.5 px-2 border-2 border-black bg-black text-white">Standard HD</button>
-              <button type="button" onclick="selectFinish(100, 'Special / Magic / Matte Edition', this)" class="finish-pill py-2.5 px-2 border-2 border-black bg-white">Special Edition +₹100</button>
-            </div>
-          </div>
+        <!-- Dynamic Finishes / Layouts -->
+        <div>
+          <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout</p>
+          <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
         </div>
 
         <button type="button" onclick="goToStep(2)" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
@@ -201,18 +168,18 @@
         </button>
       </div>
 
-      <!-- STEP 2: UPLOAD PHOTO + SUGGESTIONS -->
+      <!-- STEP 2 -->
       <div id="step-2" class="hidden py-5 space-y-5">
         <p class="font-serif-luxury text-2xl italic">"Drop your photo, and tell us what's in your head."</p>
         <label class="block border-2 border-dashed border-black bg-white p-6 text-center cursor-pointer hover:bg-neutral-50">
           <span class="text-xs font-bold uppercase tracking-wider block mb-1">+ Tap to pick a photo from your phone</span>
-          <span id="modal-prompt-hint" class="text-[11px] text-neutral-500 block">100% private · Used only for your custom piece</span>
+          <span class="text-[11px] text-neutral-500 block">100% private · Used only for your custom piece</span>
           <input type="file" id="cust-photo" accept="image/*" onchange="previewPhoto(event)" class="hidden" />
           <img id="photo-preview" class="hidden h-28 mx-auto mt-3 object-cover border-2 border-black" />
         </label>
         <div>
           <p class="text-xs font-semibold mb-1.5">Talk to us—how should we style or edit it?</p>
-          <textarea id="cust-notes" rows="3" placeholder="e.g. Remove the background, make it minimal black & white, and add this quote/date on the other side..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
+          <textarea id="cust-notes" rows="3" placeholder="e.g. Remove the background, make it minimal black & white, and add this quote/date..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
         </div>
         <div class="flex gap-2">
           <button type="button" onclick="goToStep(1)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
@@ -222,10 +189,9 @@
         </div>
       </div>
 
-      <!-- STEP 3: CONTACT & SUBMIT -->
+      <!-- STEP 3 -->
       <div id="step-3" class="hidden py-5 space-y-4">
         <p class="font-serif-luxury text-2xl italic">"Where should we WhatsApp your preview?"</p>
-        <p class="text-xs text-neutral-600 -mt-2">We craft your digital mockup first. Nothing is printed until you approve.</p>
         <input type="text" id="cust-name" placeholder="Your name" class="w-full border-2 border-black px-3.5 py-3 text-xs focus:outline-none" />
         <input type="tel" id="cust-phone" placeholder="Your WhatsApp number" class="w-full border-2 border-black px-3.5 py-3 text-xs focus:outline-none" />
         <label class="flex items-center gap-2.5 border-2 border-black p-3 cursor-pointer">
@@ -240,7 +206,7 @@
         </div>
       </div>
 
-      <!-- STEP 4: LUXURY COMMISSION CONFIRMED TICKET -->
+      <!-- STEP 4: TICKET -->
       <div id="step-4" class="hidden py-6 text-center space-y-4">
         <span class="bg-black text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1">Commission Received</span>
         <h3 class="font-serif-luxury text-3xl font-bold">We’re on it, <span id="ticket-name">Friend</span>.</h3>
@@ -249,9 +215,6 @@
           <p id="ticket-code" class="text-lg font-bold tracking-widest">SKIA-0000</p>
           <p id="ticket-item" class="text-neutral-600 pt-1"></p>
         </div>
-        <p class="text-xs text-neutral-600 leading-relaxed">
-          Our studio has received your photo and notes. We will prepare your preview and message your WhatsApp shortly.
-        </p>
         <button onclick="closeModal()" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
           Back to SKIA Studio
         </button>
@@ -268,6 +231,7 @@
     let products = [];
     let currentCategory = 'ALL';
     let activeProduct = null;
+    let extraSizeCost = 0;
     let extraPlacement = 0;
     let extraFinish = 0;
     let chosenColor = 'Pitch Black';
@@ -276,11 +240,25 @@
     let chosenFinishLabel = 'HD Ink';
     let uploadedPhotoData = '';
 
-    // Map old/new categories cleanly to WEAR, HOLD, CREWS
     function normalizeCat(p) {
       if (p.category === 'HOLD' || p.is_apparel === false) return 'HOLD';
       if (p.category === 'CREWS' || p.category === 'KAFILA') return 'CREWS';
       return 'WEAR';
+    }
+
+    function parseProductConfig(p) {
+      const parts = (p.spec || '').split('||CONF:');
+      const cleanSpec = parts[0];
+      let conf = null;
+      if (parts[1]) {
+        try { conf = JSON.parse(parts[1]); } catch(e) {}
+      }
+      if (!conf) {
+        conf = p.is_apparel
+          ? { sizes: ['S','M','L','XL','XXL'], shades: ['Pitch Black','Pure White','Charcoal Acid'], finishes: ['HD Ink|0','3D Puff|100','Stitch|150'] }
+          : { sizes: ['Classic 325ml Cup','Black Contrast Cup (+₹50)','Magic Heat Cup (+₹120)'], shades: ['Pure White','Pitch Black'], finishes: ['Center Focus|0','Full Wrap|0'] };
+      }
+      return { cleanSpec, conf };
     }
 
     async function loadCatalogFromCloud() {
@@ -290,7 +268,6 @@
       renderProducts();
     }
 
-    // Tap corner badge to swap Raw Photo <-> Final Mockup!
     function swapCardImage(event, prodId) {
       event.stopPropagation();
       const mainImg = document.getElementById('main-img-' + prodId);
@@ -302,26 +279,23 @@
 
     function renderProducts() {
       const grid = document.getElementById('product-grid');
-      const list = currentCategory === 'ALL'
-        ? products
-        : products.filter(p => normalizeCat(p) === currentCategory);
+      const list = currentCategory === 'ALL' ? products : products.filter(p => normalizeCat(p) === currentCategory);
 
-      grid.innerHTML = list.map(p => `
+      grid.innerHTML = list.map(p => {
+        const { cleanSpec } = parseProductConfig(p);
+        return `
         <div onclick="openModal(${p.id})" class="group cursor-pointer bg-white border-2 border-black p-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition">
           <div class="relative h-72 overflow-hidden bg-neutral-100 border border-black mb-3">
             <img id="main-img-${p.id}" src="${p.final_image}" alt="${p.title}" class="w-full h-full object-cover transition duration-500" />
-            
-            <!-- TAP TO SWAP BEFORE & AFTER -->
-            <div onclick="swapCardImage(event, ${p.id})" title="Tap to swap Before & After" class="absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000] hover:bg-black hover:text-white transition">
+            <div onclick="swapCardImage(event, ${p.id})" class="absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000] hover:bg-black hover:text-white transition">
               <img id="badge-img-${p.id}" src="${p.raw_photo}" class="w-10 h-10 object-cover border border-black" />
               <div class="pr-1">
                 <span class="text-[9px] font-bold uppercase tracking-wider block leading-tight">Raw Photo</span>
                 <span class="text-[10px] font-serif-luxury italic block leading-tight">⇄ Tap to Swap</span>
               </div>
             </div>
-
             <span class="absolute top-2.5 right-2.5 bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-1">
-              ${p.spec}
+              ${cleanSpec}
             </span>
           </div>
           <div class="flex justify-between items-baseline">
@@ -332,8 +306,8 @@
           <div class="pt-2.5 flex justify-between items-center text-xs font-bold uppercase tracking-wider">
             <span>Start With This</span><span>→</span>
           </div>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
     }
 
     function filterCategory(cat) {
@@ -348,26 +322,42 @@
 
     function openModal(id) {
       activeProduct = products.find(p => p.id === id);
+      const { conf } = parseProductConfig(activeProduct);
+      extraSizeCost = 0;
       extraPlacement = 0;
       extraFinish = 0;
       uploadedPhotoData = '';
       document.getElementById('photo-preview').classList.add('hidden');
       document.getElementById('modal-title').innerText = activeProduct.title;
 
-      // 2-MODE SWITCH: Wearable vs Non-Clothing Object
-      if (activeProduct.is_apparel) {
-        document.getElementById('wearable-options').classList.remove('hidden');
-        document.getElementById('object-options').classList.add('hidden');
-        chosenSize = 'M';
-        chosenPlacementLabel = 'Front';
-        chosenFinishLabel = 'HD Ink';
-      } else {
-        document.getElementById('wearable-options').classList.add('hidden');
-        document.getElementById('object-options').classList.remove('hidden');
-        chosenSize = 'Standard Object';
-        chosenPlacementLabel = 'Center Focus';
-        chosenFinishLabel = 'Standard HD';
-      }
+      // 1. Render Shades from Admin Config
+      const shadesBox = document.getElementById('dynamic-shades');
+      chosenColor = conf.shades[0] || 'Standard';
+      shadesBox.innerHTML = conf.shades.map((sh, i) => `
+        <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sh}</button>
+      `).join('');
+
+      // 2. Render Sizes / Object Editions from Admin Config
+      const sizesBox = document.getElementById('dynamic-sizes');
+      chosenSize = conf.sizes[0] || 'Standard';
+      sizesBox.innerHTML = conf.sizes.map((sz, i) => {
+        const match = sz.match(/\+₹(\d+)/);
+        const addCost = match ? Number(match[1]) : 0;
+        return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sz}</button>`;
+      }).join('');
+
+      // 3. Show/Hide Apparel Placement
+      document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
+      chosenPlacementLabel = activeProduct.is_apparel ? 'Front' : 'Object Layout';
+
+      // 4. Render Finishes / Layouts from Admin Config
+      const finBox = document.getElementById('dynamic-finishes');
+      finBox.innerHTML = conf.finishes.map((fn, i) => {
+        const [label, costStr] = fn.split('|');
+        const cost = Number(costStr || 0);
+        if (i === 0) chosenFinishLabel = label;
+        return `<button type="button" onclick="selectFinish(${cost}, '${label}', this)" class="finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${label}${cost > 0 ? ' +₹'+cost : ''}</button>`;
+      }).join('');
 
       updatePrice();
       goToStep(1);
@@ -378,23 +368,20 @@
     function goToStep(stepNum) {
       [1, 2, 3, 4].forEach(n => document.getElementById('step-' + n).classList.add('hidden'));
       document.getElementById('step-' + stepNum).classList.remove('hidden');
-      if (stepNum <= 3) {
-        document.getElementById('step-indicator').innerText = `Step ${stepNum} of 3`;
-      } else {
-        document.getElementById('step-indicator').innerText = `Confirmed`;
-      }
+      document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Confirmed';
     }
 
     function selectColor(name, btn) {
       chosenColor = name;
-      document.getElementById('selected-color-name').innerText = name;
-      document.querySelectorAll('.color-dot').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-black'));
-      btn.classList.add('ring-2', 'ring-offset-2', 'ring-black');
+      document.querySelectorAll('.shade-btn').forEach(b => b.className = "shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
+      btn.className = "shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
     }
-    function selectSize(size, btn) {
+    function selectSize(size, cost, btn) {
       chosenSize = size;
-      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white");
-      btn.className = "size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-black text-white";
+      extraSizeCost = cost;
+      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
+      btn.className = "size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      updatePrice();
     }
     function selectPlacement(cost, label, btn) {
       extraPlacement = cost;
@@ -406,12 +393,12 @@
     function selectFinish(cost, label, btn) {
       extraFinish = cost;
       chosenFinishLabel = label;
-      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill py-2 border-2 border-black bg-white");
-      btn.className = "finish-pill py-2 border-2 border-black bg-black text-white";
+      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
+      btn.className = "finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
       updatePrice();
     }
     function updatePrice() {
-      const total = Number(activeProduct.base_price) + extraPlacement + extraFinish;
+      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish;
       document.getElementById('live-price').innerText = total;
       document.getElementById('final-btn-price').innerText = total;
     }
@@ -453,7 +440,7 @@
       btn.innerText = "Saving Commission...";
       btn.disabled = true;
 
-      const total = Number(activeProduct.base_price) + extraPlacement + extraFinish;
+      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish;
       const orderPayload = {
         order_code: "SKIA-" + Math.floor(1000 + Math.random() * 9000),
         product_title: activeProduct.title,
@@ -486,4 +473,4 @@
     loadCatalogFromCloud();
   </script>
 </body>
-  </html>
+</html>
