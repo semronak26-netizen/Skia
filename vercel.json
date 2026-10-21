@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/supaproxy/:path*",
+      "destination": "https://giffvjhztnjgftvqirdx.supabase.co/:path*"
+    }
+  ]
+}
