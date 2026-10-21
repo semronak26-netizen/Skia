@@ -3,7 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SKIA — Cast on What You Wear & Hold | Studio Indore</title>
+  <title>SKIA Studio Indore — Custom Apparel, Cups & Everyday Objects</title>
+  <meta name="description" content="Bring a photo from your phone. Cast it on 240-400 GSM heavy cotton tees, hoodies, varsity jackets, ceramic cups & crew drops. Free WhatsApp preview before print. Cash on Delivery available." />
+  
+  <!-- Pitch-Black Flame Favicon for Google Search & Browser Tab -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23000000'/%3E%3Cpath d='M50 15 C42 35, 25 48, 25 68 C25 82, 37 92, 52 93 C44 86, 40 76, 46 64 C50 74, 58 78, 58 90 C70 84, 78 72, 78 56 C78 36, 62 24, 50 15 Z' fill='%23FFFFFF'/%3E%3C/svg%3E" />
+
+  <!-- Google Structured Data for Sitelinks -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SKIA Studio Indore",
+    "url": "https://skia-indore.vercel.app/",
+    "hasPart": [
+      { "@type": "WebPage", "name": "To Wear (Apparel)", "url": "https://skia-indore.vercel.app/#to-wear" },
+      { "@type": "WebPage", "name": "To Hold & Keep (Cups & Objects)", "url": "https://skia-indore.vercel.app/#to-hold" },
+      { "@type": "WebPage", "name": "For Crews (Bulk Drops)", "url": "https://skia-indore.vercel.app/#for-crews" },
+      { "@type": "WebPage", "name": "Privacy & Studio Promise", "url": "https://skia-indore.vercel.app/#studio-promise" }
+    ]
+  }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,7 +66,7 @@
     <!-- 2. HERO -->
     <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
       <div class="p-6 sm:p-10 pb-4">
-        <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
+        <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore · COD Available</p>
         <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
           Bring a photo.<br />
           <span class="italic font-normal">Cast it on what you wear & hold.</span>
@@ -62,22 +83,22 @@
     </section>
 
     <!-- 3. SECTIONS -->
-    <section class="pb-6">
+    <nav class="pb-6" aria-label="Main Categories">
       <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
-        <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
+        <a href="#everything" onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
           Everything
-        </button>
-        <button onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+        </a>
+        <a href="#to-wear" onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
           To Wear
-        </button>
-        <button onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+        </a>
+        <a href="#to-hold" onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
           To Hold & Keep
-        </button>
-        <button onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+        </a>
+        <a href="#for-crews" onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
           For Crews
-        </button>
+        </a>
       </div>
-    </section>
+    </nav>
 
     <!-- 4. PRODUCT GRID -->
     <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
@@ -86,7 +107,7 @@
     <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
 
     <!-- 5. PRIVACY & STUDIO PROMISE -->
-    <section class="mt-16 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
+    <section id="studio-promise" class="mt-16 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
       <div>
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01 / PRIVACY FIRST</span>
         <p class="font-bold text-sm mt-0.5">100% Photo Confidentiality</p>
@@ -94,8 +115,8 @@
       </div>
       <div class="sm:border-x sm:border-neutral-200 sm:px-6">
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">02 / ZERO RISK</span>
-        <p class="font-bold text-sm mt-0.5">Approve Before Print</p>
-        <p class="text-neutral-600 mt-1 text-[11px]">We send your custom digital preview on WhatsApp first. Nothing goes to press until you love it.</p>
+        <p class="font-bold text-sm mt-0.5">Approve Preview + COD Available</p>
+        <p class="text-neutral-600 mt-1 text-[11px]">See your custom digital preview on WhatsApp first. Pay via UPI or Cash on Delivery.</p>
       </div>
       <div>
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">03 / CRAFT</span>
@@ -131,23 +152,20 @@
         </div>
       </div>
 
-      <!-- STEP 1: DYNAMICALLY BUILT FROM ADMIN CHECKBOXES -->
+      <!-- STEP 1 -->
       <div id="step-1" class="py-5 space-y-5">
         <p class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
 
-        <!-- Dynamic Shades -->
         <div>
           <p class="text-xs font-semibold mb-2">1. Pick Shade</p>
           <div id="dynamic-shades" class="flex flex-wrap gap-2"></div>
         </div>
 
-        <!-- Dynamic Sizes or Object Editions -->
         <div>
-          <p id="size-label" class="text-xs font-semibold mb-2">2. Pick Size / Edition</p>
+          <p class="text-xs font-semibold mb-2">2. Pick Size / Edition</p>
           <div id="dynamic-sizes" class="flex flex-wrap gap-2"></div>
         </div>
 
-        <!-- Placement (For Wearables) -->
         <div id="placement-box">
           <p class="text-xs font-semibold mb-2">3. Placement</p>
           <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
@@ -157,9 +175,8 @@
           </div>
         </div>
 
-        <!-- Dynamic Finishes / Layouts -->
         <div>
-          <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout</p>
+          <p class="text-xs font-semibold mb-2">4. Craft Finish / Layout</p>
           <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
         </div>
 
@@ -184,20 +201,43 @@
         <div class="flex gap-2">
           <button type="button" onclick="goToStep(1)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
           <button type="button" onclick="goToStep(3)" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
-            Next · Preview Details →
+            Next · Delivery & Payment →
           </button>
         </div>
       </div>
 
-      <!-- STEP 3 -->
-      <div id="step-3" class="hidden py-5 space-y-4">
-        <p class="font-serif-luxury text-2xl italic">"Where should we WhatsApp your preview?"</p>
-        <input type="text" id="cust-name" placeholder="Your name" class="w-full border-2 border-black px-3.5 py-3 text-xs focus:outline-none" />
-        <input type="tel" id="cust-phone" placeholder="Your WhatsApp number" class="w-full border-2 border-black px-3.5 py-3 text-xs focus:outline-none" />
-        <label class="flex items-center gap-2.5 border-2 border-black p-3 cursor-pointer">
+      <!-- STEP 3: CONTACT, DELIVERY ADDRESS & COD / UPI SWITCH -->
+      <div id="step-3" class="hidden py-5 space-y-3.5">
+        <p class="font-serif-luxury text-2xl italic">"Where do we send your preview & parcel?"</p>
+        <p class="text-[11px] text-neutral-600 -mt-2">Nothing is printed until you approve your digital preview on WhatsApp.</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <input type="text" id="cust-name" placeholder="Your Full Name" class="w-full border-2 border-black px-3 py-2.5 text-xs focus:outline-none" />
+          <input type="tel" id="cust-phone" placeholder="WhatsApp Number" class="w-full border-2 border-black px-3 py-2.5 text-xs focus:outline-none" />
+        </div>
+
+        <textarea id="cust-address" rows="2" placeholder="Full Delivery Address (House No, Street, Landmark, City)" class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
+        
+        <input type="text" id="cust-pincode" placeholder="6-Digit Pincode (e.g. 452001)" class="w-full border-2 border-black px-3 py-2.5 text-xs focus:outline-none" />
+
+        <!-- PAYMENT METHOD SELECTOR: UPI vs COD (+₹50) -->
+        <div class="pt-1">
+          <p class="text-xs font-semibold mb-1.5">How would you like to pay (after approving preview)?</p>
+          <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+            <button type="button" onclick="selectPayMode(0, 'Prepaid UPI', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-black text-white text-center">
+              UPI After Preview<br/><span class="text-[10px] font-normal">Free Shipping (+₹0)</span>
+            </button>
+            <button type="button" onclick="selectPayMode(50, 'Cash on Delivery (COD)', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-white text-black text-center">
+              Cash on Delivery<br/><span class="text-[10px] font-normal">COD Fee (+₹50)</span>
+            </button>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-2.5 border-2 border-black p-2.5 cursor-pointer">
           <input type="checkbox" id="cust-gift" class="accent-black w-4 h-4" />
-          <span class="text-xs font-medium">Urgent gift? Send a 2-Hour Digital Reveal Card today.</span>
+          <span class="text-[11px] font-medium">Urgent gift? Send a 2-Hour Digital Reveal Card today.</span>
         </label>
+
         <div class="flex gap-2 pt-2">
           <button type="button" onclick="goToStep(2)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
           <button type="button" id="submit-btn" onclick="finishOrder()" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
@@ -234,10 +274,12 @@
     let extraSizeCost = 0;
     let extraPlacement = 0;
     let extraFinish = 0;
+    let extraCodCost = 0;
     let chosenColor = 'Pitch Black';
     let chosenSize = 'M';
     let chosenPlacementLabel = 'Front';
     let chosenFinishLabel = 'HD Ink';
+    let chosenPayLabel = 'Prepaid UPI';
     let uploadedPhotoData = '';
 
     function normalizeCat(p) {
@@ -326,18 +368,25 @@
       extraSizeCost = 0;
       extraPlacement = 0;
       extraFinish = 0;
+      extraCodCost = 0;
+      chosenPayLabel = 'Prepaid UPI';
       uploadedPhotoData = '';
       document.getElementById('photo-preview').classList.add('hidden');
       document.getElementById('modal-title').innerText = activeProduct.title;
 
-      // 1. Render Shades from Admin Config
+      // Reset Payment Buttons to UPI default
+      const payBtns = document.querySelectorAll('.pay-pill');
+      if (payBtns.length === 2) {
+        payBtns[0].className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white text-center";
+        payBtns[1].className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black text-center";
+      }
+
       const shadesBox = document.getElementById('dynamic-shades');
       chosenColor = conf.shades[0] || 'Standard';
       shadesBox.innerHTML = conf.shades.map((sh, i) => `
         <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sh}</button>
       `).join('');
 
-      // 2. Render Sizes / Object Editions from Admin Config
       const sizesBox = document.getElementById('dynamic-sizes');
       chosenSize = conf.sizes[0] || 'Standard';
       sizesBox.innerHTML = conf.sizes.map((sz, i) => {
@@ -346,11 +395,9 @@
         return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sz}</button>`;
       }).join('');
 
-      // 3. Show/Hide Apparel Placement
       document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
       chosenPlacementLabel = activeProduct.is_apparel ? 'Front' : 'Object Layout';
 
-      // 4. Render Finishes / Layouts from Admin Config
       const finBox = document.getElementById('dynamic-finishes');
       finBox.innerHTML = conf.finishes.map((fn, i) => {
         const [label, costStr] = fn.split('|');
@@ -397,8 +444,15 @@
       btn.className = "finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
       updatePrice();
     }
+    function selectPayMode(cost, label, btn) {
+      extraCodCost = cost;
+      chosenPayLabel = label;
+      document.querySelectorAll('.pay-pill').forEach(b => b.className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black text-center");
+      btn.className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white text-center";
+      updatePrice();
+    }
     function updatePrice() {
-      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish;
+      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
       document.getElementById('live-price').innerText = total;
       document.getElementById('final-btn-price').innerText = total;
     }
@@ -440,7 +494,14 @@
       btn.innerText = "Saving Commission...";
       btn.disabled = true;
 
-      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish;
+      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
+      const rawNotes = document.getElementById('cust-notes').value || 'No notes';
+      const addr = document.getElementById('cust-address').value || 'Address not entered';
+      const pin = document.getElementById('cust-pincode').value || 'N/A';
+
+      // Pack Suggestion + Address + Payment Method cleanly without needing new SQL columns!
+      const packedNotes = `${rawNotes}||ADDR:${addr} (PIN: ${pin})||PAY:${chosenPayLabel}`;
+
       const orderPayload = {
         order_code: "SKIA-" + Math.floor(1000 + Math.random() * 9000),
         product_title: activeProduct.title,
@@ -449,7 +510,7 @@
         size: chosenSize,
         placement: chosenPlacementLabel,
         finish: chosenFinishLabel,
-        notes: document.getElementById('cust-notes').value || 'No notes',
+        notes: packedNotes,
         urgent_gift: document.getElementById('cust-gift').checked,
         customer_name: document.getElementById('cust-name').value || 'Friend',
         customer_phone: document.getElementById('cust-phone').value || 'N/A',
@@ -465,7 +526,7 @@
       } else {
         document.getElementById('ticket-name').innerText = orderPayload.customer_name;
         document.getElementById('ticket-code').innerText = orderPayload.order_code;
-        document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price}`;
+        document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price} (${chosenPayLabel})`;
         goToStep(4);
       }
     }
