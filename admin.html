@@ -180,7 +180,10 @@
   </section>
 
   <script>
-    const SUPABASE_URL = "https://giffvjhztnjgftvqirdx.supabase.co";
+    // USES VERCEL TUNNEL (/supaproxy) SO JIO & WEAK WI-FI NEVER BLOCK ADMIN!
+    const SUPABASE_URL = window.location.hostname.includes('vercel.app')
+      ? window.location.origin + "/supaproxy"
+      : "https://giffvjhztnjgftvqirdx.supabase.co";
     const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -224,7 +227,7 @@
         const img = new Image();
         img.onload = () => {
           const c = document.createElement('canvas');
-          const max = 900;
+          const max = 800;
           let w = img.width, h = img.height;
           if (w > max || h > max) {
             if (w > h) { h = Math.round(h * (max / w)); w = max; }
@@ -232,7 +235,7 @@
           }
           c.width = w; c.height = h;
           c.getContext('2d').drawImage(img, 0, 0, w, h);
-          cb(c.toDataURL('image/jpeg', 0.82));
+          cb(c.toDataURL('image/jpeg', 0.78));
         };
         img.src = e.target.result;
       };
@@ -329,7 +332,6 @@
         oBox.innerHTML = `<p class="text-xs text-neutral-500 border-2 border-dashed border-black p-6 text-center">No customer orders yet.</p>`;
       } else {
         oBox.innerHTML = orders.map(o => {
-          // Unpack Payment Mode & Delivery Address from ||META:
           const noteParts = (o.notes || '').split('||META:');
           const cleanNotes = noteParts[0];
           let paymentMode = "UPI After Preview";
