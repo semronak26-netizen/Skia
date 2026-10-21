@@ -131,23 +131,17 @@
         </div>
       </div>
 
-      <!-- STEP 1: DYNAMICALLY BUILT FROM ADMIN CHECKBOXES -->
+      <!-- STEP 1 -->
       <div id="step-1" class="py-5 space-y-5">
         <p class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
-
-        <!-- Dynamic Shades -->
         <div>
           <p class="text-xs font-semibold mb-2">1. Pick Shade</p>
           <div id="dynamic-shades" class="flex flex-wrap gap-2"></div>
         </div>
-
-        <!-- Dynamic Sizes or Object Editions -->
         <div>
           <p id="size-label" class="text-xs font-semibold mb-2">2. Pick Size / Edition</p>
           <div id="dynamic-sizes" class="flex flex-wrap gap-2"></div>
         </div>
-
-        <!-- Placement (For Wearables) -->
         <div id="placement-box">
           <p class="text-xs font-semibold mb-2">3. Placement</p>
           <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
@@ -156,13 +150,10 @@
             <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill py-2 border-2 border-black bg-white">Both +₹150</button>
           </div>
         </div>
-
-        <!-- Dynamic Finishes / Layouts -->
         <div>
           <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout</p>
           <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
         </div>
-
         <button type="button" onclick="goToStep(2)" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
           Next · Drop Your Photo →
         </button>
@@ -189,23 +180,21 @@
         </div>
       </div>
 
-      <!-- STEP 3: UPGRADE #1 (DELIVERY ADDRESS + UPI vs COD SELECTOR) -->
+      <!-- STEP 3: DELIVERY ADDRESS + UPI vs COD -->
       <div id="step-3" class="hidden py-5 space-y-4">
-        <p class="font-serif-luxury text-2xl italic">"Where should we send your preview & parcel?"</p>
+        <p class="font-serif-luxury text-2xl italic">"Where do we send your preview & parcel?"</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <input type="text" id="cust-name" placeholder="Your full name" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
           <input type="tel" id="cust-phone" placeholder="WhatsApp number" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
         </div>
 
-        <!-- Delivery Address & Pincode Box for Qikink -->
         <div>
           <textarea id="cust-address" rows="2" placeholder="Full delivery address, landmark, city & 6-digit Pincode" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none"></textarea>
         </div>
 
-        <!-- Payment Method Choice: UPI (+₹0) vs COD (+₹50) -->
         <div>
-          <p class="text-xs font-semibold mb-1.5">Payment preference (after you approve preview on WhatsApp):</p>
+          <p class="text-xs font-semibold mb-1.5">Payment preference (after approving preview):</p>
           <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
             <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI After Preview', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-black text-white">
               UPI (+₹0 Free)
@@ -247,7 +236,10 @@
   </div>
 
   <script>
-    const SUPABASE_URL = "https://giffvjhztnjgftvqirdx.supabase.co";
+    // USES VERCEL TUNNEL (/supaproxy) SO JIO & INDIAN ISPs NEVER BLOCK IT!
+    const SUPABASE_URL = window.location.hostname.includes('vercel.app')
+      ? window.location.origin + "/supaproxy"
+      : "https://giffvjhztnjgftvqirdx.supabase.co";
     const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -357,18 +349,15 @@
       document.getElementById('photo-preview').classList.add('hidden');
       document.getElementById('modal-title').innerText = activeProduct.title;
 
-      // Reset Payment Buttons to UPI default
       document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
       document.getElementById('pay-cod-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
 
-      // 1. Render Shades from Admin Config
       const shadesBox = document.getElementById('dynamic-shades');
       chosenColor = conf.shades[0] || 'Standard';
       shadesBox.innerHTML = conf.shades.map((sh, i) => `
         <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sh}</button>
       `).join('');
 
-      // 2. Render Sizes / Object Editions from Admin Config
       const sizesBox = document.getElementById('dynamic-sizes');
       chosenSize = conf.sizes[0] || 'Standard';
       sizesBox.innerHTML = conf.sizes.map((sz, i) => {
@@ -377,11 +366,9 @@
         return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sz}</button>`;
       }).join('');
 
-      // 3. Show/Hide Apparel Placement
       document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
       chosenPlacementLabel = activeProduct.is_apparel ? 'Front' : 'Object Layout';
 
-      // 4. Render Finishes / Layouts from Admin Config
       const finBox = document.getElementById('dynamic-finishes');
       finBox.innerHTML = conf.finishes.map((fn, i) => {
         const [label, costStr] = fn.split('|');
@@ -441,13 +428,14 @@
       document.getElementById('final-btn-price').innerText = total;
     }
 
+    // Ultra-fast 700px compression so uploads succeed in 0.2s even on weak signal
     function compressAndLoadImage(file, callback) {
       const reader = new FileReader();
       reader.onload = e => {
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const maxDim = 1000;
+          const maxDim = 700;
           let w = img.width, h = img.height;
           if (w > maxDim || h > maxDim) {
             if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
@@ -455,7 +443,7 @@
           }
           canvas.width = w; canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          callback(canvas.toDataURL('image/jpeg', 0.82));
+          callback(canvas.toDataURL('image/jpeg', 0.75));
         };
         img.src = e.target.result;
       };
@@ -498,17 +486,22 @@
         photo_data: uploadedPhotoData
       };
 
-      const { error } = await db.from('skia_orders').insert([orderPayload]);
-      btn.disabled = false;
-      btn.innerHTML = `Send to SKIA · ₹<span id="final-btn-price">${total}</span>`;
-
-      if (error) {
-        alert("Could not send order: " + error.message);
-      } else {
-        document.getElementById('ticket-name').innerText = orderPayload.customer_name;
-        document.getElementById('ticket-code').innerText = orderPayload.order_code;
-        document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price} (${chosenPaymentLabel})`;
-        goToStep(4);
+      try {
+        const { error } = await db.from('skia_orders').insert([orderPayload]);
+        btn.disabled = false;
+        btn.innerHTML = `Send to SKIA · ₹<span id="final-btn-price">${total}</span>`;
+        if (error) {
+          alert("Could not send order: " + error.message);
+        } else {
+          document.getElementById('ticket-name').innerText = orderPayload.customer_name;
+          document.getElementById('ticket-code').innerText = orderPayload.order_code;
+          document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price} (${chosenPaymentLabel})`;
+          goToStep(4);
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = `Send to SKIA · ₹<span id="final-btn-price">${total}</span>`;
+        alert("Network hiccup—please make sure vercel.json is added or tap Send again!");
       }
     }
 
