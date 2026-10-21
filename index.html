@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKIA — Bring a Photo. We'll Make It Wearable.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #FFFFFF;
+      color: #000000;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif-luxury { font-family: 'Cormorant Garamond', serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .fire-bg-pattern {
+      background-color: #FFFFFF;
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 10 C68 32, 42 45, 58 72 C65 55, 78 64, 70 90 C88 68, 95 40, 60 10 Z' fill='%23000000' fill-opacity='0.035'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between fire-bg-pattern">
+
+  <!-- 1. HEADER -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-black">
+    <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+      <button onclick="filterCategory('ALL')" class="flex items-center gap-2 text-left">
+        <svg class="w-6 h-6 fill-black" viewBox="0 0 24 24">
+          <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
+        </svg>
+        <span class="text-2xl font-bold tracking-[0.38em]">SKIA</span>
+      </button>
+      <button onclick="filterCategory('KAFILA')" class="text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 hover:bg-black hover:text-white transition">
+        Crew Drops (5+) →
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-5 pt-8 pb-20 w-full">
+
+    <!-- 2. HERO BOX (ZERO FIRE OVERLAP) -->
+    <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
+      <div class="p-6 sm:p-10 pb-4">
+        <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">Studio Indore · 240–400 GSM</p>
+        <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
+          Bring a photo.<br />
+          <span class="italic font-normal">We’ll make it wearable.</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-lg">
+          Every piece below shows the <strong>raw phone photo</strong> a customer sent us, and what we turned it into. You approve your digital preview on WhatsApp before we print.
+        </p>
+      </div>
+      <div class="w-full overflow-hidden leading-none pt-2">
+        <svg class="w-full h-10 sm:h-12 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,120 L0,65 C45,95 85,20 130,75 C175,20 220,90 270,35 C315,85 365,15 415,75 C460,25 510,90 560,30 C610,85 660,10 710,75 C760,25 810,90 860,35 C910,85 960,15 1010,75 C1060,30 1110,85 1155,40 C1180,70 1190,55 1200,80 L1200,120 Z"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 3. CATEGORY PILLS -->
+    <section class="pb-6">
+      <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
+        <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
+          All Pieces
+        </button>
+        <button onclick="filterCategory('CHHAYA')" id="tab-CHHAYA" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          Chhaya · Photo Edits
+        </button>
+        <button onclick="filterCategory('KORA')" id="tab-KORA" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          Kora · Blank Canvas
+        </button>
+        <button onclick="filterCategory('KAFILA')" id="tab-KAFILA" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          Kafila · Teams (5+)
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. LIVE CLOUD PRODUCT GRID -->
+    <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
+      Loading SKIA Studio Catalog...
+    </div>
+    <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
+  </main>
+
+  <!-- 5. PITCH-BLACK FIRE FOOTER -->
+  <div class="w-full overflow-hidden leading-none pt-8">
+    <svg class="w-full h-12 sm:h-16 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,120 L0,70 C40,95 70,30 110,75 C150,25 190,85 240,40 C280,85 330,15 380,70 C420,30 470,90 520,35 C570,85 620,10 670,70 C720,25 760,85 810,40 C860,90 910,20 960,70 C1010,30 1060,85 1110,40 C1150,75 1180,50 1200,80 L1200,120 Z"/>
+    </svg>
+  </div>
+  <footer class="bg-black text-white py-10 px-5 text-center text-xs">
+    <p class="tracking-[0.4em] font-bold text-base mb-1">SKIA</p>
+    <p class="text-neutral-400 text-[11px]">240–400 GSM Heavy Cotton · Free Preview Before Print · Indore</p>
+  </footer>
+
+  <!-- 6. 3-STEP CONVERSATIONAL CUSTOMIZER -->
+  <div id="custom-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md border-t-4 sm:border-2 border-black p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-[8px_8px_0px_#000000]">
+      <div class="flex justify-between items-center pb-4 border-b-2 border-black">
+        <div>
+          <p id="step-indicator" class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Step 1 of 3</p>
+          <h2 id="modal-title" class="font-serif-luxury text-2xl font-bold">Product</h2>
+        </div>
+        <div class="text-right">
+          <span class="text-sm font-bold block">₹<span id="live-price">899</span></span>
+          <button onclick="closeModal()" class="text-[11px] font-semibold uppercase underline">Close ✕</button>
+        </div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div id="step-1" class="py-5 space-y-5">
+        <p class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
+        <div>
+          <p class="text-xs font-semibold mb-2">Shade: <span id="selected-color-name" class="font-normal">Pitch Black</span></p>
+          <div class="flex gap-3">
+            <button type="button" onclick="selectColor('Pitch Black', this)" class="color-dot w-8 h-8 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
+            <button type="button" onclick="selectColor('Pure White', this)" class="color-dot w-8 h-8 rounded-full bg-white border-2 border-black"></button>
+            <button type="button" onclick="selectColor('Charcoal Acid', this)" class="color-dot w-8 h-8 rounded-full bg-neutral-700"></button>
+            <button type="button" onclick="selectColor('Espresso', this)" class="color-dot w-8 h-8 rounded-full bg-[#3A2D28]"></button>
+          </div>
+        </div>
+        <div id="size-section">
+          <p class="text-xs font-semibold mb-2">Size</p>
+          <div class="flex gap-2">
+            <button type="button" onclick="selectSize('S', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">S</button>
+            <button type="button" onclick="selectSize('M', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-black text-white">M</button>
+            <button type="button" onclick="selectSize('L', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">L</button>
+            <button type="button" onclick="selectSize('XL', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">XL</button>
+            <button type="button" onclick="selectSize('XXL', this)" class="size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white">XXL</button>
+          </div>
+        </div>
+        <div id="apparel-craft-section" class="space-y-4 pt-3 border-t border-neutral-200">
+          <div>
+            <p class="text-xs font-semibold mb-2">Placement</p>
+            <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
+              <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill py-2 border-2 border-black bg-black text-white">Front</button>
+              <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill py-2 border-2 border-black bg-white">Back</button>
+              <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill py-2 border-2 border-black bg-white">Both +₹150</button>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-semibold mb-2">Finish</p>
+            <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
+              <button type="button" onclick="selectFinish(0, 'HD Ink', this)" class="finish-pill py-2 border-2 border-black bg-black text-white">HD Ink</button>
+              <button type="button" onclick="selectFinish(100, '3D Puff', this)" class="finish-pill py-2 border-2 border-black bg-white">3D Puff +₹100</button>
+              <button type="button" onclick="selectFinish(150, 'Embroidery', this)" class="finish-pill py-2 border-2 border-black bg-white">Stitch +₹150</button>
+            </div>
+          </div>
+        </div>
+        <button type="button" onclick="goToStep(2)" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          Next · Drop Your Photo →
+        </button>
+      </div>
+
+      <!-- STEP 2 -->
+      <div id="step-2" class="hidden py-5 space-y-5">
+        <p class="font-serif-luxury text-2xl italic">"Drop your photo, and tell us what's in your head."</p>
+        <label class="block border-2 border-dashed border-black bg-white p-6 text-center cursor-pointer hover:bg-neutral-50">
+          <span class="text-xs font-bold uppercase tracking-wider block mb-1">+ Tap to upload your photo</span>
+          <span id="modal-prompt-hint" class="text-[11px] text-neutral-500 block">Any raw photo from your gallery</span>
+          <input type="file" id="cust-photo" accept="image/*" onchange="previewPhoto(event)" class="hidden" />
+          <img id="photo-preview" class="hidden h-28 mx-auto mt-3 object-cover border-2 border-black" />
+        </label>
+        <div>
+          <p class="text-xs font-semibold mb-1.5">How should we style or edit it?</p>
+          <textarea id="cust-notes" rows="3" placeholder="Talk to us—what background should we remove, what text/date should we add?" class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="goToStep(1)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
+          <button type="button" onclick="goToStep(3)" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+            Next · Preview Details →
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div id="step-3" class="hidden py-5 space-y-4">
+        <p class="font-serif-luxury text-2xl italic">"Where should we WhatsApp your preview?"</p>
+        <input type="text" id="cust-name" placeholder="Your name" class="w-full border-2 border-black px-3.5 py-3 text-xs focus:outline-none" />
+        <input type="tel" id="cust-phone" placeholder="Your WhatsApp number" class="w-full border-2 border-black px-3.5 py-3 text-xs focus:outline-none" />
+        <label class="flex items-center gap-2.5 border-2 border-black p-3 cursor-pointer">
+          <input type="checkbox" id="cust-gift" class="accent-black w-4 h-4" />
+          <span class="text-xs font-medium">Urgent gift? Send a 2-Hour Digital Reveal Card today.</span>
+        </label>
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="goToStep(2)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
+          <button type="button" id="submit-btn" onclick="finishOrder()" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+            Send to SKIA · ₹<span id="final-btn-price">899</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // CONNECTED TO YOUR MUMBAI SUPABASE CLOUD BRAIN
+    const SUPABASE_URL = "https://giffvjhztnjgftvqirdx.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const starterProducts = [
+      {
+        title: "The Ride / Streetwear Edit",
+        spec: "240 GSM Oversized Tee",
+        prompt: "You send: Bike or car photo → We craft: Vintage graphic",
+        base_price: 899,
+        category: "CHHAYA",
+        is_apparel: true,
+        final_image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+        raw_photo: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80"
+      },
+      {
+        title: "Minimal Line-Art Hoodie",
+        spec: "400 GSM Heavy Fleece",
+        prompt: "You send: Couple or friend selfie → We craft: Clean line-art",
+        base_price: 1499,
+        category: "CHHAYA",
+        is_apparel: true,
+        final_image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
+        raw_photo: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=300&q=80"
+      },
+      {
+        title: "The Custom Varsity Jacket",
+        spec: "320 GSM Structured Fleece",
+        prompt: "You send: Any emblem, sketch or text → Direct custom craft",
+        base_price: 1699,
+        category: "KORA",
+        is_apparel: true,
+        final_image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
+        raw_photo: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80"
+      },
+      {
+        title: "Custom Memory Ceramic Mug",
+        spec: "325 ml Matte / Gloss",
+        prompt: "You send: Any photo or quote → Permanent ceramic wrap",
+        base_price: 449,
+        category: "KORA",
+        is_apparel: false,
+        final_image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80",
+        raw_photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80"
+      },
+      {
+        title: "Crew & College Drop (5+ Units)",
+        spec: "Tees, Hoodies & Jackets",
+        prompt: "You send: Club or gym logo → Free mockup & bulk rates",
+        base_price: 699,
+        category: "KAFILA",
+        is_apparel: true,
+        final_image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80",
+        raw_photo: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=80"
+      }
+    ];
+
+    let products = [];
+    let currentCategory = 'ALL';
+    let activeProduct = null;
+    let extraPlacement = 0;
+    let extraFinish = 0;
+    let chosenColor = 'Pitch Black';
+    let chosenSize = 'M';
+    let chosenPlacementLabel = 'Front';
+    let chosenFinishLabel = 'HD Ink';
+    let uploadedPhotoData = '';
+
+    async function loadCatalogFromCloud() {
+      const { data, error } = await db.from('skia_products').select('*').order('id', { ascending: false });
+      if (!error && data && data.length === 0) {
+        // Auto-seed starter catalog on first boot
+        const { data: seeded } = await db.from('skia_products').insert(starterProducts).select('*');
+        products = seeded || [];
+      } else {
+        products = data || [];
+      }
+      document.getElementById('loading-status').classList.add('hidden');
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      const list = currentCategory === 'ALL' ? products : products.filter(p => p.category === currentCategory);
+      grid.innerHTML = list.map(p => `
+        <div onclick="openModal(${p.id})" class="group cursor-pointer bg-white border-2 border-black p-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition">
+          <div class="relative h-72 overflow-hidden bg-neutral-100 border border-black mb-3">
+            <img src="${p.final_image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000]">
+              <img src="${p.raw_photo}" class="w-10 h-10 object-cover border border-black" />
+              <div class="pr-1">
+                <span class="text-[9px] font-bold uppercase tracking-wider block leading-tight">Customer Photo</span>
+                <span class="text-[10px] font-serif-luxury italic block leading-tight">→ SKIA Edit</span>
+              </div>
+            </div>
+            <span class="absolute top-2.5 right-2.5 bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-1">
+              ${p.spec}
+            </span>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif-luxury text-2xl font-bold">${p.title}</h3>
+            <span class="text-sm font-bold">₹${p.base_price}</span>
+          </div>
+          <p class="text-[11px] text-neutral-600 mt-1 pb-3 border-b border-neutral-200">${p.prompt}</p>
+          <div class="pt-2.5 flex justify-between items-center text-xs font-bold uppercase tracking-wider">
+            <span>Cast Yours</span><span>→</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.className = "cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition";
+      });
+      const active = document.getElementById('tab-' + cat);
+      if (active) active.className = "cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition";
+      renderProducts();
+    }
+
+    function openModal(id) {
+      activeProduct = products.find(p => p.id === id);
+      extraPlacement = 0;
+      extraFinish = 0;
+      uploadedPhotoData = '';
+      document.getElementById('photo-preview').classList.add('hidden');
+      document.getElementById('modal-title').innerText = activeProduct.title;
+      document.getElementById('modal-prompt-hint').innerText = activeProduct.prompt;
+      document.getElementById('apparel-craft-section').style.display = activeProduct.is_apparel ? 'block' : 'none';
+      document.getElementById('size-section').style.display = activeProduct.is_apparel ? 'block' : 'none';
+      updatePrice();
+      goToStep(1);
+      document.getElementById('custom-modal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('custom-modal').classList.add('hidden'); }
+    function goToStep(stepNum) {
+      [1, 2, 3].forEach(n => document.getElementById('step-' + n).classList.add('hidden'));
+      document.getElementById('step-' + stepNum).classList.remove('hidden');
+      document.getElementById('step-indicator').innerText = `Step ${stepNum} of 3`;
+    }
+    function selectColor(name, btn) {
+      chosenColor = name;
+      document.getElementById('selected-color-name').innerText = name;
+      document.querySelectorAll('.color-dot').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-black'));
+      btn.classList.add('ring-2', 'ring-offset-2', 'ring-black');
+    }
+    function selectSize(size, btn) {
+      chosenSize = size;
+      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-white");
+      btn.className = "size-pill px-4 py-2 text-xs font-semibold border-2 border-black bg-black text-white";
+    }
+    function selectPlacement(cost, label, btn) {
+      extraPlacement = cost;
+      chosenPlacementLabel = label;
+      document.querySelectorAll('.place-pill').forEach(b => b.className = "place-pill py-2 border-2 border-black bg-white");
+      btn.className = "place-pill py-2 border-2 border-black bg-black text-white";
+      updatePrice();
+    }
+    function selectFinish(cost, label, btn) {
+      extraFinish = cost;
+      chosenFinishLabel = label;
+      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill py-2 border-2 border-black bg-white");
+      btn.className = "finish-pill py-2 border-2 border-black bg-black text-white";
+      updatePrice();
+    }
+    function updatePrice() {
+      const total = Number(activeProduct.base_price) + extraPlacement + extraFinish;
+      document.getElementById('live-price').innerText = total;
+      document.getElementById('final-btn-price').innerText = total;
+    }
+
+    // Fast HD Image Compressor for Android Photos
+    function compressAndLoadImage(file, callback) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 1000;
+          let w = img.width, h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+            else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+          }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function previewPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      compressAndLoadImage(file, dataUrl => {
+        uploadedPhotoData = dataUrl;
+        const img = document.getElementById('photo-preview');
+        img.src = uploadedPhotoData;
+        img.classList.remove('hidden');
+      });
+    }
+
+    async function finishOrder() {
+      const btn = document.getElementById('submit-btn');
+      btn.innerText = "Sending to SKIA Studio...";
+      btn.disabled = true;
+
+      const total = Number(activeProduct.base_price) + extraPlacement + extraFinish;
+      const orderPayload = {
+        order_code: "SKIA-" + Math.floor(1000 + Math.random() * 9000),
+        product_title: activeProduct.title,
+        price: total,
+        color: chosenColor,
+        size: chosenSize,
+        placement: chosenPlacementLabel,
+        finish: chosenFinishLabel,
+        notes: document.getElementById('cust-notes').value || 'No notes',
+        urgent_gift: document.getElementById('cust-gift').checked,
+        customer_name: document.getElementById('cust-name').value || 'Guest',
+        customer_phone: document.getElementById('cust-phone').value || 'N/A',
+        photo_data: uploadedPhotoData
+      };
+
+      const { error } = await db.from('skia_orders').insert([orderPayload]);
+      btn.disabled = false;
+      btn.innerHTML = `Send to SKIA · ₹<span id="final-btn-price">${total}</span>`;
+
+      if (error) {
+        alert("Could not send order: " + error.message);
+      } else {
+        closeModal();
+        alert(`Thank you, ${orderPayload.customer_name}! Your commission (${orderPayload.order_code}) is now saved in the SKIA Cloud Studio. We'll WhatsApp your preview shortly!`);
+      }
+    }
+
+    loadCatalogFromCloud();
+  </script>
+</body>
+        </html>
