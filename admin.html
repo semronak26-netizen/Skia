@@ -19,7 +19,7 @@
     <div class="border-2 border-black p-6 w-full max-w-xs text-center shadow-[6px_6px_0px_#000000]">
       <p class="text-[10px] font-bold uppercase tracking-widest mb-1">SKIA Studio</p>
       <h2 class="font-serif-luxury text-3xl font-bold mb-4">Owner Login</h2>
-      <input type="password" id="pin-input" placeholder="Passcode" class="w-full border-2 border-black p-2.5 text-center mb-3 text-sm" />
+      <input type="password" id="pin-input" placeholder="Passcode (1234)" class="w-full border-2 border-black p-2.5 text-center mb-3 text-sm" />
       <button onclick="unlock()" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">Unlock Studio</button>
     </div>
   </div>
@@ -45,44 +45,117 @@
     <div id="orders-container" class="space-y-4 text-xs">Loading orders...</div>
   </section>
 
-  <!-- TAB 2: UPLOAD NEW PIECE (WITH 2-MODE WEARABLE vs OBJECT SWITCH!) -->
+  <!-- TAB 2: UPLOAD NEW PIECE WITH DYNAMIC OPTIONS CHECKLIST -->
   <section id="tab-add" class="hidden border-2 border-black p-5 shadow-[6px_6px_0px_#000000]">
     <h2 class="font-serif-luxury text-2xl font-bold mb-4">Publish a New Piece to SKIA</h2>
-    <form onsubmit="publishProductToCloud(event)" class="space-y-4 text-xs">
+    <form onsubmit="publishProductToCloud(event)" class="space-y-5 text-xs">
       
-      <!-- THE 2-MODE SWITCH -->
-      <div class="bg-neutral-100 border-2 border-black p-3">
-        <label class="font-bold block mb-2 uppercase tracking-wider text-[10px]">Step 1: What Kind of Item Is This?</label>
+      <!-- STEP 1: CHOOSE SECTION -->
+      <div class="bg-neutral-100 border-2 border-black p-3.5">
+        <label class="font-bold block mb-2 uppercase tracking-wider text-[10px]">Step 1: Choose Section</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <label class="flex items-center gap-2 bg-white border border-black p-2.5 cursor-pointer">
-            <input type="radio" name="p-mode" value="WEAR" checked class="accent-black" />
-            <span><strong>To Wear</strong> (Tees, Hoodies, Jackets)</span>
+          <label class="flex items-center gap-2 bg-white border-2 border-black p-2.5 cursor-pointer">
+            <input type="radio" name="p-mode" value="WEAR" checked onchange="toggleModeOptions()" class="accent-black" />
+            <span><strong>To Wear</strong> (Clothing)</span>
           </label>
-          <label class="flex items-center gap-2 bg-white border border-black p-2.5 cursor-pointer">
-            <input type="radio" name="p-mode" value="HOLD" class="accent-black" />
-            <span><strong>To Hold & Keep</strong> (Cups, Totes, Posters)</span>
+          <label class="flex items-center gap-2 bg-white border-2 border-black p-2.5 cursor-pointer">
+            <input type="radio" name="p-mode" value="HOLD" onchange="toggleModeOptions()" class="accent-black" />
+            <span><strong>To Hold & Keep</strong> (Cups/Objects)</span>
           </label>
-          <label class="flex items-center gap-2 bg-white border border-black p-2.5 cursor-pointer">
-            <input type="radio" name="p-mode" value="CREWS" class="accent-black" />
-            <span><strong>For Crews</strong> (Team & Bulk Drops)</span>
+          <label class="flex items-center gap-2 bg-white border-2 border-black p-2.5 cursor-pointer">
+            <input type="radio" name="p-mode" value="CREWS" onchange="toggleModeOptions()" class="accent-black" />
+            <span><strong>For Crews</strong> (Teams 5+)</span>
           </label>
         </div>
       </div>
 
+      <!-- STEP 2A: WEARABLE CHECKLIST (Visible when "To Wear" or "For Crews" is chosen) -->
+      <div id="wear-config-box" class="border-2 border-black p-4 space-y-4 bg-white">
+        <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2 py-0.5">Step 2: Tick Available Clothing Options</p>
+        
+        <div>
+          <label class="font-bold block mb-1.5">Available Sizes for This Garment:</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="S" checked /> S</label>
+            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="M" checked /> M</label>
+            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="L" checked /> L</label>
+            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="XL" checked /> XL</label>
+            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="XXL" checked /> XXL</label>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold block mb-1.5">Available Qikink Garment Shades:</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pure White" checked /> Pure White</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Charcoal Acid" checked /> Charcoal Acid</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Espresso" checked /> Espresso</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Navy Blue" /> Navy Blue</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Olive Green" /> Olive Green</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Lavender" /> Lavender</label>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold block mb-1.5">Allowed Print Finishes:</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="HD Ink|0" checked /> HD Soft Ink (Included)</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="3D Puff|100" checked /> 3D Puff (+₹100)</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="Stitch|150" checked /> Embroidery (+₹150)</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2B: NON-CLOTHING OBJECT CHECKLIST (Visible when "To Hold & Keep" is chosen!) -->
+      <div id="hold-config-box" class="hidden border-2 border-black p-4 space-y-4 bg-white">
+        <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2 py-0.5">Step 2: Tick Available Object / Cup Options</p>
+        
+        <div>
+          <label class="font-bold block mb-1.5">Tick Editions / Sizes Available for This Object:</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Classic 325ml Cup" checked /> Classic 325ml Cup</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Black Contrast Cup (+₹50)" checked /> Black Contrast Cup (+₹50)</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Magic Heat Cup (+₹120)" checked /> Magic Heat Cup (+₹120)</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Steel Sipper (+₹180)" /> Steel Sipper (+₹180)</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Standard Size" /> Standard Size (Totes/Posters)</label>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold block mb-1.5">Available Base Shades:</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pure White" checked /> Pure White</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Matte / Natural" /> Matte / Natural</label>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold block mb-1.5">Allowed Print Layouts:</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Center Focus|0" checked /> Center Focus</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Full Wrap|0" checked /> Full Wrap Panorama</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="2-Sided (Photo + Quote)|50" checked /> 2-Sided: Photo + Text (+₹50)</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: PRODUCT DETAILS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label class="font-bold block mb-1">Product Title</label>
-          <input type="text" id="p-title" required placeholder="e.g. Custom Matte Coffee Cup" class="w-full border-2 border-black p-2.5" />
+          <input type="text" id="p-title" required placeholder="e.g. Custom Studio Ceramic Cup" class="w-full border-2 border-black p-2.5" />
         </div>
         <div>
           <label class="font-bold block mb-1">Base Price (₹)</label>
-          <input type="number" id="p-price" required placeholder="449" class="w-full border-2 border-black p-2.5" />
+          <input type="number" id="p-price" required placeholder="399" class="w-full border-2 border-black p-2.5" />
         </div>
       </div>
 
       <div>
         <label class="font-bold block mb-1">Short Spec Badge (Top-Right of Card)</label>
-        <input type="text" id="p-spec" required placeholder="e.g. 325 ml Ceramic · Matte or Gloss (or 240 GSM Cotton)" class="w-full border-2 border-black p-2.5" />
+        <input type="text" id="p-spec" required placeholder="e.g. 325 ml Ceramic · Gloss & Matte (or 240 GSM Cotton)" class="w-full border-2 border-black p-2.5" />
       </div>
 
       <div>
@@ -140,6 +213,18 @@
       document.getElementById('btn-' + t).className = "px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white";
     }
 
+    // Switch checklist between Wearable vs Non-Clothing Object
+    function toggleModeOptions() {
+      const mode = document.querySelector('input[name="p-mode"]:checked').value;
+      if (mode === 'HOLD') {
+        document.getElementById('wear-config-box').classList.add('hidden');
+        document.getElementById('hold-config-box').classList.remove('hidden');
+      } else {
+        document.getElementById('wear-config-box').classList.remove('hidden');
+        document.getElementById('hold-config-box').classList.add('hidden');
+      }
+    }
+
     function compressImg(file, cb) {
       const r = new FileReader();
       r.onload = e => {
@@ -187,11 +272,23 @@
       const selectedMode = document.querySelector('input[name="p-mode"]:checked').value;
       const isWearable = (selectedMode !== 'HOLD');
 
+      // Collect checked Sizes, Shades, and Finishes
+      const sizeClass = isWearable ? '.w-size:checked' : '.h-size:checked';
+      const shadeClass = isWearable ? '.w-shade:checked' : '.h-shade:checked';
+      const finishClass = isWearable ? '.w-finish:checked' : '.h-finish:checked';
+
+      const sizes = Array.from(document.querySelectorAll(sizeClass)).map(el => el.value);
+      const shades = Array.from(document.querySelectorAll(shadeClass)).map(el => el.value);
+      const finishes = Array.from(document.querySelectorAll(finishClass)).map(el => el.value);
+
+      const cleanSpec = document.getElementById('p-spec').value;
+      const packedSpec = cleanSpec + "||CONF:" + JSON.stringify({ sizes, shades, finishes });
+
       const newP = {
         title: document.getElementById('p-title').value,
         base_price: Number(document.getElementById('p-price').value),
         category: selectedMode,
-        spec: document.getElementById('p-spec').value,
+        spec: packedSpec,
         prompt: document.getElementById('p-prompt').value,
         is_apparel: isWearable,
         final_image: finalImgData,
@@ -206,8 +303,9 @@
         alert("Error: " + error.message);
       } else {
         e.target.reset();
+        toggleModeOptions();
         finalImgData = ""; rawImgData = "";
-        alert("✓ Published! Your new piece is now live on skia-indore.vercel.app.");
+        alert("✓ Published with your exact selected options!");
         await loadAllCloudData();
         showTab('manage');
       }
@@ -263,21 +361,23 @@
       }
 
       const mBox = document.getElementById('manage-container');
-      mBox.innerHTML = products.map(p => `
+      mBox.innerHTML = products.map(p => {
+        const cleanSpec = (p.spec || '').split('||CONF:')[0];
+        return `
         <div class="border-2 border-black p-3 flex justify-between items-center bg-white gap-2">
           <div class="flex items-center gap-3">
             <img src="${p.final_image}" class="w-12 h-12 object-cover border border-black shrink-0" />
             <div>
               <p class="font-bold">${p.title} — ₹${p.base_price}</p>
-              <p class="text-[10px] text-neutral-500">${p.is_apparel ? 'To Wear' : 'To Hold & Keep'} · ${p.spec}</p>
+              <p class="text-[10px] text-neutral-500">${p.is_apparel ? 'To Wear' : 'To Hold & Keep'} · ${cleanSpec}</p>
             </div>
           </div>
           <div class="flex gap-1.5 shrink-0">
             <button onclick="editProductPrice(${p.id}, ${p.base_price})" class="border-2 border-black px-2.5 py-1 font-bold uppercase text-[10px] hover:bg-black hover:text-white">Edit ₹</button>
             <button onclick="deleteProdFromCloud(${p.id})" class="border-2 border-black px-2.5 py-1 font-bold uppercase text-[10px] text-red-700 hover:bg-red-700 hover:text-white">Delete</button>
           </div>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
     }
   </script>
 </body>
