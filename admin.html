@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKIA — Private Cloud Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { background-color: #FFFFFF; color: #000000; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-serif-luxury { font-family: 'Cormorant Garamond', serif; }
+  </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto">
+
+  <!-- PIN LOCK OVERLAY -->
+  <div id="pin-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-6">
+    <div class="border-2 border-black p-6 w-full max-w-xs text-center shadow-[6px_6px_0px_#000000]">
+      <p class="text-[10px] font-bold uppercase tracking-widest mb-1">SKIA Studio</p>
+      <h2 class="font-serif-luxury text-3xl font-bold mb-4">Owner Login</h2>
+      <input type="password" id="pin-input" placeholder="Passcode (1234)" class="w-full border-2 border-black p-2.5 text-center mb-3 text-sm" />
+      <button onclick="unlock()" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">Unlock Cloud Admin</button>
+    </div>
+  </div>
+
+  <!-- ADMIN HEADER -->
+  <header class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-widest bg-black text-white px-2 py-0.5">Live Mumbai Cloud</span>
+      <h1 class="font-serif-luxury text-3xl font-bold mt-1">SKIA Owner Studio</h1>
+    </div>
+    <button onclick="loadAllCloudData()" class="border-2 border-black px-3 py-1.5 text-xs font-bold uppercase hover:bg-black hover:text-white">↻ Refresh</button>
+  </header>
+
+  <!-- TABS -->
+  <div class="flex gap-2 mb-6 overflow-x-auto">
+    <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white">1. Customer Orders (<span id="order-badge">0</span>)</button>
+    <button onclick="showTab('add')" id="btn-add" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">2. + Upload Product</button>
+    <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">3. Manage Catalog</button>
+  </div>
+
+  <!-- TAB 1: LIVE CUSTOMER ORDERS INBOX -->
+  <section id="tab-orders" class="space-y-4">
+    <div id="orders-container" class="space-y-4 text-xs">Loading orders from cloud...</div>
+  </section>
+
+  <!-- TAB 2: UPLOAD NEW PRODUCT TO CLOUD -->
+  <section id="tab-add" class="hidden border-2 border-black p-5 shadow-[6px_6px_0px_#000000]">
+    <h2 class="font-serif-luxury text-2xl font-bold mb-4">Publish a New Piece to SKIA Cloud</h2>
+    <form onsubmit="publishProductToCloud(event)" class="space-y-4 text-xs">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold block mb-1">Product Title</label>
+          <input type="text" id="p-title" required placeholder="e.g. Custom Anime Hoodie" class="w-full border-2 border-black p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Base Price (₹)</label>
+          <input type="number" id="p-price" required placeholder="1299" class="w-full border-2 border-black p-2.5" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold block mb-1">Category</label>
+          <select id="p-cat" class="w-full border-2 border-black p-2.5 bg-white">
+            <option value="CHHAYA">Chhaya · Photo Edits</option>
+            <option value="KORA">Kora · Blank Canvas</option>
+            <option value="KAFILA">Kafila · Teams (5+)</option>
+          </select>
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Qikink GSM / Spec Tag</label>
+          <input type="text" id="p-spec" required placeholder="e.g. 240 GSM Oversized Tee" class="w-full border-2 border-black p-2.5" />
+        </div>
+      </div>
+
+      <div>
+        <label class="font-bold block mb-1">1-Line Customer Prompt ("You send → We craft")</label>
+        <input type="text" id="p-prompt" required placeholder="You send: Bike photo → We craft: Streetwear graphic" class="w-full border-2 border-black p-2.5" />
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="border-2 border-dashed border-black p-3">
+          <label class="font-bold block mb-1">1. Main Final Mockup Photo</label>
+          <input type="file" accept="image/*" onchange="loadImg(event, 'final')" class="text-xs w-full" />
+        </div>
+        <div class="border-2 border-dashed border-black p-3">
+          <label class="font-bold block mb-1">2. Corner "Raw Customer Photo"</label>
+          <input type="file" accept="image/*" onchange="loadImg(event, 'raw')" class="text-xs w-full" />
+        </div>
+      </div>
+
+      <button type="submit" id="pub-btn" class="w-full bg-black text-white py-3.5 font-bold uppercase tracking-widest">
+        Publish Live to SKIA Cloud →
+      </button>
+    </form>
+  </section>
+
+  <!-- TAB 3: MANAGE / DELETE LIVE PRODUCTS -->
+  <section id="tab-manage" class="hidden space-y-3">
+    <div id="manage-container" class="space-y-2 text-xs"></div>
+  </section>
+
+  <script>
+    const SUPABASE_URL = "https://giffvjhztnjgftvqirdx.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let products = [];
+    let orders = [];
+    let finalImgData = "";
+    let rawImgData = "";
+
+    function unlock() {
+      if (document.getElementById('pin-input').value === '1234') {
+        document.getElementById('pin-screen').classList.add('hidden');
+        loadAllCloudData();
+      } else {
+        alert("Wrong PIN! Use 1234");
+      }
+    }
+
+    function showTab(t) {
+      ['orders', 'add', 'manage'].forEach(x => {
+        document.getElementById('tab-' + x).classList.add('hidden');
+        document.getElementById('btn-' + x).className = "px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black";
+      });
+      document.getElementById('tab-' + t).classList.remove('hidden');
+      document.getElementById('btn-' + t).className = "px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white";
+    }
+
+    function compressImg(file, cb) {
+      const r = new FileReader();
+      r.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const c = document.createElement('canvas');
+          const max = 900;
+          let w = img.width, h = img.height;
+          if (w > max || h > max) {
+            if (w > h) { h = Math.round(h * (max / w)); w = max; }
+            else { w = Math.round(w * (max / h)); h = max; }
+          }
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          cb(c.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = e.target.result;
+      };
+      r.readAsDataURL(file);
+    }
+
+    function loadImg(e, type) {
+      const file = e.target.files[0];
+      if (!file) return;
+      compressImg(file, dataUrl => {
+        if (type === 'final') finalImgData = dataUrl;
+        if (type === 'raw') rawImgData = dataUrl;
+      });
+    }
+
+    async function loadAllCloudData() {
+      const { data: ordData } = await db.from('skia_orders').select('*').order('id', { ascending: false });
+      const { data: prodData } = await db.from('skia_products').select('*').order('id', { ascending: false });
+      orders = ordData || [];
+      products = prodData || [];
+      renderAdmin();
+    }
+
+    async function publishProductToCloud(e) {
+      e.preventDefault();
+      const btn = document.getElementById('pub-btn');
+      btn.innerText = "Uploading to Cloud...";
+      btn.disabled = true;
+
+      const newP = {
+        title: document.getElementById('p-title').value,
+        base_price: Number(document.getElementById('p-price').value),
+        category: document.getElementById('p-cat').value,
+        spec: document.getElementById('p-spec').value,
+        prompt: document.getElementById('p-prompt').value,
+        is_apparel: true,
+        final_image: finalImgData || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+        raw_photo: rawImgData || "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80"
+      };
+
+      const { error } = await db.from('skia_products').insert([newP]);
+      btn.disabled = false;
+      btn.innerText = "Publish Live to SKIA Cloud →";
+
+      if (error) {
+        alert("Error: " + error.message);
+      } else {
+        e.target.reset();
+        finalImgData = ""; rawImgData = "";
+        alert("✓ Published to Mumbai Cloud! Every customer visiting SKIA will now see this piece.");
+        await loadAllCloudData();
+        showTab('manage');
+      }
+    }
+
+    async function deleteProdFromCloud(id) {
+      await db.from('skia_products').delete().eq('id', id);
+      await loadAllCloudData();
+    }
+
+    async function deleteOrderFromCloud(id) {
+      await db.from('skia_orders').delete().eq('id', id);
+      await loadAllCloudData();
+    }
+
+    function renderAdmin() {
+      document.getElementById('order-badge').innerText = orders.length;
+      const oBox = document.getElementById('orders-container');
+      if (orders.length === 0) {
+        oBox.innerHTML = `<p class="text-xs text-neutral-500 border-2 border-dashed border-black p-6 text-center">No cloud orders yet. Submit a test order in File 1 (Customer Site) and tap Refresh!</p>`;
+      } else {
+        oBox.innerHTML = orders.map(o => `
+          <div class="border-2 border-black p-4 bg-white shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row justify-between gap-4">
+            <div class="space-y-1">
+              <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
+              <h3 class="font-serif-luxury text-2xl font-bold pt-1">${o.product_title} — ₹${o.price}</h3>
+              <p><strong>Customer:</strong> ${o.customer_name} | <strong>WhatsApp:</strong> <a href="https://wa.me/91${o.customer_phone}" target="_blank" class="underline font-bold">${o.customer_phone} (Tap to Chat)</a></p>
+              <p><strong>Qikink Spec:</strong> ${o.color} · Size ${o.size} · ${o.placement} · ${o.finish}</p>
+              <p class="bg-neutral-100 border border-black p-2 mt-1"><strong>Customer Suggestion:</strong> "${o.notes}"</p>
+              ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
+              <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-400 underline pt-2 block">Remove Order</button>
+            </div>
+            <div class="text-center shrink-0">
+              ${o.photo_data ? `<img src="${o.photo_data}" class="w-24 h-24 object-cover border-2 border-black mx-auto mb-2" />
+              <a href="${o.photo_data}" download="${o.order_code}.jpg" class="inline-block bg-black text-white px-3 py-1.5 text-[10px] font-bold uppercase">Download Photo</a>` : `<p class="text-[10px] text-neutral-400">No photo attached</p>`}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const mBox = document.getElementById('manage-container');
+      mBox.innerHTML = products.map(p => `
+        <div class="border-2 border-black p-3 flex justify-between items-center bg-white">
+          <div class="flex items-center gap-3">
+            <img src="${p.final_image}" class="w-12 h-12 object-cover border border-black" />
+            <div>
+              <p class="font-bold">${p.title} (₹${p.base_price})</p>
+              <p class="text-[10px] text-neutral-500">${p.prompt}</p>
+            </div>
+          </div>
+          <button onclick="deleteProdFromCloud(${p.id})" class="border-2 border-black px-3 py-1 font-bold uppercase hover:bg-black hover:text-white">Delete</button>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
