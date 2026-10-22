@@ -35,22 +35,20 @@
 
   <!-- TABS -->
   <div class="flex gap-2 mb-6 overflow-x-auto">
-    <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white">1. Orders (<span id="order-badge">0</span>)</button>
+    <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white">1. Previews & Orders (<span id="order-badge">0</span>)</button>
     <button onclick="showTab('add')" id="btn-add" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">2. + Upload Piece</button>
     <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">3. Edit / Delete Catalog</button>
   </div>
 
-  <!-- TAB 1: ORDERS -->
+  <!-- TAB 1: ORDERS & PREVIEWS -->
   <section id="tab-orders" class="space-y-4">
     <div id="orders-container" class="space-y-4 text-xs">Loading orders...</div>
   </section>
 
-  <!-- TAB 2: UPLOAD NEW PIECE WITH DYNAMIC OPTIONS CHECKLIST -->
+  <!-- TAB 2: UPLOAD NEW PIECE -->
   <section id="tab-add" class="hidden border-2 border-black p-5 shadow-[6px_6px_0px_#000000]">
     <h2 class="font-serif-luxury text-2xl font-bold mb-4">Publish a New Piece to SKIA</h2>
     <form onsubmit="publishProductToCloud(event)" class="space-y-5 text-xs">
-      
-      <!-- STEP 1: CHOOSE SECTION -->
       <div class="bg-neutral-100 border-2 border-black p-3.5">
         <label class="font-bold block mb-2 uppercase tracking-wider text-[10px]">Step 1: Choose Section</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -69,11 +67,11 @@
         </div>
       </div>
 
-      <!-- STEP 2A: WEARABLE CHECKLIST -->
+      <!-- WEARABLE CHECKLIST -->
       <div id="wear-config-box" class="border-2 border-black p-4 space-y-4 bg-white">
         <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2 py-0.5">Step 2: Tick Available Clothing Options</p>
         <div>
-          <label class="font-bold block mb-1.5">Available Sizes for This Garment:</label>
+          <label class="font-bold block mb-1.5">Available Sizes:</label>
           <div class="flex flex-wrap gap-2">
             <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="S" checked /> S</label>
             <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="M" checked /> M</label>
@@ -83,7 +81,7 @@
           </div>
         </div>
         <div>
-          <label class="font-bold block mb-1.5">Available Qikink Garment Shades:</label>
+          <label class="font-bold block mb-1.5">Available Shades:</label>
           <div class="flex flex-wrap gap-2">
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pure White" checked /> Pure White</label>
@@ -104,11 +102,11 @@
         </div>
       </div>
 
-      <!-- STEP 2B: NON-CLOTHING OBJECT CHECKLIST -->
+      <!-- OBJECT CHECKLIST -->
       <div id="hold-config-box" class="hidden border-2 border-black p-4 space-y-4 bg-white">
         <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2 py-0.5">Step 2: Tick Available Object / Cup Options</p>
         <div>
-          <label class="font-bold block mb-1.5">Tick Editions / Sizes Available for This Object:</label>
+          <label class="font-bold block mb-1.5">Tick Editions / Sizes Available:</label>
           <div class="flex flex-wrap gap-2">
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Classic 325ml Cup" checked /> Classic 325ml Cup</label>
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Black Contrast Cup (+₹50)" checked /> Black Contrast Cup (+₹50)</label>
@@ -135,7 +133,6 @@
         </div>
       </div>
 
-      <!-- STEP 3: PRODUCT DETAILS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label class="font-bold block mb-1">Product Title</label>
@@ -148,18 +145,18 @@
       </div>
 
       <div>
-        <label class="font-bold block mb-1">Short Spec Badge (Top-Right of Card)</label>
-        <input type="text" id="p-spec" required placeholder="e.g. 325 ml Ceramic · Gloss & Matte (or 240 GSM Cotton)" class="w-full border-2 border-black p-2.5" />
+        <label class="font-bold block mb-1">Short Spec Badge</label>
+        <input type="text" id="p-spec" required placeholder="e.g. 325 ml Ceramic · Gloss & Matte" class="w-full border-2 border-black p-2.5" />
       </div>
 
       <div>
-        <label class="font-bold block mb-1">1-Line Customer Prompt ("You send → We craft")</label>
+        <label class="font-bold block mb-1">1-Line Customer Prompt</label>
         <input type="text" id="p-prompt" required placeholder="You send: Any photo or quote → We craft: Minimal ceramic wrap" class="w-full border-2 border-black p-2.5" />
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div class="border-2 border-dashed border-black p-3">
-          <label class="font-bold block mb-1">1. Main Final Mockup Photo (From Qikink)</label>
+          <label class="font-bold block mb-1">1. Main Final Mockup Photo</label>
           <input type="file" accept="image/*" required onchange="loadImg(event, 'final')" class="text-xs w-full" />
         </div>
         <div class="border-2 border-dashed border-black p-3">
@@ -180,7 +177,6 @@
   </section>
 
   <script>
-    // USES VERCEL TUNNEL (/supaproxy) SO JIO & WEAK WI-FI NEVER BLOCK ADMIN!
     const SUPABASE_URL = window.location.hostname.includes('vercel.app')
       ? window.location.origin + "/supaproxy"
       : "https://giffvjhztnjgftvqirdx.supabase.co";
@@ -306,6 +302,23 @@
       }
     }
 
+    // 1-Tap Admin Button to Move an Unpaid Preview into Confirmed Orders!
+    async function movePreviewToConfirmedOrder(orderId) {
+      const target = orders.find(x => x.id === orderId);
+      if (!target) return;
+      const parts = (target.notes || '').split('||META:');
+      const cleanNotes = parts[0];
+      let meta = { bucket: 'ORDER', payment: 'UPI Paid (Confirmed by Admin)', address: 'Not provided', stage: 'Confirmed & In Craft' };
+      if (parts[1]) {
+        try {
+          const old = JSON.parse(parts[1]);
+          meta = { ...old, bucket: 'ORDER', payment: 'UPI Paid (Confirmed)', stage: 'Confirmed & In Craft' };
+        } catch(e) {}
+      }
+      await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(meta) }).eq('id', orderId);
+      await loadAllCloudData();
+    }
+
     async function editProductPrice(id, oldPrice) {
       const newPrice = prompt("Enter new Base Price (₹):", oldPrice);
       if (!newPrice || isNaN(newPrice)) return;
@@ -334,22 +347,27 @@
         oBox.innerHTML = orders.map(o => {
           const noteParts = (o.notes || '').split('||META:');
           const cleanNotes = noteParts[0];
-          let paymentMode = "UPI After Preview";
+          let bucket = "PREVIEW";
+          let paymentMode = "Unpaid · Preview Requested";
           let deliveryAddress = "Not provided";
           if (noteParts[1]) {
             try {
               const meta = JSON.parse(noteParts[1]);
+              bucket = meta.bucket || bucket;
               paymentMode = meta.payment || paymentMode;
               deliveryAddress = meta.address || deliveryAddress;
             } catch(e) {}
           }
 
-          const waMsg = encodeURIComponent(`Hi ${o.customer_name}! This is SKIA Studio Indore regarding your custom commission (${o.order_code} - ${o.product_title}, ₹${o.price} via ${paymentMode}).`);
+          const waMsg = encodeURIComponent(`Hi ${o.customer_name}! This is SKIA Studio Indore regarding your custom commission (${o.order_code} - ${o.product_title}, ₹${o.price}).`);
           return `
           <div class="border-2 border-black p-4 bg-white shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex flex-wrap gap-2 items-center">
                 <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
+                <span class="px-2 py-0.5 text-[10px] font-bold uppercase ${bucket === 'ORDER' ? 'bg-emerald-900 text-white' : 'bg-amber-200 text-black border border-black'}">
+                  ${bucket === 'ORDER' ? '✓ CONFIRMED ORDER' : '⏳ IN PREVIEW (UNPAID)'}
+                </span>
                 <span class="border border-black px-2 py-0.5 text-[10px] font-bold uppercase">${paymentMode}</span>
               </div>
               <h3 class="font-serif-luxury text-2xl font-bold">${o.product_title} — ₹${o.price}</h3>
@@ -358,9 +376,14 @@
               <p class="bg-neutral-100 border border-black p-2"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
               <p class="bg-white border border-black p-2"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
-              <div class="pt-2 flex gap-3 items-center">
+              <div class="pt-2 flex flex-wrap gap-2 items-center">
                 <a href="https://wa.me/91${o.customer_phone}?text=${waMsg}" target="_blank" class="bg-black text-white px-3 py-1.5 text-[10px] font-bold uppercase">WhatsApp Customer →</a>
-                <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline">Delete Order</button>
+                ${bucket === 'PREVIEW' ? `
+                  <button onclick="movePreviewToConfirmedOrder(${o.id})" class="border-2 border-black bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white">
+                    ✓ Mark Paid (Move to Orders)
+                  </button>
+                ` : ''}
+                <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline ml-2">Delete</button>
               </div>
             </div>
             <div class="text-center shrink-0">
