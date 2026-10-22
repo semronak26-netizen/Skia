@@ -302,7 +302,6 @@
       }
     }
 
-    // 1-Tap Admin Button to Move an Unpaid Preview into Confirmed Orders!
     async function movePreviewToConfirmedOrder(orderId) {
       const target = orders.find(x => x.id === orderId);
       if (!target) return;
@@ -345,6 +344,11 @@
         oBox.innerHTML = `<p class="text-xs text-neutral-500 border-2 border-dashed border-black p-6 text-center">No customer orders yet.</p>`;
       } else {
         oBox.innerHTML = orders.map(o => {
+          // Separate 10-digit Phone from 4-digit Privacy PIN
+          const phoneParts = (o.customer_phone || '').split('#');
+          const cleanPhone = phoneParts[0] || 'N/A';
+          const custPin = phoneParts[1] || 'None';
+
           const noteParts = (o.notes || '').split('||META:');
           const cleanNotes = noteParts[0];
           let bucket = "PREVIEW";
@@ -369,15 +373,16 @@
                   ${bucket === 'ORDER' ? '✓ CONFIRMED ORDER' : '⏳ IN PREVIEW (UNPAID)'}
                 </span>
                 <span class="border border-black px-2 py-0.5 text-[10px] font-bold uppercase">${paymentMode}</span>
+                <span class="bg-neutral-100 border border-black px-2 py-0.5 text-[10px] font-bold">PIN: ${custPin}</span>
               </div>
               <h3 class="font-serif-luxury text-2xl font-bold">${o.product_title} — ₹${o.price}</h3>
-              <p><strong>Customer:</strong> ${o.customer_name} (${o.customer_phone})</p>
+              <p><strong>Customer:</strong> ${o.customer_name} · <strong>WhatsApp:</strong> ${cleanPhone}</p>
               <p><strong>Spec:</strong> ${o.color} · ${o.size} · ${o.placement} · ${o.finish}</p>
               <p class="bg-neutral-100 border border-black p-2"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
               <p class="bg-white border border-black p-2"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
               <div class="pt-2 flex flex-wrap gap-2 items-center">
-                <a href="https://wa.me/91${o.customer_phone}?text=${waMsg}" target="_blank" class="bg-black text-white px-3 py-1.5 text-[10px] font-bold uppercase">WhatsApp Customer →</a>
+                <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="bg-black text-white px-3 py-1.5 text-[10px] font-bold uppercase">WhatsApp Customer →</a>
                 ${bucket === 'PREVIEW' ? `
                   <button onclick="movePreviewToConfirmedOrder(${o.id})" class="border-2 border-black bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white">
                     ✓ Mark Paid (Move to Orders)
