@@ -25,7 +25,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between fire-bg-pattern">
 
-  <!-- 1. HEADER WITH "PREVIEWS & ORDERS" BUTTON -->
+  <!-- 1. HEADER -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-black">
     <div class="max-w-5xl mx-auto px-4 sm:px-5 py-4 flex items-center justify-between gap-2">
       <button onclick="showMainShop('ALL')" class="flex items-center gap-2 text-left">
@@ -50,7 +50,6 @@
 
     <!-- VIEW A: MAIN STOREFRONT -->
     <div id="storefront-view">
-      <!-- HERO -->
       <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
         <div class="p-6 sm:p-10 pb-4">
           <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
@@ -69,7 +68,6 @@
         </div>
       </section>
 
-      <!-- SECTIONS -->
       <section class="pb-6">
         <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
           <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
@@ -87,18 +85,17 @@
         </div>
       </section>
 
-      <!-- PRODUCT GRID -->
       <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
         Loading SKIA Studio...
       </div>
       <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
     </div>
 
-    <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" TRACKING SECTION -->
+    <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" SECTION (PROTECTED BY 10-DIGIT PHONE + 4-DIGIT PIN) -->
     <div id="customer-orders-view" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black pb-4">
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Your Personal Studio Archive</p>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">100% Private Studio Archive</p>
           <h2 class="font-serif-luxury text-3xl sm:text-4xl font-bold">My Previews & Orders</h2>
         </div>
         <button onclick="showMainShop('ALL')" class="self-start text-xs font-bold uppercase tracking-wider border-2 border-black px-4 py-2 bg-white hover:bg-black hover:text-white">
@@ -106,16 +103,17 @@
         </button>
       </div>
 
-      <!-- Auto-Remembered Phone Lookup Bar (Survives Page Reloads!) -->
+      <!-- Protected Lookup Bar (Requires 10-Digit Phone + 4-Digit PIN) -->
       <div class="bg-white border-2 border-black p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-[4px_4px_0px_#000000]">
         <div class="text-xs">
-          <span class="font-bold block">Synced with your WhatsApp number:</span>
-          <span class="text-neutral-500 text-[11px]">Your phone automatically remembers your items even if you reload the site.</span>
+          <span class="font-bold block">🔒 Protected by your 4-Digit Privacy PIN</span>
+          <span class="text-neutral-500 text-[11px]">Enter your 10-digit WhatsApp & 4-digit PIN to unlock on any device.</span>
         </div>
-        <div class="flex gap-2">
-          <input type="tel" id="lookup-phone-input" placeholder="Enter 10-digit WhatsApp" class="border-2 border-black px-3 py-2 text-xs w-full sm:w-44 focus:outline-none" />
-          <button onclick="syncCustomerOrdersByPhone()" class="bg-black text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
-            Load
+        <div class="flex flex-wrap sm:flex-nowrap gap-2">
+          <input type="tel" id="lookup-phone-input" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="10-Digit WhatsApp" class="border-2 border-black px-3 py-2 text-xs w-full sm:w-40 focus:outline-none" />
+          <input type="password" id="lookup-pin-input" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4-Digit PIN" class="border-2 border-black px-3 py-2 text-xs w-28 focus:outline-none text-center tracking-widest" />
+          <button onclick="syncCustomerOrdersByPhoneAndPin()" class="bg-black text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
+            Unlock
           </button>
         </div>
       </div>
@@ -131,10 +129,9 @@
       </div>
 
       <p id="cust-tab-subtitle" class="text-xs text-neutral-600 italic">
-        Showing items awaiting your WhatsApp preview approval & payment. You can pay via UPI anytime to move them to Confirmed Orders.
+        Showing items awaiting your WhatsApp preview approval & payment.
       </p>
 
-      <!-- List of Previews or Confirmed Orders -->
       <div id="customer-items-list" class="space-y-4"></div>
     </div>
 
@@ -142,8 +139,8 @@
     <section class="mt-16 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
       <div>
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01 / PRIVACY FIRST</span>
-        <p class="font-bold text-sm mt-0.5">100% Photo Confidentiality</p>
-        <p class="text-neutral-600 mt-1 text-[11px]">Your personal photos are never shared publicly and are permanently deleted after printing.</p>
+        <p class="font-bold text-sm mt-0.5">PIN-Locked Photo Privacy</p>
+        <p class="text-neutral-600 mt-1 text-[11px]">Your personal photos are locked behind your 4-digit PIN and permanently deleted after printing.</p>
       </div>
       <div class="sm:border-x sm:border-neutral-200 sm:px-6">
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">02 / ZERO RISK</span>
@@ -188,15 +185,15 @@
       <div id="step-1" class="py-5 space-y-5">
         <p class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
         <div>
-          <p class="text-xs font-semibold mb-2">1. Pick Shade</p>
+          <p class="text-xs font-semibold mb-2">1. Pick Shade *</p>
           <div id="dynamic-shades" class="flex flex-wrap gap-2"></div>
         </div>
         <div>
-          <p id="size-label" class="text-xs font-semibold mb-2">2. Pick Size / Edition</p>
+          <p id="size-label" class="text-xs font-semibold mb-2">2. Pick Size / Edition *</p>
           <div id="dynamic-sizes" class="flex flex-wrap gap-2"></div>
         </div>
         <div id="placement-box">
-          <p class="text-xs font-semibold mb-2">3. Placement</p>
+          <p class="text-xs font-semibold mb-2">3. Placement *</p>
           <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
             <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill py-2 border-2 border-black bg-black text-white">Front</button>
             <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill py-2 border-2 border-black bg-white">Back</button>
@@ -204,7 +201,7 @@
           </div>
         </div>
         <div>
-          <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout</p>
+          <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout *</p>
           <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
         </div>
         <button type="button" onclick="goToStep(2)" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
@@ -212,38 +209,67 @@
         </button>
       </div>
 
-      <!-- STEP 2 -->
+      <!-- STEP 2 (MANDATORY PHOTO & MANDATORY NOTES) -->
       <div id="step-2" class="hidden py-5 space-y-5">
         <p class="font-serif-luxury text-2xl italic">"Drop your photo, and tell us what's in your head."</p>
         <label class="block border-2 border-dashed border-black bg-white p-6 text-center cursor-pointer hover:bg-neutral-50">
-          <span class="text-xs font-bold uppercase tracking-wider block mb-1">+ Tap to pick a photo from your phone</span>
-          <span class="text-[11px] text-neutral-500 block">100% private · Used only for your custom piece</span>
+          <span class="text-xs font-bold uppercase tracking-wider block mb-1">+ Tap to pick a photo from your phone *</span>
+          <span class="text-[11px] text-neutral-500 block">Mandatory · 100% private & PIN-protected</span>
           <input type="file" id="cust-photo" accept="image/*" onchange="previewPhoto(event)" class="hidden" />
           <img id="photo-preview" class="hidden h-28 mx-auto mt-3 object-cover border-2 border-black" />
         </label>
         <div>
-          <p class="text-xs font-semibold mb-1.5">Talk to us—how should we style or edit it?</p>
-          <textarea id="cust-notes" rows="3" placeholder="e.g. Remove the background, make it minimal black & white, and add this quote/date..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
+          <p class="text-xs font-semibold mb-1.5">Talk to us—how should we style or edit it? *</p>
+          <textarea id="cust-notes" rows="3" placeholder="Mandatory: Tell us what background to remove, what text/date to write, or how you want it styled..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
         </div>
         <div class="flex gap-2">
           <button type="button" onclick="goToStep(1)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
-          <button type="button" onclick="goToStep(3)" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="validateStep2AndContinue()" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
             Next · Delivery & Preview →
           </button>
         </div>
       </div>
 
-      <!-- STEP 3: DELIVERY ADDRESS + UPI vs COD -->
+      <!-- STEP 3: MANDATORY 10-DIGIT PHONE + 1-TIME 4-DIGIT PIN + ADDRESS -->
       <div id="step-3" class="hidden py-5 space-y-4">
         <p class="font-serif-luxury text-2xl italic">"Where do we send your preview & parcel?"</p>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <input type="text" id="cust-name" placeholder="Your full name" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
-          <input type="tel" id="cust-phone" placeholder="10-digit WhatsApp number" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Your Full Name *</label>
+          <input type="text" id="cust-name" placeholder="e.g. Aarav Sharma" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
+        </div>
+
+        <!-- SHOWN WHEN PIN IS ALREADY SAVED ON THIS PHONE (SO USER NEVER MAKES A PIN PER ORDER!) -->
+        <div id="saved-identity-banner" class="hidden border-2 border-black bg-neutral-100 p-3 flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold block">🔒 WhatsApp & Privacy PIN Saved</span>
+            <span id="saved-phone-display" class="text-neutral-600 text-[11px]">9876543210 (PIN Active)</span>
+          </div>
+          <button type="button" onclick="unlockIdentityFields()" class="text-[10px] font-bold uppercase underline">
+            Change Number
+          </button>
+        </div>
+
+        <!-- SHOWN ONLY ON FIRST SETUP (OR WHEN CHANGING NUMBER) -->
+        <div id="first-time-identity-fields" class="space-y-3 bg-neutral-50 border-2 border-black p-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">10-Digit WhatsApp *</label>
+              <input type="tel" id="cust-phone" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="e.g. 9876543210" class="w-full border-2 border-black bg-white px-3 py-2 text-xs focus:outline-none" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Set 4-Digit Privacy PIN *</label>
+              <input type="password" id="cust-pin" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4 Digits (e.g. 2409)" class="w-full border-2 border-black bg-white px-3 py-2 text-xs focus:outline-none text-center tracking-widest" />
+            </div>
+          </div>
+          <p class="text-[10px] text-neutral-500 leading-snug">
+            🔒 <strong>Set once for your number:</strong> Your phone will remember this PIN automatically for all future orders.
+          </p>
         </div>
 
         <div>
-          <textarea id="cust-address" rows="2" placeholder="Full delivery address, landmark, city & 6-digit Pincode" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none"></textarea>
+          <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Full Delivery Address & 6-Digit Pincode *</label>
+          <textarea id="cust-address" rows="2" placeholder="House/Flat No, Building, Area, City & 6-digit Pincode" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none"></textarea>
         </div>
 
         <div>
@@ -271,7 +297,7 @@
         </div>
       </div>
 
-      <!-- STEP 4: UPI PAYMENT vs PAY AFTER WHATSAPP PREVIEW SCREEN -->
+      <!-- STEP 4: UPI PAYMENT vs PAY AFTER WHATSAPP PREVIEW -->
       <div id="step-4" class="hidden py-5 space-y-4">
         <div class="border-2 border-black p-3.5 bg-neutral-50 text-xs">
           <span class="bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">Commission Saved</span>
@@ -279,7 +305,6 @@
           <p id="ticket-item" class="text-neutral-600 text-[11px]"></p>
         </div>
 
-        <!-- SHOWN IF CUSTOMER SELECTED UPI -->
         <div id="upi-choice-box" class="space-y-3">
           <div class="border-2 border-black p-3.5 bg-white text-xs leading-relaxed">
             <p class="font-bold uppercase tracking-wider text-[10px] mb-1">🔔 Studio Payment Note</p>
@@ -301,7 +326,6 @@
           </button>
         </div>
 
-        <!-- SHOWN IF CUSTOMER SELECTED COD -->
         <div id="cod-confirmed-box" class="hidden space-y-3 text-center">
           <p class="text-xs text-neutral-700 leading-relaxed">
             Your <strong>Cash on Delivery</strong> order is placed in your <strong>Confirmed Orders</strong> tab! We will WhatsApp your digital preview before shipping.
@@ -321,6 +345,9 @@
       : "https://giffvjhztnjgftvqirdx.supabase.co";
     const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // YOUR REAL KOTAK UPI ID
+    const OWNER_UPI_ID = "8103423011@kotakbank";
 
     let products = [];
     let customerOrders = [];
@@ -381,36 +408,96 @@
       document.getElementById('loading-status').classList.add('hidden');
       renderProducts();
 
-      // Auto-load saved customer phone from permanent phone memory!
+      // Auto-restore saved customer identity (10-digit phone + 4-digit PIN)
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
-      if (savedPhone) {
-        document.getElementById('lookup-phone-input').value = savedPhone;
-        document.getElementById('cust-phone').value = savedPhone;
-        await fetchCustomerOrdersFromCloud(savedPhone);
-      }
+      const savedPin = localStorage.getItem('skia_customer_pin') || '';
       const savedName = localStorage.getItem('skia_customer_name') || '';
-      if (savedName) document.getElementById('cust-name').value = savedName;
       const savedAddr = localStorage.getItem('skia_customer_address') || '';
+
+      if (savedName) document.getElementById('cust-name').value = savedName;
       if (savedAddr) document.getElementById('cust-address').value = savedAddr;
+
+      if (savedPhone.length === 10 && savedPin.length === 4) {
+        document.getElementById('lookup-phone-input').value = savedPhone;
+        document.getElementById('lookup-pin-input').value = savedPin;
+        document.getElementById('cust-phone').value = savedPhone;
+        document.getElementById('cust-pin').value = savedPin;
+        lockIdentityFields(savedPhone);
+        await fetchCustomerOrdersFromCloud(savedPhone, savedPin, true);
+      }
     }
 
-    async function fetchCustomerOrdersFromCloud(phone) {
-      const cleanPhone = (phone || '').trim();
-      if (!cleanPhone) return;
+    function lockIdentityFields(phone) {
+      document.getElementById('saved-phone-display').innerText = `${phone} (4-Digit PIN Saved)`;
+      document.getElementById('saved-identity-banner').classList.remove('hidden');
+      document.getElementById('first-time-identity-fields').classList.add('hidden');
+    }
+
+    function unlockIdentityFields() {
+      document.getElementById('saved-identity-banner').classList.add('hidden');
+      document.getElementById('first-time-identity-fields').classList.remove('hidden');
+      document.getElementById('cust-phone').focus();
+    }
+
+    // Checks if this 10-digit phone already has a registered PIN in Supabase
+    async function verifyPhonePinOnCloud(phone, pin) {
+      const { data } = await db.from('skia_orders')
+        .select('customer_phone')
+        .like('customer_phone', `${phone}#%`)
+        .limit(5);
+
+      if (data && data.length > 0) {
+        const existingKey = data[0].customer_phone; // e.g. "9876543210#2409"
+        const existingPin = existingKey.split('#')[1];
+        if (existingPin && existingPin !== pin) {
+          return { valid: false, exists: true };
+        }
+        return { valid: true, exists: true };
+      }
+      return { valid: true, exists: false };
+    }
+
+    async function fetchCustomerOrdersFromCloud(phone, pin, silent = false) {
+      if (phone.length !== 10 || pin.length !== 4) {
+        if (!silent) alert("Please enter a valid 10-digit WhatsApp number and your 4-digit PIN.");
+        return false;
+      }
+
+      const check = await verifyPhonePinOnCloud(phone, pin);
+      if (!check.valid) {
+        if (!silent) alert("❌ Wrong 4-Digit Privacy PIN for this WhatsApp number!");
+        customerOrders = [];
+        updateCustomerCounts();
+        renderCustomerOrdersList();
+        return false;
+      }
+
+      const lockedKey = `${phone}#${pin}`;
       const { data } = await db.from('skia_orders')
         .select('*')
-        .eq('customer_phone', cleanPhone)
+        .eq('customer_phone', lockedKey)
         .order('id', { ascending: false });
+
       customerOrders = data || [];
       updateCustomerCounts();
       renderCustomerOrdersList();
+      return true;
     }
 
-    async function syncCustomerOrdersByPhone() {
+    async function syncCustomerOrdersByPhoneAndPin() {
       const phone = document.getElementById('lookup-phone-input').value.trim();
-      if (!phone) return alert("Please enter your 10-digit WhatsApp number.");
-      localStorage.setItem('skia_customer_phone', phone);
-      await fetchCustomerOrdersFromCloud(phone);
+      const pin = document.getElementById('lookup-pin-input').value.trim();
+      if (phone.length !== 10) return alert("Please enter an exact 10-digit WhatsApp number.");
+      if (pin.length !== 4) return alert("Please enter your 4-digit Privacy PIN.");
+
+      const ok = await fetchCustomerOrdersFromCloud(phone, pin, false);
+      if (ok) {
+        localStorage.setItem('skia_customer_phone', phone);
+        localStorage.setItem('skia_customer_pin', pin);
+        document.getElementById('cust-phone').value = phone;
+        document.getElementById('cust-pin').value = pin;
+        lockIdentityFields(phone);
+      }
     }
 
     function updateCustomerCounts() {
@@ -431,7 +518,10 @@
       document.getElementById('storefront-view').classList.add('hidden');
       document.getElementById('customer-orders-view').classList.remove('hidden');
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
-      if (savedPhone) await fetchCustomerOrdersFromCloud(savedPhone);
+      const savedPin = localStorage.getItem('skia_customer_pin') || '';
+      if (savedPhone.length === 10 && savedPin.length === 4) {
+        await fetchCustomerOrdersFromCloud(savedPhone, savedPin, true);
+      }
       switchCustomerTab(tab || 'PREVIEW');
     }
 
@@ -498,8 +588,7 @@
     }
 
     async function payExistingPreviewOrder(orderId, amount) {
-      // Open UPI app deep link
-      window.location.href = `upi://pay?pa=skiastudio@ybl&pn=SKIA%20Studio&am=${amount}&cu=INR`;
+      window.location.href = `upi://pay?pa=${OWNER_UPI_ID}&pn=SKIA%20Studio&am=${amount}&cu=INR`;
       setTimeout(async () => {
         if (confirm("Did you complete the ₹" + amount + " UPI payment? Tap OK to move this piece into your Confirmed Orders!")) {
           const target = customerOrders.find(x => x.id === orderId);
@@ -510,7 +599,7 @@
           meta.stage = 'Confirmed & In Craft';
           const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
           await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', orderId);
-          await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'));
+          await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'), localStorage.getItem('skia_customer_pin'), true);
           switchCustomerTab('ORDER');
         }
       }, 1200);
@@ -578,8 +667,21 @@
       chosenPaymentMode = 'UPI';
       uploadedPhotoData = '';
       document.getElementById('photo-preview').classList.add('hidden');
+      document.getElementById('cust-photo').value = '';
+      document.getElementById('cust-notes').value = '';
       document.getElementById('confirm-paid-btn').classList.add('hidden');
       document.getElementById('modal-title').innerText = activeProduct.title;
+
+      // Check if phone + PIN are already saved on this device so we don't ask per order
+      const savedPhone = localStorage.getItem('skia_customer_phone') || '';
+      const savedPin = localStorage.getItem('skia_customer_pin') || '';
+      if (savedPhone.length === 10 && savedPin.length === 4) {
+        document.getElementById('cust-phone').value = savedPhone;
+        document.getElementById('cust-pin').value = savedPin;
+        lockIdentityFields(savedPhone);
+      } else {
+        unlockIdentityFields();
+      }
 
       document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
       document.getElementById('pay-cod-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
@@ -619,6 +721,18 @@
       [1, 2, 3, 4].forEach(n => document.getElementById('step-' + n).classList.add('hidden'));
       document.getElementById('step-' + stepNum).classList.remove('hidden');
       document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Next Step';
+    }
+
+    // Mandatory check on Step 2 (Photo + Notes)
+    function validateStep2AndContinue() {
+      if (!uploadedPhotoData) {
+        return alert("Please upload a reference photo from your phone first!");
+      }
+      const notes = document.getElementById('cust-notes').value.trim();
+      if (notes.length < 3) {
+        return alert("Please write a short note telling us how you want your photo styled!");
+      }
+      goToStep(3);
     }
 
     function selectColor(name, btn) {
@@ -694,25 +808,43 @@
     }
 
     async function finishOrder() {
+      const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
-      const name = document.getElementById('cust-name').value.trim() || 'Friend';
-      const address = document.getElementById('cust-address').value.trim() || 'Address not provided';
-      if (!phone) return alert("Please enter your 10-digit WhatsApp number so we can send your preview & save your order!");
+      const pin = document.getElementById('cust-pin').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
 
-      // Save customer details permanently on their phone browser!
+      // Strict Mandatory Checks
+      if (name.length < 2) return alert("Please enter your full name.");
+      if (!/^\d{10}$/.test(phone)) return alert("Please enter an exact 10-digit WhatsApp phone number.");
+      if (!/^\d{4}$/.test(pin)) return alert("Please set an exact 4-digit numeric Privacy PIN.");
+      if (address.length < 8) return alert("Please enter your complete delivery address and 6-digit Pincode.");
+
+      const btn = document.getElementById('submit-btn');
+      btn.innerText = "Verifying PIN & Saving...";
+      btn.disabled = true;
+
+      // Enforce 1 PIN per 1 Phone Number across the cloud!
+      const pinCheck = await verifyPhonePinOnCloud(phone, pin);
+      if (!pinCheck.valid) {
+        btn.disabled = false;
+        const t = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
+        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${t}</span>`;
+        unlockIdentityFields();
+        return alert("❌ Wrong 4-Digit Privacy PIN for this WhatsApp number! This phone number already has a PIN set. Please enter your original 4-digit PIN.");
+      }
+
+      // Save permanently so user never has to enter PIN again on this phone
       localStorage.setItem('skia_customer_phone', phone);
+      localStorage.setItem('skia_customer_pin', pin);
       localStorage.setItem('skia_customer_name', name);
       localStorage.setItem('skia_customer_address', address);
       document.getElementById('lookup-phone-input').value = phone;
-
-      const btn = document.getElementById('submit-btn');
-      btn.innerText = "Saving Commission...";
-      btn.disabled = true;
+      document.getElementById('lookup-pin-input').value = pin;
+      lockIdentityFields(phone);
 
       const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
-      const rawNotes = document.getElementById('cust-notes').value || 'No notes';
+      const rawNotes = document.getElementById('cust-notes').value.trim();
 
-      // COD goes straight to Confirmed Orders; UPI starts in Previews until paid!
       const isCod = (chosenPaymentMode === 'COD');
       const metaObj = {
         bucket: isCod ? 'ORDER' : 'PREVIEW',
@@ -732,7 +864,7 @@
         notes: rawNotes + "||META:" + JSON.stringify(metaObj),
         urgent_gift: document.getElementById('cust-gift').checked,
         customer_name: name,
-        customer_phone: phone,
+        customer_phone: `${phone}#${pin}`,
         photo_data: uploadedPhotoData
       };
 
@@ -744,7 +876,7 @@
           alert("Could not send order: " + error.message);
         } else {
           lastCreatedOrder = (data && data[0]) ? data[0] : orderPayload;
-          await fetchCustomerOrdersFromCloud(phone);
+          await fetchCustomerOrdersFromCloud(phone, pin, true);
 
           document.getElementById('ticket-code').innerText = orderPayload.order_code;
           document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price}`;
@@ -767,7 +899,7 @@
 
     function triggerUpiPaymentForCurrentOrder() {
       if (!lastCreatedOrder) return;
-      window.location.href = `upi://pay?pa=skiastudio@ybl&pn=SKIA%20Studio&am=${lastCreatedOrder.price}&cu=INR`;
+      window.location.href = `upi://pay?pa=${OWNER_UPI_ID}&pn=SKIA%20Studio&am=${lastCreatedOrder.price}&cu=INR`;
       document.getElementById('confirm-paid-btn').classList.remove('hidden');
     }
 
@@ -779,7 +911,7 @@
       meta.stage = 'Confirmed & In Craft';
       const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
       await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', lastCreatedOrder.id);
-      await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'));
+      await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'), localStorage.getItem('skia_customer_pin'), true);
       closeAndOpenSection('ORDER');
     }
 
