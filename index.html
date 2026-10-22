@@ -25,67 +25,120 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between fire-bg-pattern">
 
-  <!-- 1. HEADER -->
+  <!-- 1. HEADER WITH "PREVIEWS & ORDERS" BUTTON -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-black">
-    <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
-      <button onclick="filterCategory('ALL')" class="flex items-center gap-2 text-left">
-        <svg class="w-6 h-6 fill-black" viewBox="0 0 24 24">
+    <div class="max-w-5xl mx-auto px-4 sm:px-5 py-4 flex items-center justify-between gap-2">
+      <button onclick="showMainShop('ALL')" class="flex items-center gap-2 text-left">
+        <svg class="w-6 h-6 fill-black shrink-0" viewBox="0 0 24 24">
           <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
         </svg>
-        <span class="text-2xl font-bold tracking-[0.38em]">SKIA</span>
+        <span class="text-xl sm:text-2xl font-bold tracking-[0.35em]">SKIA</span>
       </button>
-      <button onclick="filterCategory('CREWS')" class="text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 hover:bg-black hover:text-white transition">
-        For Crews (5+) →
-      </button>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openCustomerOrdersView('PREVIEW')" class="text-[11px] font-bold tracking-wider uppercase border-2 border-black px-3 py-1.5 bg-white hover:bg-black hover:text-white transition">
+          Previews & Orders (<span id="nav-order-count">0</span>)
+        </button>
+        <button onclick="showMainShop('CREWS')" class="hidden sm:inline-block text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 bg-black text-white">
+          For Crews →
+        </button>
+      </div>
     </div>
   </header>
 
   <main class="max-w-5xl mx-auto px-5 pt-8 pb-16 w-full">
 
-    <!-- 2. HERO -->
-    <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
-      <div class="p-6 sm:p-10 pb-4">
-        <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
-        <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
-          Bring a photo.<br />
-          <span class="italic font-normal">Cast it on what you wear & hold.</span>
-        </h1>
-        <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-lg">
-          Tap any piece below, drop a photo from your phone, and tell us your idea. You see and approve the digital preview on WhatsApp before we craft it.
-        </p>
-      </div>
-      <div class="w-full overflow-hidden leading-none pt-2">
-        <svg class="w-full h-10 sm:h-12 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M0,120 L0,65 C45,95 85,20 130,75 C175,20 220,90 270,35 C315,85 365,15 415,75 C460,25 510,90 560,30 C610,85 660,10 710,75 C760,25 810,90 860,35 C910,85 960,15 1010,75 C1060,30 1110,85 1155,40 C1180,70 1190,55 1200,80 L1200,120 Z"/>
-        </svg>
-      </div>
-    </section>
+    <!-- VIEW A: MAIN STOREFRONT -->
+    <div id="storefront-view">
+      <!-- HERO -->
+      <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
+        <div class="p-6 sm:p-10 pb-4">
+          <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
+          <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
+            Bring a photo.<br />
+            <span class="italic font-normal">Cast it on what you wear & hold.</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-lg">
+            Tap any piece below, drop a photo from your phone, and tell us your idea. You see and approve the digital preview on WhatsApp before we craft it.
+          </p>
+        </div>
+        <div class="w-full overflow-hidden leading-none pt-2">
+          <svg class="w-full h-10 sm:h-12 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,120 L0,65 C45,95 85,20 130,75 C175,20 220,90 270,35 C315,85 365,15 415,75 C460,25 510,90 560,30 C610,85 660,10 710,75 C760,25 810,90 860,35 C910,85 960,15 1010,75 C1060,30 1110,85 1155,40 C1180,70 1190,55 1200,80 L1200,120 Z"/>
+          </svg>
+        </div>
+      </section>
 
-    <!-- 3. SECTIONS -->
-    <section class="pb-6">
-      <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
-        <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
-          Everything
-        </button>
-        <button onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
-          To Wear
-        </button>
-        <button onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
-          To Hold & Keep
-        </button>
-        <button onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
-          For Crews
-        </button>
-      </div>
-    </section>
+      <!-- SECTIONS -->
+      <section class="pb-6">
+        <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
+          <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
+            Everything
+          </button>
+          <button onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+            To Wear
+          </button>
+          <button onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+            To Hold & Keep
+          </button>
+          <button onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+            For Crews
+          </button>
+        </div>
+      </section>
 
-    <!-- 4. PRODUCT GRID -->
-    <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
-      Loading SKIA Studio...
+      <!-- PRODUCT GRID -->
+      <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
+        Loading SKIA Studio...
+      </div>
+      <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
     </div>
-    <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
 
-    <!-- 5. PRIVACY & STUDIO PROMISE -->
+    <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" TRACKING SECTION -->
+    <div id="customer-orders-view" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black pb-4">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Your Personal Studio Archive</p>
+          <h2 class="font-serif-luxury text-3xl sm:text-4xl font-bold">My Previews & Orders</h2>
+        </div>
+        <button onclick="showMainShop('ALL')" class="self-start text-xs font-bold uppercase tracking-wider border-2 border-black px-4 py-2 bg-white hover:bg-black hover:text-white">
+          ← Back to Catalog
+        </button>
+      </div>
+
+      <!-- Auto-Remembered Phone Lookup Bar (Survives Page Reloads!) -->
+      <div class="bg-white border-2 border-black p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-[4px_4px_0px_#000000]">
+        <div class="text-xs">
+          <span class="font-bold block">Synced with your WhatsApp number:</span>
+          <span class="text-neutral-500 text-[11px]">Your phone automatically remembers your items even if you reload the site.</span>
+        </div>
+        <div class="flex gap-2">
+          <input type="tel" id="lookup-phone-input" placeholder="Enter 10-digit WhatsApp" class="border-2 border-black px-3 py-2 text-xs w-full sm:w-44 focus:outline-none" />
+          <button onclick="syncCustomerOrdersByPhone()" class="bg-black text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
+            Load
+          </button>
+        </div>
+      </div>
+
+      <!-- TWO TABS: 1. PREVIEWS (UNPAID) vs 2. ORDERS (COD & PAID) -->
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
+          1. Previews · Unpaid (<span id="count-previews">0</span>)
+        </button>
+        <button onclick="switchCustomerTab('ORDER')" id="cust-tab-ORDER" class="py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center">
+          2. Orders · Confirmed (<span id="count-orders">0</span>)
+        </button>
+      </div>
+
+      <p id="cust-tab-subtitle" class="text-xs text-neutral-600 italic">
+        Showing items awaiting your WhatsApp preview approval & payment. You can pay via UPI anytime to move them to Confirmed Orders.
+      </p>
+
+      <!-- List of Previews or Confirmed Orders -->
+      <div id="customer-items-list" class="space-y-4"></div>
+    </div>
+
+    <!-- PRIVACY & STUDIO PROMISE -->
     <section class="mt-16 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
       <div>
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01 / PRIVACY FIRST</span>
@@ -105,7 +158,7 @@
     </section>
   </main>
 
-  <!-- 6. FOOTER -->
+  <!-- FOOTER -->
   <div class="w-full overflow-hidden leading-none pt-4">
     <svg class="w-full h-12 sm:h-16 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
       <path d="M0,120 L0,70 C40,95 70,30 110,75 C150,25 190,85 240,40 C280,85 330,15 380,70 C420,30 470,90 520,35 C570,85 620,10 670,70 C720,25 760,85 810,40 C860,90 910,20 960,70 C1010,30 1060,85 1110,40 C1150,75 1180,50 1200,80 L1200,120 Z"/>
@@ -116,7 +169,7 @@
     <p class="text-neutral-400 text-[11px]">To Wear · To Hold & Keep · Studio Indore</p>
   </footer>
 
-  <!-- 7. DYNAMIC CONVERSATIONAL DRAWER -->
+  <!-- DYNAMIC CONVERSATIONAL DRAWER -->
   <div id="custom-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white w-full max-w-md border-t-4 sm:border-2 border-black p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-[8px_8px_0px_#000000]">
       
@@ -186,7 +239,7 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <input type="text" id="cust-name" placeholder="Your full name" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
-          <input type="tel" id="cust-phone" placeholder="WhatsApp number" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
+          <input type="tel" id="cust-phone" placeholder="10-digit WhatsApp number" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
         </div>
 
         <div>
@@ -194,12 +247,12 @@
         </div>
 
         <div>
-          <p class="text-xs font-semibold mb-1.5">Payment preference (after approving preview):</p>
+          <p class="text-xs font-semibold mb-1.5">Choose how you want to proceed:</p>
           <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-            <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI After Preview', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-black text-white">
+            <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-black text-white">
               UPI (+₹0 Free)
             </button>
-            <button type="button" id="pay-cod-btn" onclick="selectPayment(50, 'Cash on Delivery (COD)', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-white text-black">
+            <button type="button" id="pay-cod-btn" onclick="selectPayment(50, 'COD', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-white text-black">
               Cash on Delivery (+₹50)
             </button>
           </div>
@@ -213,30 +266,56 @@
         <div class="flex gap-2 pt-2">
           <button type="button" onclick="goToStep(2)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
           <button type="button" id="submit-btn" onclick="finishOrder()" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
-            Send to SKIA · ₹<span id="final-btn-price">899</span>
+            Send Commission · ₹<span id="final-btn-price">899</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 4: TICKET -->
-      <div id="step-4" class="hidden py-6 text-center space-y-4">
-        <span class="bg-black text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1">Commission Received</span>
-        <h3 class="font-serif-luxury text-3xl font-bold">We’re on it, <span id="ticket-name">Friend</span>.</h3>
-        <div class="border-2 border-black p-4 bg-neutral-50 text-xs space-y-1">
-          <p class="text-[10px] uppercase tracking-widest text-neutral-500">Your SKIA Reference Code</p>
-          <p id="ticket-code" class="text-lg font-bold tracking-widest">SKIA-0000</p>
-          <p id="ticket-item" class="text-neutral-600 pt-1"></p>
+      <!-- STEP 4: UPI PAYMENT vs PAY AFTER WHATSAPP PREVIEW SCREEN -->
+      <div id="step-4" class="hidden py-5 space-y-4">
+        <div class="border-2 border-black p-3.5 bg-neutral-50 text-xs">
+          <span class="bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">Commission Saved</span>
+          <p id="ticket-code" class="text-base font-bold tracking-widest mt-1">SKIA-0000</p>
+          <p id="ticket-item" class="text-neutral-600 text-[11px]"></p>
         </div>
-        <button onclick="closeModal()" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
-          Back to SKIA Studio
-        </button>
+
+        <!-- SHOWN IF CUSTOMER SELECTED UPI -->
+        <div id="upi-choice-box" class="space-y-3">
+          <div class="border-2 border-black p-3.5 bg-white text-xs leading-relaxed">
+            <p class="font-bold uppercase tracking-wider text-[10px] mb-1">🔔 Studio Payment Note</p>
+            <p class="text-neutral-700">
+              You can <strong>pay via UPI right now</strong> to move this directly into your Confirmed Orders, OR <strong>pay after you see and approve your digital preview on WhatsApp!</strong>
+            </p>
+          </div>
+
+          <button type="button" onclick="triggerUpiPaymentForCurrentOrder()" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+            Pay ₹<span id="upi-now-amount">899</span> by UPI Now →
+          </button>
+
+          <button type="button" id="confirm-paid-btn" onclick="markCurrentOrderPaid()" class="hidden w-full border-2 border-black bg-emerald-950 text-white py-3 text-xs font-bold uppercase tracking-widest">
+            ✓ I Have Completed UPI Payment (Move to Orders)
+          </button>
+
+          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="w-full border-2 border-black bg-white text-black py-3 text-xs font-bold uppercase tracking-wider">
+            Pay After WhatsApp Preview (Keep in Previews) →
+          </button>
+        </div>
+
+        <!-- SHOWN IF CUSTOMER SELECTED COD -->
+        <div id="cod-confirmed-box" class="hidden space-y-3 text-center">
+          <p class="text-xs text-neutral-700 leading-relaxed">
+            Your <strong>Cash on Delivery</strong> order is placed in your <strong>Confirmed Orders</strong> tab! We will WhatsApp your digital preview before shipping.
+          </p>
+          <button type="button" onclick="closeAndOpenSection('ORDER')" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+            View in My Confirmed Orders →
+          </button>
+        </div>
       </div>
 
     </div>
   </div>
 
   <script>
-    // USES VERCEL TUNNEL (/supaproxy) SO JIO & INDIAN ISPs NEVER BLOCK IT!
     const SUPABASE_URL = window.location.hostname.includes('vercel.app')
       ? window.location.origin + "/supaproxy"
       : "https://giffvjhztnjgftvqirdx.supabase.co";
@@ -244,8 +323,11 @@
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let products = [];
+    let customerOrders = [];
     let currentCategory = 'ALL';
+    let currentCustomerTab = 'PREVIEW';
     let activeProduct = null;
+    let lastCreatedOrder = null;
     let extraSizeCost = 0;
     let extraPlacement = 0;
     let extraFinish = 0;
@@ -254,7 +336,7 @@
     let chosenSize = 'M';
     let chosenPlacementLabel = 'Front';
     let chosenFinishLabel = 'HD Ink';
-    let chosenPaymentLabel = 'UPI After Preview';
+    let chosenPaymentMode = 'UPI';
     let uploadedPhotoData = '';
 
     function normalizeCat(p) {
@@ -278,11 +360,160 @@
       return { cleanSpec, conf };
     }
 
+    function parseOrderMeta(o) {
+      const parts = (o.notes || '').split('||META:');
+      const cleanNotes = parts[0];
+      let meta = {
+        bucket: 'PREVIEW',
+        payment: 'Unpaid · Pay After WhatsApp Preview',
+        address: 'Not provided',
+        stage: 'Studio Crafting Preview'
+      };
+      if (parts[1]) {
+        try { meta = { ...meta, ...JSON.parse(parts[1]) }; } catch(e) {}
+      }
+      return { cleanNotes, meta };
+    }
+
     async function loadCatalogFromCloud() {
       const { data } = await db.from('skia_products').select('*').order('id', { ascending: false });
       products = data || [];
       document.getElementById('loading-status').classList.add('hidden');
       renderProducts();
+
+      // Auto-load saved customer phone from permanent phone memory!
+      const savedPhone = localStorage.getItem('skia_customer_phone') || '';
+      if (savedPhone) {
+        document.getElementById('lookup-phone-input').value = savedPhone;
+        document.getElementById('cust-phone').value = savedPhone;
+        await fetchCustomerOrdersFromCloud(savedPhone);
+      }
+      const savedName = localStorage.getItem('skia_customer_name') || '';
+      if (savedName) document.getElementById('cust-name').value = savedName;
+      const savedAddr = localStorage.getItem('skia_customer_address') || '';
+      if (savedAddr) document.getElementById('cust-address').value = savedAddr;
+    }
+
+    async function fetchCustomerOrdersFromCloud(phone) {
+      const cleanPhone = (phone || '').trim();
+      if (!cleanPhone) return;
+      const { data } = await db.from('skia_orders')
+        .select('*')
+        .eq('customer_phone', cleanPhone)
+        .order('id', { ascending: false });
+      customerOrders = data || [];
+      updateCustomerCounts();
+      renderCustomerOrdersList();
+    }
+
+    async function syncCustomerOrdersByPhone() {
+      const phone = document.getElementById('lookup-phone-input').value.trim();
+      if (!phone) return alert("Please enter your 10-digit WhatsApp number.");
+      localStorage.setItem('skia_customer_phone', phone);
+      await fetchCustomerOrdersFromCloud(phone);
+    }
+
+    function updateCustomerCounts() {
+      const previews = customerOrders.filter(o => parseOrderMeta(o).meta.bucket === 'PREVIEW');
+      const confirmed = customerOrders.filter(o => parseOrderMeta(o).meta.bucket === 'ORDER');
+      document.getElementById('nav-order-count').innerText = customerOrders.length;
+      document.getElementById('count-previews').innerText = previews.length;
+      document.getElementById('count-orders').innerText = confirmed.length;
+    }
+
+    function showMainShop(cat) {
+      document.getElementById('customer-orders-view').classList.add('hidden');
+      document.getElementById('storefront-view').classList.remove('hidden');
+      if (cat) filterCategory(cat);
+    }
+
+    async function openCustomerOrdersView(tab) {
+      document.getElementById('storefront-view').classList.add('hidden');
+      document.getElementById('customer-orders-view').classList.remove('hidden');
+      const savedPhone = localStorage.getItem('skia_customer_phone') || '';
+      if (savedPhone) await fetchCustomerOrdersFromCloud(savedPhone);
+      switchCustomerTab(tab || 'PREVIEW');
+    }
+
+    function switchCustomerTab(tab) {
+      currentCustomerTab = tab;
+      document.getElementById('cust-tab-PREVIEW').className = tab === 'PREVIEW'
+        ? "py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
+        : "py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
+      document.getElementById('cust-tab-ORDER').className = tab === 'ORDER'
+        ? "py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
+        : "py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
+
+      document.getElementById('cust-tab-subtitle').innerText = tab === 'PREVIEW'
+        ? "Unpaid commissions waiting for your WhatsApp preview approval. Tap 'Pay via UPI' anytime after seeing your preview to confirm your order!"
+        : "Confirmed orders (Paid via UPI or Cash on Delivery) currently being crafted & shipped by SKIA Studio.";
+      renderCustomerOrdersList();
+    }
+
+    function renderCustomerOrdersList() {
+      const box = document.getElementById('customer-items-list');
+      const filtered = customerOrders.filter(o => parseOrderMeta(o).meta.bucket === currentCustomerTab);
+
+      if (filtered.length === 0) {
+        box.innerHTML = `
+          <div class="border-2 border-dashed border-black p-8 text-center bg-white text-xs text-neutral-500">
+            No items in your <strong>${currentCustomerTab === 'PREVIEW' ? 'Previews (Unpaid)' : 'Confirmed Orders'}</strong> section yet.
+          </div>`;
+        return;
+      }
+
+      box.innerHTML = filtered.map(o => {
+        const { cleanNotes, meta } = parseOrderMeta(o);
+        return `
+        <div class="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row justify-between gap-4 text-xs">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
+              <span class="border border-black px-2 py-0.5 text-[10px] font-bold uppercase">${meta.payment}</span>
+              <span class="bg-neutral-100 border border-black px-2 py-0.5 text-[10px] font-semibold">${meta.stage || 'In Studio'}</span>
+            </div>
+            <h3 class="font-serif-luxury text-2xl font-bold pt-1">${o.product_title} — ₹${o.price}</h3>
+            <p class="text-neutral-600"><strong>Spec:</strong> ${o.color} · ${o.size} · ${o.placement} · ${o.finish}</p>
+            <p class="text-neutral-600"><strong>Your Note:</strong> "${cleanNotes}"</p>
+            <p class="text-neutral-500 text-[11px]"><strong>Delivery Address:</strong> ${meta.address}</p>
+
+            ${meta.bucket === 'PREVIEW' ? `
+              <div class="pt-3 flex flex-wrap gap-2">
+                <button onclick="payExistingPreviewOrder(${o.id}, ${o.price})" class="bg-black text-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider">
+                  Pay ₹${o.price} via UPI & Move to Orders →
+                </button>
+              </div>
+            ` : `
+              <p class="pt-2 text-[11px] font-bold text-emerald-800">✓ Confirmed Order · SKIA Studio is crafting this piece.</p>
+            `}
+          </div>
+          ${o.photo_data ? `
+            <div class="shrink-0">
+              <img src="${o.photo_data}" class="w-20 h-20 object-cover border-2 border-black" />
+              <span class="text-[9px] text-neutral-400 block mt-1">Uploaded Photo</span>
+            </div>
+          ` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    async function payExistingPreviewOrder(orderId, amount) {
+      // Open UPI app deep link
+      window.location.href = `upi://pay?pa=skiastudio@ybl&pn=SKIA%20Studio&am=${amount}&cu=INR`;
+      setTimeout(async () => {
+        if (confirm("Did you complete the ₹" + amount + " UPI payment? Tap OK to move this piece into your Confirmed Orders!")) {
+          const target = customerOrders.find(x => x.id === orderId);
+          if (!target) return;
+          const { cleanNotes, meta } = parseOrderMeta(target);
+          meta.bucket = 'ORDER';
+          meta.payment = 'UPI Paid';
+          meta.stage = 'Confirmed & In Craft';
+          const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
+          await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', orderId);
+          await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'));
+          switchCustomerTab('ORDER');
+        }
+      }, 1200);
     }
 
     function swapCardImage(event, prodId) {
@@ -344,9 +575,10 @@
       extraPlacement = 0;
       extraFinish = 0;
       extraCodCost = 0;
-      chosenPaymentLabel = 'UPI After Preview';
+      chosenPaymentMode = 'UPI';
       uploadedPhotoData = '';
       document.getElementById('photo-preview').classList.add('hidden');
+      document.getElementById('confirm-paid-btn').classList.add('hidden');
       document.getElementById('modal-title').innerText = activeProduct.title;
 
       document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
@@ -386,7 +618,7 @@
     function goToStep(stepNum) {
       [1, 2, 3, 4].forEach(n => document.getElementById('step-' + n).classList.add('hidden'));
       document.getElementById('step-' + stepNum).classList.remove('hidden');
-      document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Confirmed';
+      document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Next Step';
     }
 
     function selectColor(name, btn) {
@@ -415,9 +647,9 @@
       btn.className = "finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
       updatePrice();
     }
-    function selectPayment(cost, label, btn) {
+    function selectPayment(cost, mode, btn) {
       extraCodCost = cost;
-      chosenPaymentLabel = label;
+      chosenPaymentMode = mode;
       document.querySelectorAll('.pay-pill').forEach(b => b.className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black");
       btn.className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
       updatePrice();
@@ -426,9 +658,9 @@
       const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
       document.getElementById('live-price').innerText = total;
       document.getElementById('final-btn-price').innerText = total;
+      document.getElementById('upi-now-amount').innerText = total;
     }
 
-    // Ultra-fast 700px compression so uploads succeed in 0.2s even on weak signal
     function compressAndLoadImage(file, callback) {
       const reader = new FileReader();
       reader.onload = e => {
@@ -462,14 +694,32 @@
     }
 
     async function finishOrder() {
+      const phone = document.getElementById('cust-phone').value.trim();
+      const name = document.getElementById('cust-name').value.trim() || 'Friend';
+      const address = document.getElementById('cust-address').value.trim() || 'Address not provided';
+      if (!phone) return alert("Please enter your 10-digit WhatsApp number so we can send your preview & save your order!");
+
+      // Save customer details permanently on their phone browser!
+      localStorage.setItem('skia_customer_phone', phone);
+      localStorage.setItem('skia_customer_name', name);
+      localStorage.setItem('skia_customer_address', address);
+      document.getElementById('lookup-phone-input').value = phone;
+
       const btn = document.getElementById('submit-btn');
       btn.innerText = "Saving Commission...";
       btn.disabled = true;
 
       const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
       const rawNotes = document.getElementById('cust-notes').value || 'No notes';
-      const custAddress = document.getElementById('cust-address').value || 'Address not provided';
-      const packedNotes = rawNotes + "||META:" + JSON.stringify({ payment: chosenPaymentLabel, address: custAddress });
+
+      // COD goes straight to Confirmed Orders; UPI starts in Previews until paid!
+      const isCod = (chosenPaymentMode === 'COD');
+      const metaObj = {
+        bucket: isCod ? 'ORDER' : 'PREVIEW',
+        payment: isCod ? 'Cash on Delivery (+₹50)' : 'Unpaid · Pay After WhatsApp Preview',
+        address: address,
+        stage: isCod ? 'Confirmed COD · Crafting Preview' : 'Awaiting WhatsApp Preview'
+      };
 
       const orderPayload = {
         order_code: "SKIA-" + Math.floor(1000 + Math.random() * 9000),
@@ -479,30 +729,63 @@
         size: chosenSize,
         placement: chosenPlacementLabel,
         finish: chosenFinishLabel,
-        notes: packedNotes,
+        notes: rawNotes + "||META:" + JSON.stringify(metaObj),
         urgent_gift: document.getElementById('cust-gift').checked,
-        customer_name: document.getElementById('cust-name').value || 'Friend',
-        customer_phone: document.getElementById('cust-phone').value || 'N/A',
+        customer_name: name,
+        customer_phone: phone,
         photo_data: uploadedPhotoData
       };
 
       try {
-        const { error } = await db.from('skia_orders').insert([orderPayload]);
+        const { data, error } = await db.from('skia_orders').insert([orderPayload]).select('*');
         btn.disabled = false;
-        btn.innerHTML = `Send to SKIA · ₹<span id="final-btn-price">${total}</span>`;
+        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
         if (error) {
           alert("Could not send order: " + error.message);
         } else {
-          document.getElementById('ticket-name').innerText = orderPayload.customer_name;
+          lastCreatedOrder = (data && data[0]) ? data[0] : orderPayload;
+          await fetchCustomerOrdersFromCloud(phone);
+
           document.getElementById('ticket-code').innerText = orderPayload.order_code;
-          document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price} (${chosenPaymentLabel})`;
+          document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price}`;
+
+          if (isCod) {
+            document.getElementById('upi-choice-box').classList.add('hidden');
+            document.getElementById('cod-confirmed-box').classList.remove('hidden');
+          } else {
+            document.getElementById('upi-choice-box').classList.remove('hidden');
+            document.getElementById('cod-confirmed-box').classList.add('hidden');
+          }
           goToStep(4);
         }
       } catch (err) {
         btn.disabled = false;
-        btn.innerHTML = `Send to SKIA · ₹<span id="final-btn-price">${total}</span>`;
-        alert("Network hiccup—please make sure vercel.json is added or tap Send again!");
+        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
+        alert("Connection hiccup—please tap Send again!");
       }
+    }
+
+    function triggerUpiPaymentForCurrentOrder() {
+      if (!lastCreatedOrder) return;
+      window.location.href = `upi://pay?pa=skiastudio@ybl&pn=SKIA%20Studio&am=${lastCreatedOrder.price}&cu=INR`;
+      document.getElementById('confirm-paid-btn').classList.remove('hidden');
+    }
+
+    async function markCurrentOrderPaid() {
+      if (!lastCreatedOrder || !lastCreatedOrder.id) return closeAndOpenSection('ORDER');
+      const { cleanNotes, meta } = parseOrderMeta(lastCreatedOrder);
+      meta.bucket = 'ORDER';
+      meta.payment = 'UPI Paid';
+      meta.stage = 'Confirmed & In Craft';
+      const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
+      await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', lastCreatedOrder.id);
+      await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'));
+      closeAndOpenSection('ORDER');
+    }
+
+    function closeAndOpenSection(tab) {
+      closeModal();
+      openCustomerOrdersView(tab);
     }
 
     loadCatalogFromCloud();
