@@ -14,7 +14,7 @@
 </head>
 <body class="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto">
 
-  <!-- ENCRYPTED SUPABASE CLOUD LOGIN (ZERO PASSWORD IN CODE!) -->
+  <!-- ENCRYPTED SUPABASE CLOUD LOGIN -->
   <div id="pin-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-6">
     <div class="border-2 border-black p-6 w-full max-w-xs text-center shadow-[6px_6px_0px_#000000]">
       <p class="text-[10px] font-bold uppercase tracking-widest mb-1">SKIA Studio Vault</p>
@@ -196,7 +196,6 @@
     let finalImgData = "";
     let rawImgData = "";
 
-    // Check if Owner is already signed in on this phone
     async function checkOwnerSession() {
       const { data: { session } } = await db.auth.getSession();
       if (session) {
@@ -335,19 +334,31 @@
       }
     }
 
-    async function movePreviewToConfirmedOrder(orderId) {
+    // ADMIN DECISION: APPROVE OR CANCEL PAYMENT!
+    async function setOrderPaymentDecision(orderId, decision) {
       const target = orders.find(x => x.id === orderId);
       if (!target) return;
       const parts = (target.notes || '').split('||META:');
       const cleanNotes = parts[0];
-      let meta = { bucket: 'ORDER', payment: 'UPI Paid (Confirmed by Admin)', address: 'Not provided', stage: 'Confirmed & In Craft' };
+      let oldMeta = {};
       if (parts[1]) {
-        try {
-          const old = JSON.parse(parts[1]);
-          meta = { ...old, bucket: 'ORDER', payment: 'UPI Paid (Confirmed)', stage: 'Confirmed & In Craft' };
-        } catch(e) {}
+        try { oldMeta = JSON.parse(parts[1]); } catch(e) {}
       }
-      await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(meta) }).eq('id', orderId);
+
+      let newMeta = { ...oldMeta };
+      if (decision === 'SUCCESS') {
+        newMeta.bucket = 'ORDER';
+        newMeta.payStatus = 'SUCCESS';
+        newMeta.payment = '✓ Payment Successful';
+        newMeta.stage = 'Payment Verified · Crafting Piece';
+      } else if (decision === 'CANCELLED') {
+        newMeta.bucket = 'ORDER';
+        newMeta.payStatus = 'CANCELLED';
+        newMeta.payment = '✕ Payment Cancelled / Not Received';
+        newMeta.stage = 'Payment Not Received';
+      }
+
+      await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(newMeta) }).eq('id', orderId);
       await loadAllCloudData();
     }
 
@@ -384,16 +395,22 @@
           const noteParts = (o.notes || '').split('||META:');
           const cleanNotes = noteParts[0];
           let bucket = "PREVIEW";
+          let payStatus = "UNPAID";
           let paymentMode = "Unpaid · Preview Requested";
           let deliveryAddress = "Not provided";
           if (noteParts[1]) {
             try {
               const meta = JSON.parse(noteParts[1]);
               bucket = meta.bucket || bucket;
+              payStatus = meta.payStatus || payStatus;
               paymentMode = meta.payment || paymentMode;
               deliveryAddress = meta.address || deliveryAddress;
             } catch(e) {}
           }
+
+          let badgeColor = "bg-amber-200 text-black border border-black";
+          if (payStatus === 'SUCCESS') badgeColor = "bg-emerald-900 text-white";
+          if (payStatus === 'CANCELLED') badgeColor = "bg-red-700 text-white";
 
           const waMsg = encodeURIComponent(`Hi ${o.customer_name}! This is SKIA Studio Indore regarding your custom commission (${o.order_code} - ${o.product_title}, ₹${o.price}).`);
           return `
@@ -401,10 +418,9 @@
             <div class="space-y-1.5">
               <div class="flex flex-wrap gap-2 items-center">
                 <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
-                <span class="px-2 py-0.5 text-[10px] font-bold uppercase ${bucket === 'ORDER' ? 'bg-emerald-900 text-white' : 'bg-amber-200 text-black border border-black'}">
-                  ${bucket === 'ORDER' ? '✓ CONFIRMED ORDER' : '⏳ IN PREVIEW (UNPAID)'}
+                <span class="px-2 py-0.5 text-[10px] font-bold uppercase ${badgeColor}">
+                  ${paymentMode}
                 </span>
-                <span class="border border-black px-2 py-0.5 text-[10px] font-bold uppercase">${paymentMode}</span>
                 <span class="bg-neutral-100 border border-black px-2 py-0.5 text-[10px] font-bold">PIN: ${custPin}</span>
               </div>
               <h3 class="font-serif-luxury text-2xl font-bold">${o.product_title} — ₹${o.price}</h3>
@@ -413,14 +429,17 @@
               <p class="bg-neutral-100 border border-black p-2"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
               <p class="bg-white border border-black p-2"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
+              
+              <!-- ADMIN PAYMENT APPROVAL / CANCELLATION BUTTONS -->
               <div class="pt-2 flex flex-wrap gap-2 items-center">
-                <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="bg-black text-white px-3 py-1.5 text-[10px] font-bold uppercase">WhatsApp Customer →</a>
-                ${bucket === 'PREVIEW' ? `
-                  <button onclick="movePreviewToConfirmedOrder(${o.id})" class="border-2 border-black bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white">
-                    ✓ Mark Paid (Move to Orders)
-                  </button>
-                ` : ''}
-                <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline ml-2">Delete</button>
+                <button onclick="setOrderPaymentDecision(${o.id}, 'SUCCESS')" class="bg-emerald-900 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
+                  ✓ Payment Successful (Unlocks COD)
+                </button>
+                <button onclick="setOrderPaymentDecision(${o.id}, 'CANCELLED')" class="bg-red-700 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
+                  ✕ Payment Cancelled
+                </button>
+                <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="border-2 border-black px-3 py-1 text-[10px] font-bold uppercase">WhatsApp →</a>
+                <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline ml-1">Delete</button>
               </div>
             </div>
             <div class="text-center shrink-0">
