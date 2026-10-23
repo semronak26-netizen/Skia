@@ -3,7 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SKIA — Cast on What You Wear & Hold | Studio Indore</title>
+  <title>SKIA Studio Indore — Custom Apparel, Ceramic Cups & Everyday Objects</title>
+  <meta name="description" content="Bring any photo from your phone and tell us your idea. Custom 240–400 GSM heavy cotton tees, hoodies, varsity jackets, ceramic cups & crew drops in Indore. Free WhatsApp preview before print." />
+  <meta name="keywords" content="SKIA, SKIA Studio Indore, custom t-shirt printing Indore, custom mug Indore, custom hoodie India, personalized gifts Indore, Ronak Sem" />
+  <link rel="canonical" href="https://skia-indore.vercel.app/" />
+
+  <!-- Circular Pitch-Black Flame Favicon for Google Search & Browser Tabs -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23000000'/%3E%3Cpath d='M50 16 C43 33, 28 43, 28 63 C28 77, 39 87, 53 88 C46 82, 43 74, 47 64 C51 72, 58 76, 58 86 C69 81, 75 70, 75 57 C75 39, 61 27, 50 16 Z' fill='%23FFFFFF'/%3E%3C/svg%3E" />
+
+  <!-- WhatsApp & Instagram Rich Link Preview (OpenGraph) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SKIA Studio Indore" />
+  <meta property="og:title" content="SKIA — Bring a Photo. Cast It on What You Wear & Hold." />
+  <meta property="og:description" content="1-of-1 Custom 240–400 GSM Apparel, Ceramic Cups & Objects. Approve your digital preview on WhatsApp before we print." />
+  <meta property="og:url" content="https://skia-indore.vercel.app/" />
+
+  <!-- Google Search Branded Card & Sitelinks Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://skia-indore.vercel.app/#website",
+        "url": "https://skia-indore.vercel.app/",
+        "name": "SKIA Studio Indore",
+        "alternateName": "SKIA",
+        "description": "Custom 1-of-1 Apparel, Outerwear, Ceramic Cups & Objects crafted from your photos."
+      },
+      {
+        "@type": "Organization",
+        "name": "SKIA Studio Indore",
+        "url": "https://skia-indore.vercel.app/",
+        "founder": "Ronak Sem",
+        "telephone": "+91-8103423011",
+        "email": "semronak26@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Indore",
+          "addressRegion": "Madhya Pradesh",
+          "addressCountry": "IN"
+        }
+      },
+      {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "To Wear (240-400 GSM Apparel)",
+            "description": "Custom Oversized Tees, Acid-Wash Tees, Heavy Hoodies & Varsity Jackets",
+            "url": "https://skia-indore.vercel.app/#to-wear"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "To Hold & Keep (Cups & Objects)",
+            "description": "Custom Studio Ceramic Cups, Magic Mugs, Totes, Metal Posters & Desk Mats",
+            "url": "https://skia-indore.vercel.app/#to-hold"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "For Crews (College & Team Drops)",
+            "description": "Custom merchandise for Indore colleges, gyms, cafes & startups",
+            "url": "https://skia-indore.vercel.app/#for-crews"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "My Previews & Orders",
+            "description": "Track your custom WhatsApp previews and confirmed orders with your 4-digit PIN",
+            "url": "https://skia-indore.vercel.app/#previews-orders"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,23 +105,23 @@
 
   <!-- 1. HEADER -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-black">
-    <div class="max-w-5xl mx-auto px-4 sm:px-5 py-4 flex items-center justify-between gap-2">
-      <button onclick="showMainShop('ALL')" class="flex items-center gap-2 text-left">
+    <nav class="max-w-5xl mx-auto px-4 sm:px-5 py-4 flex items-center justify-between gap-2" aria-label="Main Navigation">
+      <a href="#everything" onclick="showMainShop('ALL')" class="flex items-center gap-2 text-left">
         <svg class="w-6 h-6 fill-black shrink-0" viewBox="0 0 24 24">
           <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
         </svg>
         <span class="text-xl sm:text-2xl font-bold tracking-[0.35em]">SKIA</span>
-      </button>
+      </a>
 
       <div class="flex items-center gap-2">
-        <button onclick="openCustomerOrdersView('PREVIEW')" class="text-[11px] font-bold tracking-wider uppercase border-2 border-black px-3 py-1.5 bg-white hover:bg-black hover:text-white transition">
+        <a href="#previews-orders" onclick="openCustomerOrdersView('PREVIEW')" class="text-[11px] font-bold tracking-wider uppercase border-2 border-black px-3 py-1.5 bg-white hover:bg-black hover:text-white transition">
           Previews & Orders (<span id="nav-order-count">0</span>)
-        </button>
-        <button onclick="showMainShop('CREWS')" class="hidden sm:inline-block text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 bg-black text-white">
+        </a>
+        <a href="#for-crews" onclick="showMainShop('CREWS')" class="hidden sm:inline-block text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 bg-black text-white">
           For Crews →
-        </button>
+        </a>
       </div>
-    </div>
+    </nav>
   </header>
 
   <main class="max-w-5xl mx-auto px-5 pt-8 pb-16 w-full">
@@ -70,18 +148,18 @@
 
       <section class="pb-6">
         <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
-          <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
+          <a href="#everything" onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
             Everything
-          </button>
-          <button onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          </a>
+          <a href="#to-wear" onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
             To Wear
-          </button>
-          <button onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          </a>
+          <a href="#to-hold" onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
             To Hold & Keep
-          </button>
-          <button onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          </a>
+          <a href="#for-crews" onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
             For Crews
-          </button>
+          </a>
         </div>
       </section>
 
@@ -91,7 +169,7 @@
       <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
     </div>
 
-    <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" SECTION (PROTECTED BY 10-DIGIT PHONE + 4-DIGIT PIN) -->
+    <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" SECTION -->
     <div id="customer-orders-view" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black pb-4">
         <div>
@@ -103,11 +181,11 @@
         </button>
       </div>
 
-      <!-- Protected Lookup Bar (Requires 10-Digit Phone + 4-Digit PIN) -->
+      <!-- Protected Lookup Bar -->
       <div class="bg-white border-2 border-black p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-[4px_4px_0px_#000000]">
         <div class="text-xs">
           <span class="font-bold block">🔒 Protected by your 4-Digit Privacy PIN</span>
-          <span class="text-neutral-500 text-[11px]">Enter your 10-digit WhatsApp & 4-digit PIN to unlock on any device.</span>
+          <span id="cod-eligibility-badge" class="text-neutral-500 text-[11px]">Complete 1 online order to unlock Cash on Delivery (COD) for your number.</span>
         </div>
         <div class="flex flex-wrap sm:flex-nowrap gap-2">
           <input type="tel" id="lookup-phone-input" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="10-Digit WhatsApp" class="border-2 border-black px-3 py-2 text-xs w-full sm:w-40 focus:outline-none" />
@@ -118,13 +196,13 @@
         </div>
       </div>
 
-      <!-- TWO TABS: 1. PREVIEWS (UNPAID) vs 2. ORDERS (COD & PAID) -->
+      <!-- TWO TABS: 1. PREVIEWS (UNPAID) vs 2. ORDERS (PROCESSING, PAID & COD) -->
       <div class="grid grid-cols-2 gap-3">
         <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
           1. Previews · Unpaid (<span id="count-previews">0</span>)
         </button>
         <button onclick="switchCustomerTab('ORDER')" id="cust-tab-ORDER" class="py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center">
-          2. Orders · Confirmed (<span id="count-orders">0</span>)
+          2. Orders · Processing & Confirmed (<span id="count-orders">0</span>)
         </button>
       </div>
 
@@ -155,16 +233,36 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
+  <!-- FOOTER WITH 4 OFFICIAL POLICY LINKS -->
   <div class="w-full overflow-hidden leading-none pt-4">
     <svg class="w-full h-12 sm:h-16 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
       <path d="M0,120 L0,70 C40,95 70,30 110,75 C150,25 190,85 240,40 C280,85 330,15 380,70 C420,30 470,90 520,35 C570,85 620,10 670,70 C720,25 760,85 810,40 C860,90 910,20 960,70 C1010,30 1060,85 1110,40 C1150,75 1180,50 1200,80 L1200,120 Z"/>
     </svg>
   </div>
-  <footer class="bg-black text-white py-10 px-5 text-center text-xs">
-    <p class="tracking-[0.4em] font-bold text-base mb-1">SKIA</p>
-    <p class="text-neutral-400 text-[11px]">To Wear · To Hold & Keep · Studio Indore</p>
+  <footer class="bg-black text-white py-10 px-5 text-center text-xs space-y-4">
+    <div>
+      <p class="tracking-[0.4em] font-bold text-base mb-1">SKIA</p>
+      <p class="text-neutral-400 text-[11px]">To Wear · To Hold & Keep · Studio Indore</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-4 text-[11px] text-neutral-300 underline pt-2">
+      <button onclick="openPolicyModal('contact')">Contact Us</button>
+      <button onclick="openPolicyModal('privacy')">Privacy Policy</button>
+      <button onclick="openPolicyModal('terms')">Terms & Conditions</button>
+      <button onclick="openPolicyModal('shipping')">Shipping & Refund Policy</button>
+    </div>
+    <p class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011 · semronak26@gmail.com</p>
   </footer>
+
+  <!-- LEGAL & CONTACT POLICIES MODAL -->
+  <div id="policy-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white border-2 border-black max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-[8px_8px_0px_#000000] text-xs space-y-4">
+      <div class="flex justify-between items-center border-b-2 border-black pb-3">
+        <h3 id="policy-title" class="font-serif-luxury text-2xl font-bold">Studio Policy</h3>
+        <button onclick="closePolicyModal()" class="font-bold uppercase underline">Close ✕</button>
+      </div>
+      <div id="policy-body" class="space-y-3 text-neutral-700 leading-relaxed"></div>
+    </div>
+  </div>
 
   <!-- DYNAMIC CONVERSATIONAL DRAWER -->
   <div id="custom-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -209,7 +307,7 @@
         </button>
       </div>
 
-      <!-- STEP 2 (MANDATORY PHOTO & MANDATORY NOTES) -->
+      <!-- STEP 2 -->
       <div id="step-2" class="hidden py-5 space-y-5">
         <p class="font-serif-luxury text-2xl italic">"Drop your photo, and tell us what's in your head."</p>
         <label class="block border-2 border-dashed border-black bg-white p-6 text-center cursor-pointer hover:bg-neutral-50">
@@ -230,7 +328,7 @@
         </div>
       </div>
 
-      <!-- STEP 3: MANDATORY 10-DIGIT PHONE + 1-TIME 4-DIGIT PIN + ADDRESS -->
+      <!-- STEP 3: PHONE + PIN + COD LOCKED UNTIL 1ST APPROVED PAYMENT -->
       <div id="step-3" class="hidden py-5 space-y-4">
         <p class="font-serif-luxury text-2xl italic">"Where do we send your preview & parcel?"</p>
         
@@ -239,7 +337,6 @@
           <input type="text" id="cust-name" placeholder="e.g. Aarav Sharma" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
         </div>
 
-        <!-- SHOWN WHEN PIN IS ALREADY SAVED ON THIS PHONE (SO USER NEVER MAKES A PIN PER ORDER!) -->
         <div id="saved-identity-banner" class="hidden border-2 border-black bg-neutral-100 p-3 flex justify-between items-center text-xs">
           <div>
             <span class="font-bold block">🔒 WhatsApp & Privacy PIN Saved</span>
@@ -250,12 +347,11 @@
           </button>
         </div>
 
-        <!-- SHOWN ONLY ON FIRST SETUP (OR WHEN CHANGING NUMBER) -->
         <div id="first-time-identity-fields" class="space-y-3 bg-neutral-50 border-2 border-black p-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
               <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">10-Digit WhatsApp *</label>
-              <input type="tel" id="cust-phone" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="e.g. 9876543210" class="w-full border-2 border-black bg-white px-3 py-2 text-xs focus:outline-none" />
+              <input type="tel" id="cust-phone" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,''); checkCodEligibilityByPhone(this.value);" placeholder="e.g. 9876543210" class="w-full border-2 border-black bg-white px-3 py-2 text-xs focus:outline-none" />
             </div>
             <div>
               <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Set 4-Digit Privacy PIN *</label>
@@ -273,15 +369,18 @@
         </div>
 
         <div>
-          <p class="text-xs font-semibold mb-1.5">Choose how you want to proceed:</p>
+          <p class="text-xs font-semibold mb-1.5">Choose payment method:</p>
           <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
             <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-black text-white">
-              UPI (+₹0 Free)
+              Online UPI (+₹0 Free)
             </button>
-            <button type="button" id="pay-cod-btn" onclick="selectPayment(50, 'COD', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-white text-black">
-              Cash on Delivery (+₹50)
+            <button type="button" id="pay-cod-btn" onclick="trySelectCod(this)" class="pay-pill py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400">
+              🔒 COD (Unlocks on 2nd Order)
             </button>
           </div>
+          <p id="cod-hint-text" class="text-[10px] text-neutral-500 mt-1">
+            * Cash on Delivery (+₹50) unlocks automatically after you complete 1 online paid order with SKIA.
+          </p>
         </div>
 
         <label class="flex items-center gap-2.5 border-2 border-black p-3 cursor-pointer">
@@ -297,38 +396,85 @@
         </div>
       </div>
 
-      <!-- STEP 4: UPI PAYMENT vs PAY AFTER WHATSAPP PREVIEW -->
+      <!-- STEP 4: TWO-QUESTION SCREEN FIRST -> THEN PAYMENT OPTIONS -->
       <div id="step-4" class="hidden py-5 space-y-4">
-        <div class="border-2 border-black p-3.5 bg-neutral-50 text-xs">
-          <span class="bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">Commission Saved</span>
-          <p id="ticket-code" class="text-base font-bold tracking-widest mt-1">SKIA-0000</p>
-          <p id="ticket-item" class="text-neutral-600 text-[11px]"></p>
+        <div class="border-2 border-black p-3 bg-neutral-50 text-xs flex justify-between items-center">
+          <div>
+            <span class="bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">Reference</span>
+            <p id="ticket-code" class="text-sm font-bold tracking-widest mt-1">SKIA-0000</p>
+            <p id="ticket-item" class="text-neutral-600 text-[11px]"></p>
+          </div>
+          <span class="text-lg font-bold">₹<span id="upi-now-amount">899</span></span>
         </div>
 
-        <div id="upi-choice-box" class="space-y-3">
-          <div class="border-2 border-black p-3.5 bg-white text-xs leading-relaxed">
-            <p class="font-bold uppercase tracking-wider text-[10px] mb-1">🔔 Studio Payment Note</p>
-            <p class="text-neutral-700">
-              You can <strong>pay via UPI right now</strong> to move this directly into your Confirmed Orders, OR <strong>pay after you see and approve your digital preview on WhatsApp!</strong>
-            </p>
+        <!-- SCREEN 4A: THE 2 QUESTIONS (PAY NOW vs PAY AFTER PREVIEW) -->
+        <div id="upi-question-box" class="space-y-3">
+          <p class="font-serif-luxury text-2xl italic">
+            "Would you like to pay now, or after seeing your WhatsApp preview?"
+          </p>
+          <p class="text-xs text-neutral-600 leading-relaxed">
+            If you tap <strong>Pay Now</strong>, your commission immediately moves into <strong>Orders (Under Processing)</strong>. If you tap <strong>After Preview</strong>, it waits safely in your <strong>Previews</strong> tab.
+          </p>
+
+          <button type="button" onclick="choosePayNowAndMoveToProcessing()" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+            1. Pay ₹<span id="q-pay-amount">899</span> Now (Move to Processing) →
+          </button>
+
+          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="w-full border-2 border-black bg-white text-black py-3.5 text-xs font-bold uppercase tracking-wider">
+            2. Pay After WhatsApp Preview (Move to Previews) →
+          </button>
+        </div>
+
+        <!-- SCREEN 4B: PAYMENT OPTIONS (SHOWN ONLY AFTER TAPPING "PAY NOW" — ALREADY MOVED TO PROCESSING!) -->
+        <div id="upi-payment-methods-box" class="hidden space-y-3">
+          <div class="bg-neutral-100 border-2 border-black p-2.5 text-[11px] font-medium text-center">
+            ✓ Moved to <strong>Orders (Under Processing)</strong>! Complete your payment below:
           </div>
 
-          <button type="button" onclick="triggerUpiPaymentForCurrentOrder()" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
-            Pay ₹<span id="upi-now-amount">899</span> by UPI Now →
-          </button>
+          <!-- 3 PAYMENT METHOD TABS -->
+          <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold uppercase">
+            <button type="button" onclick="switchPayMethodTab('APP')" id="pm-tab-APP" class="py-2 border-2 border-black bg-black text-white">1. PhonePe / App</button>
+            <button type="button" onclick="switchPayMethodTab('QR')" id="pm-tab-QR" class="py-2 border-2 border-black bg-white text-black">2. Scan QR</button>
+            <button type="button" onclick="switchPayMethodTab('ID')" id="pm-tab-ID" class="py-2 border-2 border-black bg-white text-black">3. UPI ID</button>
+          </div>
 
-          <button type="button" id="confirm-paid-btn" onclick="markCurrentOrderPaid()" class="hidden w-full border-2 border-black bg-emerald-950 text-white py-3 text-xs font-bold uppercase tracking-widest">
-            ✓ I Have Completed UPI Payment (Move to Orders)
-          </button>
+          <!-- METHOD 1: PHONEPE / UPI APP -->
+          <div id="pm-box-APP" class="border-2 border-black p-4 text-center space-y-2.5 bg-white">
+            <p class="text-xs font-semibold">Tap below to pay via PhonePe, Google Pay, or Paytm:</p>
+            <button type="button" onclick="openUpiAppLink()" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">
+              Open PhonePe / UPI App →
+            </button>
+            <p class="text-[10px] text-neutral-500">Official Studio UPI: <strong>skiastudio@ybl</strong></p>
+          </div>
 
-          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="w-full border-2 border-black bg-white text-black py-3 text-xs font-bold uppercase tracking-wider">
-            Pay After WhatsApp Preview (Keep in Previews) →
+          <!-- METHOD 2: LIVE DYNAMIC QR CODE -->
+          <div id="pm-box-QR" class="hidden border-2 border-black p-4 text-center space-y-2 bg-white">
+            <p class="text-xs font-semibold">Scan with PhonePe, GPay, or Paytm (or screenshot & scan):</p>
+            <img id="dynamic-upi-qr" src="" alt="SKIA UPI QR" class="w-44 h-44 mx-auto border-2 border-black p-1" />
+            <p class="text-[10px] text-neutral-500">UPI ID: <strong>skiastudio@ybl</strong></p>
+          </div>
+
+          <!-- METHOD 3: COPY UPI ID -->
+          <div id="pm-box-ID" class="hidden border-2 border-black p-4 text-center space-y-2.5 bg-white">
+            <p class="text-xs font-semibold">Copy our Studio UPI ID & pay inside your UPI app:</p>
+            <div class="border-2 border-black bg-neutral-100 p-2.5 font-mono text-sm font-bold">
+              skiastudio@ybl
+            </div>
+            <button type="button" onclick="copyStudioUpiId()" class="border-2 border-black bg-black text-white px-4 py-2 text-xs font-bold uppercase">
+              Copy UPI ID
+            </button>
+          </div>
+
+          <button type="button" onclick="closeAndOpenSection('ORDER')" class="w-full border-2 border-black bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition">
+            View in My Orders (Under Processing) →
           </button>
         </div>
 
+        <!-- SCREEN 4C: SHOWN FOR COD (ALREADY CONFIRMED!) -->
         <div id="cod-confirmed-box" class="hidden space-y-3 text-center">
+          <p class="font-serif-luxury text-2xl font-bold">✓ Cash on Delivery Confirmed</p>
           <p class="text-xs text-neutral-700 leading-relaxed">
-            Your <strong>Cash on Delivery</strong> order is placed in your <strong>Confirmed Orders</strong> tab! We will WhatsApp your digital preview before shipping.
+            Your COD order is confirmed and placed inside your <strong>Orders</strong> section! We will WhatsApp your digital preview before shipping.
           </p>
           <button type="button" onclick="closeAndOpenSection('ORDER')" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
             View in My Confirmed Orders →
@@ -346,8 +492,7 @@
     const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // YOUR REAL KOTAK UPI ID
-    const OWNER_UPI_ID = "skiastudio.ybl";
+    const OWNER_UPI_ID = "skiastudio@ybl";
 
     let products = [];
     let customerOrders = [];
@@ -355,6 +500,7 @@
     let currentCustomerTab = 'PREVIEW';
     let activeProduct = null;
     let lastCreatedOrder = null;
+    let isCustomerCodEligible = false;
     let extraSizeCost = 0;
     let extraPlacement = 0;
     let extraFinish = 0;
@@ -392,7 +538,8 @@
       const cleanNotes = parts[0];
       let meta = {
         bucket: 'PREVIEW',
-        payment: 'Unpaid · Pay After WhatsApp Preview',
+        payment: 'Unpaid · Awaiting WhatsApp Preview',
+        payStatus: 'UNPAID',
         address: 'Not provided',
         stage: 'Studio Crafting Preview'
       };
@@ -408,7 +555,6 @@
       document.getElementById('loading-status').classList.add('hidden');
       renderProducts();
 
-      // Auto-restore saved customer identity (10-digit phone + 4-digit PIN)
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
       const savedPin = localStorage.getItem('skia_customer_pin') || '';
       const savedName = localStorage.getItem('skia_customer_name') || '';
@@ -439,7 +585,53 @@
       document.getElementById('cust-phone').focus();
     }
 
-    // Checks if this 10-digit phone already has a registered PIN in Supabase
+    async function checkCodEligibilityByPhone(phone) {
+      if (!phone || phone.length !== 10) {
+        isCustomerCodEligible = false;
+        updateCodButtonUI();
+        return;
+      }
+      const { data } = await db.from('skia_orders')
+        .select('notes')
+        .like('customer_phone', `${phone}#%`);
+
+      isCustomerCodEligible = (data || []).some(row => {
+        const { meta } = parseOrderMeta(row);
+        return meta.payStatus === 'SUCCESS';
+      });
+      updateCodButtonUI();
+    }
+
+    function updateCodButtonUI() {
+      const codBtn = document.getElementById('pay-cod-btn');
+      const hint = document.getElementById('cod-hint-text');
+      const badge = document.getElementById('cod-eligibility-badge');
+      if (isCustomerCodEligible) {
+        codBtn.innerText = "Cash on Delivery (+₹50)";
+        codBtn.className = chosenPaymentMode === 'COD'
+          ? "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white"
+          : "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
+        hint.innerText = "✓ Cash on Delivery is unlocked for your verified number!";
+        if (badge) badge.innerText = "✓ Verified Member: Cash on Delivery (COD) is unlocked for your number!";
+      } else {
+        chosenPaymentMode = 'UPI';
+        extraCodCost = 0;
+        codBtn.innerText = "🔒 COD (After 1st Order)";
+        codBtn.className = "pay-pill py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400";
+        document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
+        hint.innerText = "* Cash on Delivery (+₹50) unlocks automatically after you complete 1 online paid order.";
+        if (badge) badge.innerText = "Complete 1 online order to unlock Cash on Delivery (COD) for your number.";
+        if (activeProduct) updatePrice();
+      }
+    }
+
+    function trySelectCod(btn) {
+      if (!isCustomerCodEligible) {
+        return alert("🔒 Cash on Delivery unlocks automatically after you complete 1 online paid order with SKIA Studio!");
+      }
+      selectPayment(50, 'COD', btn);
+    }
+
     async function verifyPhonePinOnCloud(phone, pin) {
       const { data } = await db.from('skia_orders')
         .select('customer_phone')
@@ -447,7 +639,7 @@
         .limit(5);
 
       if (data && data.length > 0) {
-        const existingKey = data[0].customer_phone; // e.g. "9876543210#2409"
+        const existingKey = data[0].customer_phone;
         const existingPin = existingKey.split('#')[1];
         if (existingPin && existingPin !== pin) {
           return { valid: false, exists: true };
@@ -479,6 +671,7 @@
         .order('id', { ascending: false });
 
       customerOrders = data || [];
+      await checkCodEligibilityByPhone(phone);
       updateCustomerCounts();
       renderCustomerOrdersList();
       return true;
@@ -535,8 +728,8 @@
         : "py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
 
       document.getElementById('cust-tab-subtitle').innerText = tab === 'PREVIEW'
-        ? "Unpaid commissions waiting for your WhatsApp preview approval. Tap 'Pay via UPI' anytime after seeing your preview to confirm your order!"
-        : "Confirmed orders (Paid via UPI or Cash on Delivery) currently being crafted & shipped by SKIA Studio.";
+        ? "Unpaid commissions waiting for your WhatsApp preview approval. Tap 'Pay Now' anytime to move an item into Orders!"
+        : "Orders Under Processing, Payment Successful, or Confirmed Cash on Delivery.";
       renderCustomerOrdersList();
     }
 
@@ -547,19 +740,23 @@
       if (filtered.length === 0) {
         box.innerHTML = `
           <div class="border-2 border-dashed border-black p-8 text-center bg-white text-xs text-neutral-500">
-            No items in your <strong>${currentCustomerTab === 'PREVIEW' ? 'Previews (Unpaid)' : 'Confirmed Orders'}</strong> section yet.
+            No items in your <strong>${currentCustomerTab === 'PREVIEW' ? 'Previews (Unpaid)' : 'Orders'}</strong> section yet.
           </div>`;
         return;
       }
 
       box.innerHTML = filtered.map(o => {
         const { cleanNotes, meta } = parseOrderMeta(o);
+        let statusStyle = "bg-amber-100 text-black border border-black";
+        if (meta.payStatus === 'SUCCESS' || meta.payStatus === 'COD') statusStyle = "bg-emerald-900 text-white";
+        if (meta.payStatus === 'CANCELLED') statusStyle = "bg-red-700 text-white";
+
         return `
         <div class="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row justify-between gap-4 text-xs">
           <div class="space-y-1.5">
             <div class="flex flex-wrap gap-2 items-center">
               <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
-              <span class="border border-black px-2 py-0.5 text-[10px] font-bold uppercase">${meta.payment}</span>
+              <span class="px-2 py-0.5 text-[10px] font-bold uppercase ${statusStyle}">${meta.payment}</span>
               <span class="bg-neutral-100 border border-black px-2 py-0.5 text-[10px] font-semibold">${meta.stage || 'In Studio'}</span>
             </div>
             <h3 class="font-serif-luxury text-2xl font-bold pt-1">${o.product_title} — ₹${o.price}</h3>
@@ -567,42 +764,81 @@
             <p class="text-neutral-600"><strong>Your Note:</strong> "${cleanNotes}"</p>
             <p class="text-neutral-500 text-[11px]"><strong>Delivery Address:</strong> ${meta.address}</p>
 
-            ${meta.bucket === 'PREVIEW' ? `
-              <div class="pt-3 flex flex-wrap gap-2">
-                <button onclick="payExistingPreviewOrder(${o.id}, ${o.price})" class="bg-black text-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider">
-                  Pay ₹${o.price} via UPI & Move to Orders →
+            ${meta.bucket === 'PREVIEW' || meta.payStatus === 'CANCELLED' || meta.payStatus === 'PROCESSING' ? `
+              <div class="pt-3">
+                <button onclick="openPayModalForExistingOrder(${o.id})" class="bg-black text-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider">
+                  ${meta.payStatus === 'PROCESSING' ? 'Open Payment Options (PhonePe / QR / UPI) →' : 'Pay ₹' + o.price + ' Now (Move to Processing) →'}
                 </button>
               </div>
-            ` : `
-              <p class="pt-2 text-[11px] font-bold text-emerald-800">✓ Confirmed Order · SKIA Studio is crafting this piece.</p>
-            `}
+            ` : ''}
           </div>
           ${o.photo_data ? `
             <div class="shrink-0">
               <img src="${o.photo_data}" class="w-20 h-20 object-cover border-2 border-black" />
-              <span class="text-[9px] text-neutral-400 block mt-1">Uploaded Photo</span>
             </div>
           ` : ''}
         </div>`;
       }).join('');
     }
 
-    async function payExistingPreviewOrder(orderId, amount) {
-      window.location.href = `upi://pay?pa=${OWNER_UPI_ID}&pn=SKIA%20Studio&am=${amount}&cu=INR`;
-      setTimeout(async () => {
-        if (confirm("Did you complete the ₹" + amount + " UPI payment? Tap OK to move this piece into your Confirmed Orders!")) {
-          const target = customerOrders.find(x => x.id === orderId);
-          if (!target) return;
-          const { cleanNotes, meta } = parseOrderMeta(target);
-          meta.bucket = 'ORDER';
-          meta.payment = 'UPI Paid';
-          meta.stage = 'Confirmed & In Craft';
-          const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
-          await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', orderId);
-          await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'), localStorage.getItem('skia_customer_pin'), true);
-          switchCustomerTab('ORDER');
-        }
-      }, 1200);
+    // Tapping "Pay Now" on a Preview item automatically moves it to Orders (Under Processing) and opens Payment Options!
+    async function openPayModalForExistingOrder(orderId) {
+      const target = customerOrders.find(x => x.id === orderId);
+      if (!target) return;
+      lastCreatedOrder = target;
+      document.getElementById('modal-title').innerText = target.product_title;
+      document.getElementById('live-price').innerText = target.price;
+      document.getElementById('upi-now-amount').innerText = target.price;
+      document.getElementById('ticket-code').innerText = target.order_code;
+      document.getElementById('ticket-item').innerText = `${target.product_title}`;
+      setupQrCodeForAmount(target.price);
+
+      document.getElementById('cod-confirmed-box').classList.add('hidden');
+      await choosePayNowAndMoveToProcessing();
+      goToStep(4);
+      document.getElementById('custom-modal').classList.remove('hidden');
+    }
+
+    // Automatically moves order to Orders (Under Processing) and shows the 3 Payment Methods!
+    async function choosePayNowAndMoveToProcessing() {
+      document.getElementById('upi-question-box').classList.add('hidden');
+      document.getElementById('upi-payment-methods-box').classList.remove('hidden');
+      switchPayMethodTab('APP');
+
+      if (lastCreatedOrder && lastCreatedOrder.id) {
+        const { cleanNotes, meta } = parseOrderMeta(lastCreatedOrder);
+        meta.bucket = 'ORDER';
+        meta.payStatus = 'PROCESSING';
+        meta.payment = '⏳ Under Processing (Verifying Payment)';
+        meta.stage = 'Order Under Processing';
+        const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
+        await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', lastCreatedOrder.id);
+        await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'), localStorage.getItem('skia_customer_pin'), true);
+      }
+    }
+
+    function switchPayMethodTab(tab) {
+      ['APP', 'QR', 'ID'].forEach(t => {
+        document.getElementById('pm-box-' + t).classList.add('hidden');
+        document.getElementById('pm-tab-' + t).className = "py-2 border-2 border-black bg-white text-black";
+      });
+      document.getElementById('pm-box-' + tab).classList.remove('hidden');
+      document.getElementById('pm-tab-' + tab).className = "py-2 border-2 border-black bg-black text-white";
+    }
+
+    function setupQrCodeForAmount(amount) {
+      const upiString = `upi://pay?pa=${OWNER_UPI_ID}&pn=SKIA%20Studio&am=${amount}&cu=INR`;
+      document.getElementById('dynamic-upi-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiString)}`;
+    }
+
+    function openUpiAppLink() {
+      const amt = lastCreatedOrder ? lastCreatedOrder.price : document.getElementById('upi-now-amount').innerText;
+      window.location.href = `upi://pay?pa=${OWNER_UPI_ID}&pn=SKIA%20Studio&am=${amt}&cu=INR`;
+    }
+
+    function copyStudioUpiId() {
+      navigator.clipboard.writeText(OWNER_UPI_ID);
+      alert("✓ Copied UPI ID: " + OWNER_UPI_ID);
     }
 
     function swapCardImage(event, prodId) {
@@ -657,7 +893,7 @@
       renderProducts();
     }
 
-    function openModal(id) {
+    async function openModal(id) {
       activeProduct = products.find(p => p.id === id);
       const { conf } = parseProductConfig(activeProduct);
       extraSizeCost = 0;
@@ -669,22 +905,22 @@
       document.getElementById('photo-preview').classList.add('hidden');
       document.getElementById('cust-photo').value = '';
       document.getElementById('cust-notes').value = '';
-      document.getElementById('confirm-paid-btn').classList.add('hidden');
       document.getElementById('modal-title').innerText = activeProduct.title;
 
-      // Check if phone + PIN are already saved on this device so we don't ask per order
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
       const savedPin = localStorage.getItem('skia_customer_pin') || '';
       if (savedPhone.length === 10 && savedPin.length === 4) {
         document.getElementById('cust-phone').value = savedPhone;
         document.getElementById('cust-pin').value = savedPin;
         lockIdentityFields(savedPhone);
+        await checkCodEligibilityByPhone(savedPhone);
       } else {
         unlockIdentityFields();
+        isCustomerCodEligible = false;
+        updateCodButtonUI();
       }
 
       document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
-      document.getElementById('pay-cod-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
 
       const shadesBox = document.getElementById('dynamic-shades');
       chosenColor = conf.shades[0] || 'Standard';
@@ -723,15 +959,10 @@
       document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Next Step';
     }
 
-    // Mandatory check on Step 2 (Photo + Notes)
     function validateStep2AndContinue() {
-      if (!uploadedPhotoData) {
-        return alert("Please upload a reference photo from your phone first!");
-      }
+      if (!uploadedPhotoData) return alert("Please upload a reference photo from your phone first!");
       const notes = document.getElementById('cust-notes').value.trim();
-      if (notes.length < 3) {
-        return alert("Please write a short note telling us how you want your photo styled!");
-      }
+      if (notes.length < 3) return alert("Please write a short note telling us how you want your photo styled!");
       goToStep(3);
     }
 
@@ -764,8 +995,10 @@
     function selectPayment(cost, mode, btn) {
       extraCodCost = cost;
       chosenPaymentMode = mode;
-      document.querySelectorAll('.pay-pill').forEach(b => b.className = "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black");
-      btn.className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
+      document.getElementById('pay-upi-btn').className = mode === 'UPI'
+        ? "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white"
+        : "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
+      updateCodButtonUI();
       updatePrice();
     }
     function updatePrice() {
@@ -773,6 +1006,7 @@
       document.getElementById('live-price').innerText = total;
       document.getElementById('final-btn-price').innerText = total;
       document.getElementById('upi-now-amount').innerText = total;
+      document.getElementById('q-pay-amount').innerText = total;
     }
 
     function compressAndLoadImage(file, callback) {
@@ -813,7 +1047,6 @@
       const pin = document.getElementById('cust-pin').value.trim();
       const address = document.getElementById('cust-address').value.trim();
 
-      // Strict Mandatory Checks
       if (name.length < 2) return alert("Please enter your full name.");
       if (!/^\d{10}$/.test(phone)) return alert("Please enter an exact 10-digit WhatsApp phone number.");
       if (!/^\d{4}$/.test(pin)) return alert("Please set an exact 4-digit numeric Privacy PIN.");
@@ -823,17 +1056,15 @@
       btn.innerText = "Verifying PIN & Saving...";
       btn.disabled = true;
 
-      // Enforce 1 PIN per 1 Phone Number across the cloud!
       const pinCheck = await verifyPhonePinOnCloud(phone, pin);
       if (!pinCheck.valid) {
         btn.disabled = false;
         const t = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
         btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${t}</span>`;
         unlockIdentityFields();
-        return alert("❌ Wrong 4-Digit Privacy PIN for this WhatsApp number! This phone number already has a PIN set. Please enter your original 4-digit PIN.");
+        return alert("❌ Wrong 4-Digit Privacy PIN for this WhatsApp number!");
       }
 
-      // Save permanently so user never has to enter PIN again on this phone
       localStorage.setItem('skia_customer_phone', phone);
       localStorage.setItem('skia_customer_pin', pin);
       localStorage.setItem('skia_customer_name', name);
@@ -845,10 +1076,12 @@
       const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
       const rawNotes = document.getElementById('cust-notes').value.trim();
 
-      const isCod = (chosenPaymentMode === 'COD');
+      // COD is immediately Confirmed; UPI starts in Previews and asks the 2 Questions!
+      const isCod = (chosenPaymentMode === 'COD' && isCustomerCodEligible);
       const metaObj = {
         bucket: isCod ? 'ORDER' : 'PREVIEW',
-        payment: isCod ? 'Cash on Delivery (+₹50)' : 'Unpaid · Pay After WhatsApp Preview',
+        payStatus: isCod ? 'COD' : 'UNPAID',
+        payment: isCod ? '✓ Confirmed · Cash on Delivery (+₹50)' : 'Unpaid · Awaiting WhatsApp Preview',
         address: address,
         stage: isCod ? 'Confirmed COD · Crafting Preview' : 'Awaiting WhatsApp Preview'
       };
@@ -879,13 +1112,16 @@
           await fetchCustomerOrdersFromCloud(phone, pin, true);
 
           document.getElementById('ticket-code').innerText = orderPayload.order_code;
-          document.getElementById('ticket-item').innerText = `${orderPayload.product_title} · ₹${orderPayload.price}`;
+          document.getElementById('ticket-item').innerText = `${orderPayload.product_title}`;
+          setupQrCodeForAmount(total);
 
           if (isCod) {
-            document.getElementById('upi-choice-box').classList.add('hidden');
+            document.getElementById('upi-question-box').classList.add('hidden');
+            document.getElementById('upi-payment-methods-box').classList.add('hidden');
             document.getElementById('cod-confirmed-box').classList.remove('hidden');
           } else {
-            document.getElementById('upi-choice-box').classList.remove('hidden');
+            document.getElementById('upi-question-box').classList.remove('hidden');
+            document.getElementById('upi-payment-methods-box').classList.add('hidden');
             document.getElementById('cod-confirmed-box').classList.add('hidden');
           }
           goToStep(4);
@@ -897,27 +1133,57 @@
       }
     }
 
-    function triggerUpiPaymentForCurrentOrder() {
-      if (!lastCreatedOrder) return;
-      window.location.href = `upi://pay?pa=${OWNER_UPI_ID}&pn=SKIA%20Studio&am=${lastCreatedOrder.price}&cu=INR`;
-      document.getElementById('confirm-paid-btn').classList.remove('hidden');
-    }
-
-    async function markCurrentOrderPaid() {
-      if (!lastCreatedOrder || !lastCreatedOrder.id) return closeAndOpenSection('ORDER');
-      const { cleanNotes, meta } = parseOrderMeta(lastCreatedOrder);
-      meta.bucket = 'ORDER';
-      meta.payment = 'UPI Paid';
-      meta.stage = 'Confirmed & In Craft';
-      const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
-      await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', lastCreatedOrder.id);
-      await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'), localStorage.getItem('skia_customer_pin'), true);
-      closeAndOpenSection('ORDER');
-    }
-
     function closeAndOpenSection(tab) {
       closeModal();
       openCustomerOrdersView(tab);
+    }
+
+    function openPolicyModal(type) {
+      const titleEl = document.getElementById('policy-title');
+      const bodyEl = document.getElementById('policy-body');
+      const map = {
+        contact: {
+          title: "Contact SKIA Studio",
+          body: `
+            <p><strong>Brand & Studio Name:</strong> SKIA Studio (Owned & Operated by Ronak Sem)</p>
+            <p><strong>Location:</strong> Indore, Madhya Pradesh, India</p>
+            <p><strong>Phone & WhatsApp Support:</strong> +91 81034 23011</p>
+            <p><strong>Official Email:</strong> semronak26@gmail.com</p>
+            <p><strong>Operating Hours:</strong> Monday to Saturday, 10:00 AM – 8:00 PM IST</p>
+          `
+        },
+        privacy: {
+          title: "Privacy Policy",
+          body: `
+            <p><strong>1. 100% Customer Photo Confidentiality:</strong> Every photograph uploaded to SKIA Studio is used strictly to craft your custom piece. Your personal photos are protected by your 4-Digit Privacy PIN, are never shared publicly, and are deleted after printing.</p>
+            <p><strong>2. Data Collected:</strong> We only collect your Name, 10-digit WhatsApp number, and Delivery Address to send your digital preview and deliver your physical order.</p>
+            <p><strong>3. Contact for Privacy Queries:</strong> Reach out to Ronak Sem at semronak26@gmail.com or +91 81034 23011.</p>
+          `
+        },
+        terms: {
+          title: "Terms & Conditions",
+          body: `
+            <p><strong>1. Custom 1-of-1 Commissions:</strong> Every item on SKIA is custom-made based on your uploaded photo and styling instructions. We provide a digital preview on WhatsApp prior to final printing.</p>
+            <p><strong>2. Payment & Cash on Delivery Eligibility:</strong> First-time orders require online UPI payment (to skiastudio@ybl). Once you complete 1 verified online order with SKIA, Cash on Delivery (+₹50 courier handling fee) automatically unlocks for your phone number.</p>
+            <p><strong>3. Content Ownership:</strong> By uploading an image, you confirm you have the right to print that photo.</p>
+          `
+        },
+        shipping: {
+          title: "Shipping, Cancellation & Refund Policy",
+          body: `
+            <p><strong>1. Shipping Timeline:</strong> Custom orders are crafted in 2–4 business days and delivered across Indore and Pan-India in 4–7 business days via BlueDart, Delhivery, or Xpressbees.</p>
+            <p><strong>2. Cancellations:</strong> You may cancel or modify your order anytime <em>before</em> approving the digital preview for printing.</p>
+            <p><strong>3. Damaged / Misprinted Items (100% Free Replacement):</strong> Because each item is custom-printed with your personal photo, returns for wrong size selection are not accepted. However, if your item arrives damaged or misprinted, share a 10-second parcel unboxing video on WhatsApp (+91 81034 23011) within 48 hours of delivery for a 100% free replacement or refund.</p>
+          `
+        }
+      };
+      titleEl.innerText = map[type].title;
+      bodyEl.innerHTML = map[type].body;
+      document.getElementById('policy-modal').classList.remove('hidden');
+    }
+
+    function closePolicyModal() {
+      document.getElementById('policy-modal').classList.add('hidden');
     }
 
     loadCatalogFromCloud();
