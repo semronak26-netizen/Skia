@@ -45,7 +45,7 @@
   <div class="flex gap-2 mb-6 overflow-x-auto">
     <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white">1. Previews & Orders (<span id="order-badge">0</span>)</button>
     <button onclick="showTab('add')" id="btn-add" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">2. + Upload Piece</button>
-    <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">3. Edit / Delete Catalog</button>
+    <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">3. Edit / Manage Slides</button>
   </div>
 
   <!-- TAB 1: ORDERS & PREVIEWS -->
@@ -120,7 +120,7 @@
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Black Contrast Cup (+₹50)" checked /> Black Contrast Cup (+₹50)</label>
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Magic Heat Cup (+₹120)" checked /> Magic Heat Cup (+₹120)</label>
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Steel Sipper (+₹180)" /> Steel Sipper (+₹180)</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Standard Size" /> Standard Size (Totes/Posters)</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Standard Size" /> Standard Size (Cases/Totes/Posters)</label>
           </div>
         </div>
         <div>
@@ -128,7 +128,7 @@
           <div class="flex flex-wrap gap-2">
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pure White" checked /> Pure White</label>
             <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Matte / Natural" /> Matte / Natural</label>
+            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Matte / Clear" /> Matte / Clear</label>
           </div>
         </div>
         <div>
@@ -162,15 +162,12 @@
         <input type="text" id="p-prompt" required placeholder="You send: Any photo or quote → We craft: Minimal ceramic wrap" class="w-full border-2 border-black p-2.5" />
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div class="border-2 border-dashed border-black p-3">
-          <label class="font-bold block mb-1">1. Main Final Mockup Photo</label>
-          <input type="file" accept="image/*" required onchange="loadImg(event, 'final')" class="text-xs w-full" />
-        </div>
-        <div class="border-2 border-dashed border-black p-3">
-          <label class="font-bold block mb-1">2. Corner "Raw Customer Photo"</label>
-          <input type="file" accept="image/*" required onchange="loadImg(event, 'raw')" class="text-xs w-full" />
-        </div>
+      <div class="space-y-3">
+        <label class="font-bold block uppercase tracking-wider text-[10px]">Step 3: Upload Example Slide Pairs (Mockup + Raw Photo)</label>
+        <div id="slides-builder-list" class="space-y-3"></div>
+        <button type="button" onclick="addSlidePairRow()" class="w-full border-2 border-dashed border-black py-2.5 font-bold uppercase tracking-wider hover:bg-black hover:text-white transition">
+          + Add Another Example Slide (Mockup + Raw Photo)
+        </button>
       </div>
 
       <button type="submit" id="pub-btn" class="w-full bg-black text-white py-3.5 font-bold uppercase tracking-widest">
@@ -179,10 +176,43 @@
     </form>
   </section>
 
-  <!-- TAB 3: EDIT PRICE OR DELETE -->
+  <!-- TAB 3: EDIT PRICE, MANAGE / DELETE SLIDES, OR DELETE PRODUCT -->
   <section id="tab-manage" class="hidden space-y-3">
     <div id="manage-container" class="space-y-2 text-xs"></div>
   </section>
+
+  <!-- POPUP MODAL TO VIEW / DELETE EXISTING SLIDES + ADD NEW SLIDE -->
+  <div id="add-slide-modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white border-2 border-black p-5 max-w-md w-full max-h-[90vh] overflow-y-auto space-y-4 text-xs shadow-[6px_6px_0px_#000000]">
+      <div class="flex justify-between items-center border-b-2 border-black pb-2">
+        <h3 class="font-serif-luxury text-2xl font-bold">Manage Product Slides</h3>
+        <button onclick="closeAddSlideModal()" class="font-bold underline">Close ✕</button>
+      </div>
+      <p id="add-slide-prod-title" class="font-bold text-neutral-600"></p>
+
+      <!-- LIST OF CURRENT SLIDES WITH DELETE BUTTON ON EACH SLIDE! -->
+      <div class="space-y-2">
+        <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Current Slides on This Card:</p>
+        <div id="existing-slides-list" class="space-y-2"></div>
+      </div>
+
+      <!-- ADD A NEW SLIDE SECTION -->
+      <div class="border-t-2 border-black pt-3 space-y-3">
+        <p class="text-[10px] font-bold uppercase tracking-wider bg-black text-white inline-block px-2 py-0.5">+ Add a New Slide</p>
+        <div class="border-2 border-dashed border-black p-3">
+          <label class="font-bold block mb-1">1. New Final Mockup Photo *</label>
+          <input type="file" id="extra-final-file" accept="image/*" onchange="loadExtraSlideFile(event, 'final')" class="w-full" />
+        </div>
+        <div class="border-2 border-dashed border-black p-3">
+          <label class="font-bold block mb-1">2. New Corner "Raw Customer Photo" *</label>
+          <input type="file" id="extra-raw-file" accept="image/*" onchange="loadExtraSlideFile(event, 'raw')" class="w-full" />
+        </div>
+        <button onclick="saveExtraSlideToProduct()" id="save-slide-btn" class="w-full bg-black text-white py-3 font-bold uppercase tracking-widest">
+          Save New Slide to Card →
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const SUPABASE_URL = window.location.hostname.includes('vercel.app')
@@ -193,8 +223,50 @@
 
     let products = [];
     let orders = [];
-    let finalImgData = "";
-    let rawImgData = "";
+    let slidePairsData = [{ finalFile: null, rawFile: null, finalPreview: "", rawPreview: "" }];
+    let targetSlideProductId = null;
+    let extraFinalFile = null;
+    let extraRawFile = null;
+
+    function resolveImgUrl(u) {
+      if (!u) return '';
+      if (window.location.hostname.includes('vercel.app') && u.includes('giffvjhztnjgftvqirdx.supabase.co')) {
+        return u.replace('https://giffvjhztnjgftvqirdx.supabase.co', window.location.origin + '/supaproxy');
+      }
+      return u;
+    }
+
+    async function uploadFileToSkiaBucket(fileObj, folder) {
+      const ext = (fileObj.name.split('.').pop() || 'jpg').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      const filePath = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await db.storage.from('skia-uploads').upload(filePath, fileObj, {
+        cacheControl: '3600',
+        upsert: false
+      });
+      if (error) throw error;
+      return `https://giffvjhztnjgftvqirdx.supabase.co/storage/v1/object/public/skia-uploads/${filePath}`;
+    }
+
+    async function downloadOriginalPhoto(rawUrl, filename, btn) {
+      const originalText = btn.innerText;
+      btn.innerText = "Downloading HD...";
+      try {
+        const fetchUrl = resolveImgUrl(rawUrl);
+        const res = await fetch(fetchUrl);
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+      } catch (e) {
+        window.open(resolveImgUrl(rawUrl), '_blank');
+      }
+      btn.innerText = originalText;
+    }
 
     async function checkOwnerSession() {
       const { data: { session } } = await db.auth.getSession();
@@ -202,6 +274,7 @@
         document.getElementById('pin-screen').classList.add('hidden');
         loadAllCloudData();
       }
+      renderSlideBuilderRows();
     }
 
     async function unlockWithCloudAuth(e) {
@@ -209,7 +282,7 @@
       const email = document.getElementById('owner-email').value.trim();
       const password = document.getElementById('owner-password').value;
       const btn = document.getElementById('login-btn');
-      btn.innerText = "Verifying with Cloud...";
+      btn.innerText = "Verifying...";
       btn.disabled = true;
 
       const { error } = await db.auth.signInWithPassword({ email, password });
@@ -249,34 +322,51 @@
       }
     }
 
-    function compressImg(file, cb) {
-      const r = new FileReader();
-      r.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          const c = document.createElement('canvas');
-          const max = 800;
-          let w = img.width, h = img.height;
-          if (w > max || h > max) {
-            if (w > h) { h = Math.round(h * (max / w)); w = max; }
-            else { w = Math.round(w * (max / h)); h = max; }
-          }
-          c.width = w; c.height = h;
-          c.getContext('2d').drawImage(img, 0, 0, w, h);
-          cb(c.toDataURL('image/jpeg', 0.78));
-        };
-        img.src = e.target.result;
-      };
-      r.readAsDataURL(file);
+    function renderSlideBuilderRows() {
+      const box = document.getElementById('slides-builder-list');
+      box.innerHTML = slidePairsData.map((pair, idx) => `
+        <div class="border-2 border-black p-3 bg-neutral-50 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold uppercase">Example Slide #${idx + 1}</span>
+            ${idx > 0 ? `<button type="button" onclick="removeSlidePairRow(${idx})" class="text-red-700 font-bold text-[10px] underline">Remove Slide</button>` : ''}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="border border-dashed border-black bg-white p-2.5">
+              <label class="font-bold block mb-1 text-[11px]">1. Main Final Mockup #${idx + 1}</label>
+              <input type="file" accept="image/*" ${idx === 0 && !pair.finalFile ? 'required' : ''} onchange="loadSlidePairFile(event, ${idx}, 'final')" class="text-xs w-full" />
+              ${pair.finalPreview ? `<img src="${pair.finalPreview}" class="h-14 mt-1.5 object-cover border border-black" />` : ''}
+            </div>
+            <div class="border border-dashed border-black bg-white p-2.5">
+              <label class="font-bold block mb-1 text-[11px]">2. Corner Raw Photo #${idx + 1}</label>
+              <input type="file" accept="image/*" ${idx === 0 && !pair.rawFile ? 'required' : ''} onchange="loadSlidePairFile(event, ${idx}, 'raw')" class="text-xs w-full" />
+              ${pair.rawPreview ? `<img src="${pair.rawPreview}" class="h-14 mt-1.5 object-cover border border-black" />` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
-    function loadImg(e, type) {
+    function addSlidePairRow() {
+      slidePairsData.push({ finalFile: null, rawFile: null, finalPreview: "", rawPreview: "" });
+      renderSlideBuilderRows();
+    }
+
+    function removeSlidePairRow(idx) {
+      slidePairsData.splice(idx, 1);
+      renderSlideBuilderRows();
+    }
+
+    function loadSlidePairFile(e, idx, type) {
       const file = e.target.files[0];
       if (!file) return;
-      compressImg(file, dataUrl => {
-        if (type === 'final') finalImgData = dataUrl;
-        if (type === 'raw') rawImgData = dataUrl;
-      });
+      if (type === 'final') {
+        slidePairsData[idx].finalFile = file;
+        slidePairsData[idx].finalPreview = URL.createObjectURL(file);
+      } else {
+        slidePairsData[idx].rawFile = file;
+        slidePairsData[idx].rawPreview = URL.createObjectURL(file);
+      }
+      renderSlideBuilderRows();
     }
 
     async function loadAllCloudData() {
@@ -289,52 +379,188 @@
 
     async function publishProductToCloud(e) {
       e.preventDefault();
+      const validSlides = slidePairsData.filter(s => s.finalFile && s.rawFile);
+      if (validSlides.length === 0) return alert("Please select both the Mockup and Raw Photo for Slide #1!");
+
       const btn = document.getElementById('pub-btn');
-      btn.innerText = "Publishing...";
+      btn.innerText = "Uploading HD Slides to Cloud...";
       btn.disabled = true;
 
-      const selectedMode = document.querySelector('input[name="p-mode"]:checked').value;
-      const isWearable = (selectedMode !== 'HOLD');
+      try {
+        const finalUrls = [];
+        const rawUrls = [];
+        for (const s of validSlides) {
+          const fUrl = await uploadFileToSkiaBucket(s.finalFile, 'products');
+          const rUrl = await uploadFileToSkiaBucket(s.rawFile, 'products');
+          finalUrls.push(fUrl);
+          rawUrls.push(rUrl);
+        }
 
-      const sizeClass = isWearable ? '.w-size:checked' : '.h-size:checked';
-      const shadeClass = isWearable ? '.w-shade:checked' : '.h-shade:checked';
-      const finishClass = isWearable ? '.w-finish:checked' : '.h-finish:checked';
+        const selectedMode = document.querySelector('input[name="p-mode"]:checked').value;
+        const isWearable = (selectedMode !== 'HOLD');
 
-      const sizes = Array.from(document.querySelectorAll(sizeClass)).map(el => el.value);
-      const shades = Array.from(document.querySelectorAll(shadeClass)).map(el => el.value);
-      const finishes = Array.from(document.querySelectorAll(finishClass)).map(el => el.value);
+        const sizeClass = isWearable ? '.w-size:checked' : '.h-size:checked';
+        const shadeClass = isWearable ? '.w-shade:checked' : '.h-shade:checked';
+        const finishClass = isWearable ? '.w-finish:checked' : '.h-finish:checked';
 
-      const cleanSpec = document.getElementById('p-spec').value;
-      const packedSpec = cleanSpec + "||CONF:" + JSON.stringify({ sizes, shades, finishes });
+        const sizes = Array.from(document.querySelectorAll(sizeClass)).map(el => el.value);
+        const shades = Array.from(document.querySelectorAll(shadeClass)).map(el => el.value);
+        const finishes = Array.from(document.querySelectorAll(finishClass)).map(el => el.value);
 
-      const newP = {
-        title: document.getElementById('p-title').value,
-        base_price: Number(document.getElementById('p-price').value),
-        category: selectedMode,
-        spec: packedSpec,
-        prompt: document.getElementById('p-prompt').value,
-        is_apparel: isWearable,
-        final_image: finalImgData,
-        raw_photo: rawImgData
-      };
+        const cleanSpec = document.getElementById('p-spec').value;
+        const packedSpec = cleanSpec + "||CONF:" + JSON.stringify({ sizes, shades, finishes });
 
-      const { error } = await db.from('skia_products').insert([newP]);
-      btn.disabled = false;
-      btn.innerText = "Publish Live to SKIA →";
+        const newP = {
+          title: document.getElementById('p-title').value,
+          base_price: Number(document.getElementById('p-price').value),
+          category: selectedMode,
+          spec: packedSpec,
+          prompt: document.getElementById('p-prompt').value,
+          is_apparel: isWearable,
+          final_image: finalUrls.join('|||SLIDE|||'),
+          raw_photo: rawUrls.join('|||SLIDE|||')
+        };
 
-      if (error) {
-        alert("Error: " + error.message);
-      } else {
-        e.target.reset();
-        toggleModeOptions();
-        finalImgData = ""; rawImgData = "";
-        alert("✓ Published with your exact selected options!");
-        await loadAllCloudData();
-        showTab('manage');
+        const { error } = await db.from('skia_products').insert([newP]);
+        btn.disabled = false;
+        btn.innerText = "Publish Live to SKIA →";
+
+        if (error) {
+          alert("Error: " + error.message);
+        } else {
+          e.target.reset();
+          slidePairsData = [{ finalFile: null, rawFile: null, finalPreview: "", rawPreview: "" }];
+          renderSlideBuilderRows();
+          toggleModeOptions();
+          alert("✓ Published in Full HD with " + validSlides.length + " swipeable slide(s)!");
+          await loadAllCloudData();
+          showTab('manage');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = "Publish Live to SKIA →";
+        alert("Upload error: " + err.message);
       }
     }
 
-    // ADMIN DECISION: APPROVE OR CANCEL PAYMENT!
+    // Open Manage Slides Modal (Shows Existing Slides with Delete Buttons + Add New Slide)
+    function openAddSlideModal(prodId) {
+      const p = products.find(x => x.id === prodId);
+      if (!p) return;
+      targetSlideProductId = prodId;
+      extraFinalFile = null;
+      extraRawFile = null;
+      document.getElementById('extra-final-file').value = "";
+      document.getElementById('extra-raw-file').value = "";
+      document.getElementById('add-slide-prod-title').innerText = p.title;
+      renderExistingSlidesInModal();
+      document.getElementById('add-slide-modal').classList.remove('hidden');
+    }
+
+    function renderExistingSlidesInModal() {
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p) return;
+      const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean);
+      const listBox = document.getElementById('existing-slides-list');
+
+      listBox.innerHTML = finals.map((fImg, idx) => {
+        const rImg = raws[idx] || raws[0] || '';
+        return `
+        <div class="flex items-center justify-between border border-black p-2 bg-neutral-50">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-[10px] w-14">Slide #${idx + 1}</span>
+            <img src="${resolveImgUrl(fImg)}" class="w-10 h-10 object-cover border border-black" title="Mockup" />
+            <img src="${resolveImgUrl(rImg)}" class="w-10 h-10 object-cover border border-black" title="Raw Photo" />
+          </div>
+          <button type="button" onclick="deleteExistingSlideFromProduct(${idx})" class="border border-red-700 text-red-700 px-2.5 py-1 text-[10px] font-bold uppercase hover:bg-red-700 hover:text-white">
+            Delete Slide
+          </button>
+        </div>`;
+      }).join('');
+    }
+
+    async function deleteExistingSlideFromProduct(slideIdx) {
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p) return;
+      const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean);
+
+      if (finals.length <= 1) {
+        return alert("A product card must have at least 1 slide! Add a new slide first before deleting this one, or delete the whole product.");
+      }
+      if (!confirm(`Delete Slide #${slideIdx + 1} from ${p.title}?`)) return;
+
+      finals.splice(slideIdx, 1);
+      if (raws.length > slideIdx) raws.splice(slideIdx, 1);
+
+      const { error } = await db.from('skia_products')
+        .update({
+          final_image: finals.join('|||SLIDE|||'),
+          raw_photo: raws.join('|||SLIDE|||')
+        })
+        .eq('id', targetSlideProductId);
+
+      if (error) {
+        alert("Error deleting slide: " + error.message);
+      } else {
+        await loadAllCloudData();
+        renderExistingSlidesInModal();
+      }
+    }
+
+    function closeAddSlideModal() {
+      document.getElementById('add-slide-modal').classList.add('hidden');
+    }
+
+    function loadExtraSlideFile(e, type) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (type === 'final') extraFinalFile = file;
+      if (type === 'raw') extraRawFile = file;
+    }
+
+    async function saveExtraSlideToProduct() {
+      if (!extraFinalFile || !extraRawFile) return alert("Please pick both the new Mockup photo and new Raw photo!");
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p) return;
+
+      const btn = document.getElementById('save-slide-btn');
+      btn.innerText = "Uploading HD Slide...";
+      btn.disabled = true;
+
+      try {
+        const newFinalUrl = await uploadFileToSkiaBucket(extraFinalFile, 'products');
+        const newRawUrl = await uploadFileToSkiaBucket(extraRawFile, 'products');
+
+        const updatedFinal = p.final_image + "|||SLIDE|||" + newFinalUrl;
+        const updatedRaw = p.raw_photo + "||SLIDE||".replace('||SLIDE||','|||SLIDE|||') + newRawUrl;
+
+        const { error } = await db.from('skia_products')
+          .update({ final_image: updatedFinal, raw_photo: updatedRaw })
+          .eq('id', targetSlideProductId);
+
+        btn.disabled = false;
+        btn.innerText = "Save New Slide to Card →";
+
+        if (error) {
+          alert("Error: " + error.message);
+        } else {
+          extraFinalFile = null;
+          extraRawFile = null;
+          document.getElementById('extra-final-file').value = "";
+          document.getElementById('extra-raw-file').value = "";
+          await loadAllCloudData();
+          renderExistingSlidesInModal();
+          alert("✓ New HD slide added!");
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = "Save New Slide to Card →";
+        alert("Upload error: " + err.message);
+      }
+    }
+
     async function setOrderPaymentDecision(orderId, decision) {
       const target = orders.find(x => x.id === orderId);
       if (!target) return;
@@ -391,17 +617,16 @@
           const phoneParts = (o.customer_phone || '').split('#');
           const cleanPhone = phoneParts[0] || 'N/A';
           const custPin = phoneParts[1] || 'None';
+          const custPhotos = (o.photo_data || '').split('|||SLIDE|||').filter(Boolean);
 
           const noteParts = (o.notes || '').split('||META:');
           const cleanNotes = noteParts[0];
-          let bucket = "PREVIEW";
           let payStatus = "UNPAID";
           let paymentMode = "Unpaid · Preview Requested";
           let deliveryAddress = "Not provided";
           if (noteParts[1]) {
             try {
               const meta = JSON.parse(noteParts[1]);
-              bucket = meta.bucket || bucket;
               payStatus = meta.payStatus || payStatus;
               paymentMode = meta.payment || paymentMode;
               deliveryAddress = meta.address || deliveryAddress;
@@ -409,12 +634,12 @@
           }
 
           let badgeColor = "bg-amber-200 text-black border border-black";
-          if (payStatus === 'SUCCESS') badgeColor = "bg-emerald-900 text-white";
+          if (payStatus === 'SUCCESS' || payStatus === 'COD') badgeColor = "bg-emerald-900 text-white";
           if (payStatus === 'CANCELLED') badgeColor = "bg-red-700 text-white";
 
           const waMsg = encodeURIComponent(`Hi ${o.customer_name}! This is SKIA Studio Indore regarding your custom commission (${o.order_code} - ${o.product_title}, ₹${o.price}).`);
           return `
-          <div class="border-2 border-black p-4 bg-white shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row justify-between gap-4">
+          <div class="border-2 border-black p-4 bg-white shadow-[4px_4px_0px_#000000] flex flex-col justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex flex-wrap gap-2 items-center">
                 <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
@@ -429,22 +654,33 @@
               <p class="bg-neutral-100 border border-black p-2"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
               <p class="bg-white border border-black p-2"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
-              
-              <!-- ADMIN PAYMENT APPROVAL / CANCELLATION BUTTONS -->
-              <div class="pt-2 flex flex-wrap gap-2 items-center">
-                <button onclick="setOrderPaymentDecision(${o.id}, 'SUCCESS')" class="bg-emerald-900 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
-                  ✓ Payment Successful (Unlocks COD)
-                </button>
-                <button onclick="setOrderPaymentDecision(${o.id}, 'CANCELLED')" class="bg-red-700 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
-                  ✕ Payment Cancelled
-                </button>
-                <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="border-2 border-black px-3 py-1 text-[10px] font-bold uppercase">WhatsApp →</a>
-                <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline ml-1">Delete</button>
-              </div>
             </div>
-            <div class="text-center shrink-0">
-              ${o.photo_data ? `<img src="${o.photo_data}" class="w-24 h-24 object-cover border-2 border-black mx-auto mb-2" />
-              <a href="${o.photo_data}" download="${o.order_code}.jpg" class="inline-block border-2 border-black px-3 py-1 text-[10px] font-bold uppercase">Download Photo</a>` : `<p class="text-[10px] text-neutral-400">No photo</p>`}
+
+            ${custPhotos.length > 0 ? `
+              <div class="border-t border-neutral-200 pt-3">
+                <p class="text-[10px] font-bold uppercase tracking-wider mb-2">Customer Original HD Photo(s) (${custPhotos.length}):</p>
+                <div class="flex flex-wrap gap-3">
+                  ${custPhotos.map((ph, idx) => `
+                    <div class="text-center">
+                      <img src="${resolveImgUrl(ph)}" class="w-20 h-20 object-cover border-2 border-black mb-1" />
+                      <button type="button" onclick="downloadOriginalPhoto('${ph}', '${o.order_code}-original-${idx+1}.jpg', this)" class="block w-full bg-black text-white px-2 py-1 text-[9px] font-bold uppercase">
+                        Download HD #${idx+1}
+                      </button>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="pt-2 border-t border-neutral-200 flex flex-wrap gap-2 items-center">
+              <button onclick="setOrderPaymentDecision(${o.id}, 'SUCCESS')" class="bg-emerald-900 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
+                ✓ Payment Successful (Unlocks COD)
+              </button>
+              <button onclick="setOrderPaymentDecision(${o.id}, 'CANCELLED')" class="bg-red-700 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
+                ✕ Payment Cancelled
+              </button>
+              <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="border-2 border-black px-3 py-1 text-[10px] font-bold uppercase">WhatsApp →</a>
+              <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline ml-1">Delete</button>
             </div>
           </div>`;
         }).join('');
@@ -453,16 +689,18 @@
       const mBox = document.getElementById('manage-container');
       mBox.innerHTML = products.map(p => {
         const cleanSpec = (p.spec || '').split('||CONF:')[0];
+        const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
         return `
-        <div class="border-2 border-black p-3 flex justify-between items-center bg-white gap-2">
+        <div class="border-2 border-black p-3 flex flex-col sm:flex-row justify-between sm:items-center bg-white gap-3">
           <div class="flex items-center gap-3">
-            <img src="${p.final_image}" class="w-12 h-12 object-cover border border-black shrink-0" />
+            <img src="${resolveImgUrl(finals[0])}" class="w-12 h-12 object-cover border border-black shrink-0" />
             <div>
               <p class="font-bold">${p.title} — ₹${p.base_price}</p>
-              <p class="text-[10px] text-neutral-500">${p.is_apparel ? 'To Wear' : 'To Hold & Keep'} · ${cleanSpec}</p>
+              <p class="text-[10px] text-neutral-500"><strong>${finals.length} Slide(s)</strong> · ${p.is_apparel ? 'To Wear' : 'To Hold & Keep'} · ${cleanSpec}</p>
             </div>
           </div>
-          <div class="flex gap-1.5 shrink-0">
+          <div class="flex flex-wrap gap-1.5 shrink-0">
+            <button onclick="openAddSlideModal(${p.id})" class="bg-black text-white px-2.5 py-1 font-bold uppercase text-[10px]">Manage / + Slides</button>
             <button onclick="editProductPrice(${p.id}, ${p.base_price})" class="border-2 border-black px-2.5 py-1 font-bold uppercase text-[10px] hover:bg-black hover:text-white">Edit ₹</button>
             <button onclick="deleteProdFromCloud(${p.id})" class="border-2 border-black px-2.5 py-1 font-bold uppercase text-[10px] text-red-700 hover:bg-red-700 hover:text-white">Delete</button>
           </div>
