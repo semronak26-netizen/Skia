@@ -86,11 +86,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    html { scroll-behavior: smooth; }
     body {
       background-color: #FFFFFF;
       color: #000000;
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
     .font-serif-luxury { font-family: 'Cormorant Garamond', serif; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -99,14 +101,90 @@
       background-color: #FFFFFF;
       background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 10 C68 32, 42 45, 58 72 C65 55, 78 64, 70 90 C88 68, 95 40, 60 10 Z' fill='%23000000' fill-opacity='0.035'/%3E%3C/svg%3E");
     }
+
+    /* 1. Infinite Pitch-Black Studio Marquee */
+    @keyframes skiaMarquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: skiaMarquee 26s linear infinite;
+    }
+
+    /* 2. Smooth Entrance & Scroll Reveal */
+    @keyframes fadeUpSmooth {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-hero-enter {
+      animation: fadeUpSmooth 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .reveal-card {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .reveal-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 3. Silky Image Cross-Fade on Swipe / Swap */
+    .img-crossfade {
+      transition: opacity 0.22s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .img-swapping {
+      opacity: 0.25;
+      transform: scale(0.97);
+    }
+
+    /* 4. Bottom-Sheet Drawer Glide */
+    @keyframes drawerSlideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-drawer-up {
+      animation: drawerSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* 5. Tactile Press Feel */
+    .tactile-btn {
+      transition: transform 0.12s ease, background-color 0.18s ease, color 0.18s ease;
+    }
+    .tactile-btn:active {
+      transform: scale(0.95);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between fire-bg-pattern">
 
+  <!-- 0. INFINITE PITCH-BLACK STUDIO TICKER -->
+  <div class="bg-black text-white py-2 overflow-hidden border-b border-black select-none">
+    <div class="animate-marquee text-[10px] font-bold uppercase tracking-[0.25em]">
+      <span class="mx-6">1-of-1 Custom Studio · Indore</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">Approve Your Digital Preview on WhatsApp Before Print</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">240–400 GSM Heavy Combed Cotton & Infused Objects</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">Zero Minimum Order</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">1-of-1 Custom Studio · Indore</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">Approve Your Digital Preview on WhatsApp Before Print</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">240–400 GSM Heavy Combed Cotton & Infused Objects</span>
+      <span class="mx-6">✦</span>
+      <span class="mx-6">Zero Minimum Order</span>
+    </div>
+  </div>
+
   <!-- 1. HEADER -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-black">
     <nav class="max-w-5xl mx-auto px-4 sm:px-5 py-4 flex items-center justify-between gap-2" aria-label="Main Navigation">
-      <a href="#everything" onclick="showMainShop('ALL')" class="flex items-center gap-2 text-left">
+      <a href="#everything" onclick="showMainShop('ALL')" class="tactile-btn flex items-center gap-2 text-left">
         <svg class="w-6 h-6 fill-black shrink-0" viewBox="0 0 24 24">
           <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
         </svg>
@@ -114,21 +192,23 @@
       </a>
 
       <div class="flex items-center gap-2">
-        <a href="#previews-orders" onclick="openCustomerOrdersView('PREVIEW')" class="text-[11px] font-bold tracking-wider uppercase border-2 border-black px-3 py-1.5 bg-white hover:bg-black hover:text-white transition">
+        <a href="#previews-orders" onclick="openCustomerOrdersView('PREVIEW')" class="tactile-btn text-[11px] font-bold tracking-wider uppercase border-2 border-black px-3 py-1.5 bg-white hover:bg-black hover:text-white">
           Previews & Orders (<span id="nav-order-count">0</span>)
         </a>
-        <a href="#for-crews" onclick="showMainShop('CREWS')" class="hidden sm:inline-block text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 bg-black text-white">
+        <a href="#for-crews" onclick="showMainShop('CREWS')" class="tactile-btn hidden sm:inline-block text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 bg-black text-white">
           For Crews →
         </a>
       </div>
     </nav>
   </header>
 
-  <main class="max-w-5xl mx-auto px-5 pt-8 pb-16 w-full">
+  <main class="max-w-5xl mx-auto px-5 pt-7 pb-16 w-full">
 
     <!-- VIEW A: MAIN STOREFRONT -->
     <div id="storefront-view">
-      <section class="bg-white border-2 border-black mb-10 overflow-hidden shadow-[6px_6px_0px_#000000]">
+
+      <!-- STAGE 1: HERO ENTRANCE -->
+      <section class="animate-hero-enter bg-white border-2 border-black mb-5 overflow-hidden shadow-[6px_6px_0px_#000000]">
         <div class="p-6 sm:p-10 pb-4">
           <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
           <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
@@ -146,27 +226,57 @@
         </div>
       </section>
 
+      <!-- STAGE 2: 3-SECOND VISUAL CLARITY STRIP -->
+      <section class="animate-hero-enter grid grid-cols-3 border-2 border-black bg-white mb-8 text-center py-3 px-2 shadow-[4px_4px_0px_#000000]">
+        <div class="px-1">
+          <span class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block">Step 01</span>
+          <span class="text-[11px] sm:text-xs font-bold block mt-0.5">Drop Your Photo(s)</span>
+        </div>
+        <div class="px-1 border-x-2 border-black">
+          <span class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block">Step 02</span>
+          <span class="text-[11px] sm:text-xs font-bold block mt-0.5">Approve on WhatsApp</span>
+        </div>
+        <div class="px-1">
+          <span class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block">Step 03</span>
+          <span class="text-[11px] sm:text-xs font-bold block mt-0.5">Crafted & Delivered</span>
+        </div>
+      </section>
+
+      <!-- CATEGORY PILLS -->
       <section class="pb-6">
         <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
-          <a href="#everything" onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition">
+          <a href="#everything" onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black">
             Everything
           </a>
-          <a href="#to-wear" onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          <a href="#to-wear" onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black">
             To Wear
           </a>
-          <a href="#to-hold" onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          <a href="#to-hold" onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black">
             To Hold & Keep
           </a>
-          <a href="#for-crews" onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition">
+          <a href="#for-crews" onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black">
             For Crews
           </a>
         </div>
       </section>
 
+      <!-- STAGE 3: TACTILE PRODUCT GRID -->
       <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
         Loading SKIA Studio...
       </div>
       <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
+
+      <!-- STAGE 5: "HAVE SOMETHING SPECIFIC IN MIND?" CONVERSATIONAL STUDIO CLOSER -->
+      <section class="mt-12 border-2 border-black bg-black text-white p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[6px_6px_0px_#000000]">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400 block mb-1">Direct Studio Line · Indore</span>
+          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-bold">Have a unique idea or a 5+ crew order?</h3>
+          <p class="text-xs text-neutral-300 mt-1">Talk directly with our studio on WhatsApp—send your photo and we’ll guide you personally.</p>
+        </div>
+        <a href="https://wa.me/918103423011?text=Hi%20SKIA%20Studio!%20I%20have%20a%20custom%20idea%20I'd%20like%20to%20discuss." target="_blank" class="tactile-btn shrink-0 bg-white text-black px-5 py-3 text-xs font-bold uppercase tracking-widest border-2 border-white hover:bg-black hover:text-white">
+          Chat With Studio →
+        </a>
+      </section>
     </div>
 
     <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" SECTION -->
@@ -176,7 +286,7 @@
           <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">100% Private Studio Archive</p>
           <h2 class="font-serif-luxury text-3xl sm:text-4xl font-bold">My Previews & Orders</h2>
         </div>
-        <button onclick="showMainShop('ALL')" class="self-start text-xs font-bold uppercase tracking-wider border-2 border-black px-4 py-2 bg-white hover:bg-black hover:text-white">
+        <button onclick="showMainShop('ALL')" class="tactile-btn self-start text-xs font-bold uppercase tracking-wider border-2 border-black px-4 py-2 bg-white hover:bg-black hover:text-white">
           ← Back to Catalog
         </button>
       </div>
@@ -189,17 +299,17 @@
         <div class="flex flex-wrap sm:flex-nowrap gap-2">
           <input type="tel" id="lookup-phone-input" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="10-Digit WhatsApp" class="border-2 border-black px-3 py-2 text-xs w-full sm:w-40 focus:outline-none" />
           <input type="password" id="lookup-pin-input" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4-Digit PIN" class="border-2 border-black px-3 py-2 text-xs w-28 focus:outline-none text-center tracking-widest" />
-          <button onclick="syncCustomerOrdersByPhoneAndPin()" class="bg-black text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
+          <button onclick="syncCustomerOrdersByPhoneAndPin()" class="tactile-btn bg-black text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
             Unlock
           </button>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
+        <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="tactile-btn py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
           1. Previews · Unpaid (<span id="count-previews">0</span>)
         </button>
-        <button onclick="switchCustomerTab('ORDER')" id="cust-tab-ORDER" class="py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center">
+        <button onclick="switchCustomerTab('ORDER')" id="cust-tab-ORDER" class="tactile-btn py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center">
           2. Orders · Processing & Confirmed (<span id="count-orders">0</span>)
         </button>
       </div>
@@ -212,7 +322,7 @@
     </div>
 
     <!-- PRIVACY & STUDIO PROMISE -->
-    <section class="mt-16 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
+    <section class="mt-12 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
       <div>
         <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01 / PRIVACY FIRST</span>
         <p class="font-bold text-sm mt-0.5">PIN-Locked Photo Privacy</p>
@@ -253,7 +363,7 @@
 
   <!-- LEGAL POLICIES MODAL -->
   <div id="policy-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white border-2 border-black max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-[8px_8px_0px_#000000] text-xs space-y-4">
+    <div class="animate-drawer-up bg-white border-2 border-black max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-[8px_8px_0px_#000000] text-xs space-y-4">
       <div class="flex justify-between items-center border-b-2 border-black pb-3">
         <h3 id="policy-title" class="font-serif-luxury text-2xl font-bold">Studio Policy</h3>
         <button onclick="closePolicyModal()" class="font-bold uppercase underline">Close ✕</button>
@@ -262,11 +372,11 @@
     </div>
   </div>
 
-  <!-- DYNAMIC CONVERSATIONAL DRAWER -->
+  <!-- STAGE 4: SLIDE-UP CONVERSATIONAL DRAWER WITH ANIMATED PROGRESS BAR -->
   <div id="custom-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-white w-full max-w-md border-t-4 sm:border-2 border-black p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-[8px_8px_0px_#000000]">
+    <div id="drawer-box" class="animate-drawer-up bg-white w-full max-w-md border-t-4 sm:border-2 border-black p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-[8px_8px_0px_#000000]">
       
-      <div class="flex justify-between items-center pb-4 border-b-2 border-black">
+      <div class="flex justify-between items-center pb-3">
         <div>
           <p id="step-indicator" class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Step 1 of 3</p>
           <h2 id="modal-title" class="font-serif-luxury text-2xl font-bold">Product</h2>
@@ -275,6 +385,11 @@
           <span class="text-sm font-bold block">₹<span id="live-price">899</span></span>
           <button onclick="closeModal()" class="text-[11px] font-semibold uppercase underline">Close ✕</button>
         </div>
+      </div>
+
+      <!-- LIVE ANIMATED PITCH-BLACK PROGRESS BAR -->
+      <div class="w-full h-1 bg-neutral-200 mb-2 overflow-hidden">
+        <div id="step-progress-bar" class="h-full bg-black transition-all duration-300" style="width: 33%;"></div>
       </div>
 
       <!-- STEP 1 -->
@@ -291,16 +406,16 @@
         <div id="placement-box">
           <p class="text-xs font-semibold mb-2">3. Placement *</p>
           <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
-            <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill py-2 border-2 border-black bg-black text-white">Front</button>
-            <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill py-2 border-2 border-black bg-white">Back</button>
-            <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill py-2 border-2 border-black bg-white">Both +₹150</button>
+            <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill tactile-btn py-2 border-2 border-black bg-black text-white">Front</button>
+            <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill tactile-btn py-2 border-2 border-black bg-white">Back</button>
+            <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill tactile-btn py-2 border-2 border-black bg-white">Both +₹150</button>
           </div>
         </div>
         <div>
           <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout *</p>
           <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
         </div>
-        <button type="button" onclick="goToStep(2)" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+        <button type="button" onclick="goToStep(2)" class="tactile-btn w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
           Next · Drop Your Photo(s) →
         </button>
       </div>
@@ -311,7 +426,7 @@
         
         <div class="border-2 border-dashed border-black bg-white p-5 text-center">
           <label class="cursor-pointer block">
-            <span class="bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider inline-block mb-1.5">+ Add Full-Res Photo(s) *</span>
+            <span class="tactile-btn bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider inline-block mb-1.5">+ Add Full-Res Photo(s) *</span>
             <span class="text-[11px] text-neutral-500 block">Select 1 to 4 photos (Sent in 100% original HD quality)</span>
             <input type="file" id="cust-photo" accept="image/*" multiple onchange="previewMultiplePhotos(event)" class="hidden" />
           </label>
@@ -325,8 +440,8 @@
           <textarea id="cust-notes" rows="3" placeholder="Mandatory: Tell us how to use your photo(s), what background to remove, or what text/model to include..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
         </div>
         <div class="flex gap-2">
-          <button type="button" onclick="goToStep(1)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
-          <button type="button" onclick="validateStep2AndContinue()" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="goToStep(1)" class="tactile-btn px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
+          <button type="button" onclick="validateStep2AndContinue()" class="tactile-btn flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
             Next · Delivery & Preview →
           </button>
         </div>
@@ -375,10 +490,10 @@
         <div>
           <p class="text-xs font-semibold mb-1.5">Choose payment method:</p>
           <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-            <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI', this)" class="pay-pill py-2.5 px-2 border-2 border-black bg-black text-white">
+            <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI', this)" class="pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white">
               Online UPI (+₹0 Free)
             </button>
-            <button type="button" id="pay-cod-btn" onclick="trySelectCod(this)" class="pay-pill py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400">
+            <button type="button" id="pay-cod-btn" onclick="trySelectCod(this)" class="pay-pill tactile-btn py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400">
               🔒 COD (Unlocks on 2nd Order)
             </button>
           </div>
@@ -393,8 +508,8 @@
         </label>
 
         <div class="flex gap-2 pt-2">
-          <button type="button" onclick="goToStep(2)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
-          <button type="button" id="submit-btn" onclick="finishOrder()" class="flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="goToStep(2)" class="tactile-btn px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
+          <button type="button" id="submit-btn" onclick="finishOrder()" class="tactile-btn flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
             Send Commission · ₹<span id="final-btn-price">899</span>
           </button>
         </div>
@@ -419,11 +534,11 @@
             If you tap <strong>Pay Now</strong>, your commission immediately moves into <strong>Orders (Under Processing)</strong>. If you tap <strong>After Preview</strong>, it waits safely in your <strong>Previews</strong> tab.
           </p>
 
-          <button type="button" onclick="choosePayNowAndMoveToProcessing()" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="choosePayNowAndMoveToProcessing()" class="tactile-btn w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
             1. Pay ₹<span id="q-pay-amount">899</span> Now (Move to Processing) →
           </button>
 
-          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="w-full border-2 border-black bg-white text-black py-3.5 text-xs font-bold uppercase tracking-wider">
+          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="tactile-btn w-full border-2 border-black bg-white text-black py-3.5 text-xs font-bold uppercase tracking-wider">
             2. Pay After WhatsApp Preview (Move to Previews) →
           </button>
         </div>
@@ -434,14 +549,14 @@
           </div>
 
           <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold uppercase">
-            <button type="button" onclick="switchPayMethodTab('APP')" id="pm-tab-APP" class="py-2 border-2 border-black bg-black text-white">1. PhonePe / App</button>
-            <button type="button" onclick="switchPayMethodTab('QR')" id="pm-tab-QR" class="py-2 border-2 border-black bg-white text-black">2. Scan QR</button>
-            <button type="button" onclick="switchPayMethodTab('ID')" id="pm-tab-ID" class="py-2 border-2 border-black bg-white text-black">3. UPI ID</button>
+            <button type="button" onclick="switchPayMethodTab('APP')" id="pm-tab-APP" class="tactile-btn py-2 border-2 border-black bg-black text-white">1. PhonePe / App</button>
+            <button type="button" onclick="switchPayMethodTab('QR')" id="pm-tab-QR" class="tactile-btn py-2 border-2 border-black bg-white text-black">2. Scan QR</button>
+            <button type="button" onclick="switchPayMethodTab('ID')" id="pm-tab-ID" class="tactile-btn py-2 border-2 border-black bg-white text-black">3. UPI ID</button>
           </div>
 
           <div id="pm-box-APP" class="border-2 border-black p-4 text-center space-y-2.5 bg-white">
             <p class="text-xs font-semibold">Tap below to pay via PhonePe, Google Pay, or Paytm:</p>
-            <button type="button" onclick="openUpiAppLink()" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">
+            <button type="button" onclick="openUpiAppLink()" class="tactile-btn w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">
               Open PhonePe / UPI App →
             </button>
             <p class="text-[10px] text-neutral-500">Official Studio UPI: <strong>skiastudio@ybl</strong></p>
@@ -458,12 +573,12 @@
             <div class="border-2 border-black bg-neutral-100 p-2.5 font-mono text-sm font-bold">
               skiastudio@ybl
             </div>
-            <button type="button" onclick="copyStudioUpiId()" class="border-2 border-black bg-black text-white px-4 py-2 text-xs font-bold uppercase">
+            <button type="button" onclick="copyStudioUpiId()" class="tactile-btn border-2 border-black bg-black text-white px-4 py-2 text-xs font-bold uppercase">
               Copy UPI ID
             </button>
           </div>
 
-          <button type="button" onclick="closeAndOpenSection('ORDER')" class="w-full border-2 border-black bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition">
+          <button type="button" onclick="closeAndOpenSection('ORDER')" class="tactile-btn w-full border-2 border-black bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white">
             View in My Orders (Under Processing) →
           </button>
         </div>
@@ -473,7 +588,7 @@
           <p class="text-xs text-neutral-700 leading-relaxed">
             Your COD order is confirmed and placed inside your <strong>Orders</strong> section! We will WhatsApp your digital preview before shipping.
           </p>
-          <button type="button" onclick="closeAndOpenSection('ORDER')" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="closeAndOpenSection('ORDER')" class="tactile-btn w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
             View in My Confirmed Orders →
           </button>
         </div>
@@ -509,9 +624,8 @@
     let chosenPlacementLabel = 'Front';
     let chosenFinishLabel = 'HD Ink';
     let chosenPaymentMode = 'UPI';
-    let selectedRawFiles = []; // Stores 100% original uncompressed File objects!
+    let selectedRawFiles = [];
 
-    // Routes Supabase Storage URLs through your unblockable Vercel tunnel!
     function resolveImgUrl(u) {
       if (!u) return '';
       if (window.location.hostname.includes('vercel.app') && u.includes('giffvjhztnjgftvqirdx.supabase.co')) {
@@ -569,6 +683,23 @@
         try { meta = { ...meta, ...JSON.parse(parts[1]) }; } catch(e) {}
       }
       return { cleanNotes, meta };
+    }
+
+    // Staggered Scroll-Reveal Observer for Product Cards
+    function initScrollReveal() {
+      const cards = document.querySelectorAll('.reveal-card');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      cards.forEach((c, idx) => {
+        c.style.transitionDelay = `${(idx % 3) * 70}ms`;
+        obs.observe(c);
+      });
     }
 
     async function loadCatalogFromCloud() {
@@ -631,8 +762,8 @@
       if (isCustomerCodEligible) {
         codBtn.innerText = "Cash on Delivery (+₹50)";
         codBtn.className = chosenPaymentMode === 'COD'
-          ? "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white"
-          : "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
+          ? "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white"
+          : "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-white text-black";
         hint.innerText = "✓ Cash on Delivery is unlocked for your verified number!";
         if (badge) badge.innerText = "✓ Verified Member: Cash on Delivery (COD) is unlocked for your number!";
       } else {
@@ -640,7 +771,7 @@
         extraCodCost = 0;
         codBtn.innerText = "🔒 COD (After 1st Order)";
         codBtn.className = "pay-pill py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400";
-        document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
+        document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white";
         hint.innerText = "* Cash on Delivery (+₹50) unlocks automatically after you complete 1 online paid order.";
         if (badge) badge.innerText = "Complete 1 online order to unlock Cash on Delivery (COD) for your number.";
         if (activeProduct) updatePrice();
@@ -743,11 +874,11 @@
     function switchCustomerTab(tab) {
       currentCustomerTab = tab;
       document.getElementById('cust-tab-PREVIEW').className = tab === 'PREVIEW'
-        ? "py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
-        : "py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
+        ? "tactile-btn py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
+        : "tactile-btn py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
       document.getElementById('cust-tab-ORDER').className = tab === 'ORDER'
-        ? "py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
-        : "py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
+        ? "tactile-btn py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
+        : "tactile-btn py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
 
       document.getElementById('cust-tab-subtitle').innerText = tab === 'PREVIEW'
         ? "Unpaid commissions waiting for your WhatsApp preview approval. Tap 'Pay Now' anytime to move an item into Orders!"
@@ -789,7 +920,7 @@
 
             ${meta.bucket === 'PREVIEW' || meta.payStatus === 'CANCELLED' || meta.payStatus === 'PROCESSING' ? `
               <div class="pt-3">
-                <button onclick="openPayModalForExistingOrder(${o.id})" class="bg-black text-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider">
+                <button onclick="openPayModalForExistingOrder(${o.id})" class="tactile-btn bg-black text-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider">
                   ${meta.payStatus === 'PROCESSING' ? 'Open Payment Options (PhonePe / QR / UPI) →' : 'Pay ₹' + o.price + ' Now (Move to Processing) →'}
                 </button>
               </div>
@@ -841,10 +972,10 @@
     function switchPayMethodTab(tab) {
       ['APP', 'QR', 'ID'].forEach(t => {
         document.getElementById('pm-box-' + t).classList.add('hidden');
-        document.getElementById('pm-tab-' + t).className = "py-2 border-2 border-black bg-white text-black";
+        document.getElementById('pm-tab-' + t).className = "tactile-btn py-2 border-2 border-black bg-white text-black";
       });
       document.getElementById('pm-box-' + tab).classList.remove('hidden');
-      document.getElementById('pm-tab-' + tab).className = "py-2 border-2 border-black bg-black text-white";
+      document.getElementById('pm-tab-' + tab).className = "tactile-btn py-2 border-2 border-black bg-black text-white";
     }
 
     function setupQrCodeForAmount(amount) {
@@ -862,6 +993,7 @@
       alert("✓ Copied UPI ID: " + OWNER_UPI_ID);
     }
 
+    // Silky Cross-Fade Slide Change + Expanding Pill Dots Update!
     function changeCardSlide(event, prodId, dir) {
       if (event) event.stopPropagation();
       const prod = products.find(x => x.id === prodId);
@@ -873,10 +1005,22 @@
       curr = (curr + dir + slides.length) % slides.length;
       cardSlideState[prodId] = curr;
 
-      document.getElementById('main-img-' + prodId).src = slides[curr].finalImg;
-      document.getElementById('badge-img-' + prodId).src = slides[curr].rawImg;
-      const counterEl = document.getElementById('slide-count-' + prodId);
-      if (counterEl) counterEl.innerText = `${curr + 1} / ${slides.length} Swipe ⇄`;
+      const mainImg = document.getElementById('main-img-' + prodId);
+      const badgeImg = document.getElementById('badge-img-' + prodId);
+      mainImg.classList.add('img-swapping');
+      setTimeout(() => {
+        mainImg.src = slides[curr].finalImg;
+        badgeImg.src = slides[curr].rawImg;
+        mainImg.classList.remove('img-swapping');
+      }, 140);
+
+      // Update Expanding Pill Dots
+      const dotsBox = document.getElementById('dots-box-' + prodId);
+      if (dotsBox) {
+        dotsBox.innerHTML = slides.map((_, i) => `
+          <span class="h-1.5 transition-all duration-300 border border-black ${i === curr ? 'w-5 bg-black' : 'w-1.5 bg-white'}"></span>
+        `).join('');
+      }
     }
 
     function handleTouchStart(event, prodId) {
@@ -891,13 +1035,18 @@
       }
     }
 
+    // Silky Cross-Fade When Tapping "Raw Photo ⇄ Tap to Swap"
     function swapCardImage(event, prodId) {
       event.stopPropagation();
       const mainImg = document.getElementById('main-img-' + prodId);
       const badgeImg = document.getElementById('badge-img-' + prodId);
-      const temp = mainImg.src;
-      mainImg.src = badgeImg.src;
-      badgeImg.src = temp;
+      mainImg.classList.add('img-swapping');
+      setTimeout(() => {
+        const temp = mainImg.src;
+        mainImg.src = badgeImg.src;
+        badgeImg.src = temp;
+        mainImg.classList.remove('img-swapping');
+      }, 140);
     }
 
     function renderProducts() {
@@ -911,19 +1060,19 @@
         const activeSlide = slides[idx] || slides[0];
 
         return `
-        <div onclick="openModal(${p.id})" class="group cursor-pointer bg-white border-2 border-black p-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition">
+        <div onclick="openModal(${p.id})" class="reveal-card group cursor-pointer bg-white border-2 border-black p-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000]">
           <div ontouchstart="handleTouchStart(event, ${p.id})" ontouchend="handleTouchEnd(event, ${p.id})" class="relative h-72 overflow-hidden bg-neutral-100 border border-black mb-3 select-none">
-            <img id="main-img-${p.id}" src="${activeSlide.finalImg}" alt="${p.title}" class="w-full h-full object-cover transition duration-500" />
+            <img id="main-img-${p.id}" src="${activeSlide.finalImg}" alt="${p.title}" class="img-crossfade w-full h-full object-cover group-hover:scale-105" />
             
             ${slides.length > 1 ? `
-              <span id="slide-count-${p.id}" class="absolute top-2.5 left-2.5 bg-white/95 border border-black text-black text-[9px] font-bold uppercase tracking-wider px-2 py-0.5">
-                ${idx + 1} / ${slides.length} Swipe ⇄
-              </span>
-              <button type="button" onclick="changeCardSlide(event, ${p.id}, -1)" class="absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">‹</button>
-              <button type="button" onclick="changeCardSlide(event, ${p.id}, 1)" class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">›</button>
+              <button type="button" onclick="changeCardSlide(event, ${p.id}, -1)" class="tactile-btn absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">‹</button>
+              <button type="button" onclick="changeCardSlide(event, ${p.id}, 1)" class="tactile-btn absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">›</button>
+              <div id="dots-box-${p.id}" class="absolute bottom-3 right-3 flex items-center gap-1 bg-white/90 border border-black px-2 py-1">
+                ${slides.map((_, i) => `<span class="h-1.5 transition-all duration-300 border border-black ${i === idx ? 'w-5 bg-black' : 'w-1.5 bg-white'}"></span>`).join('')}
+              </div>
             ` : ''}
 
-            <div onclick="swapCardImage(event, ${p.id})" class="absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000] hover:bg-black hover:text-white transition">
+            <div onclick="swapCardImage(event, ${p.id})" class="tactile-btn absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000] hover:bg-black hover:text-white">
               <img id="badge-img-${p.id}" src="${activeSlide.rawImg}" class="w-10 h-10 object-cover border border-black" />
               <div class="pr-1">
                 <span class="text-[9px] font-bold uppercase tracking-wider block leading-tight">Raw Photo</span>
@@ -941,19 +1090,21 @@
           </div>
           <p class="text-[11px] text-neutral-600 mt-1 pb-3 border-b border-neutral-200">${p.prompt}</p>
           <div class="pt-2.5 flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-            <span>Start With This</span><span>→</span>
+            <span>Start With This</span><span class="group-hover:translate-x-1 transition-transform">→</span>
           </div>
         </div>`;
       }).join('');
+
+      initScrollReveal();
     }
 
     function filterCategory(cat) {
       currentCategory = cat;
       document.querySelectorAll('.cat-pill').forEach(btn => {
-        btn.className = "cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black transition";
+        btn.className = "cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black";
       });
       const active = document.getElementById('tab-' + cat);
-      if (active) active.className = "cat-pill whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black transition";
+      if (active) active.className = "cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black";
       renderProducts();
     }
 
@@ -984,12 +1135,12 @@
         updateCodButtonUI();
       }
 
-      document.getElementById('pay-upi-btn').className = "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white";
+      document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white";
 
       const shadesBox = document.getElementById('dynamic-shades');
       chosenColor = conf.shades[0] || 'Standard';
       shadesBox.innerHTML = conf.shades.map((sh, i) => `
-        <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sh}</button>
+        <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sh}</button>
       `).join('');
 
       const sizesBox = document.getElementById('dynamic-sizes');
@@ -997,7 +1148,7 @@
       sizesBox.innerHTML = conf.sizes.map((sz, i) => {
         const match = sz.match(/\+₹(\d+)/);
         const addCost = match ? Number(match[1]) : 0;
-        return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sz}</button>`;
+        return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sz}</button>`;
       }).join('');
 
       document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
@@ -1008,7 +1159,7 @@
         const [label, costStr] = fn.split('|');
         const cost = Number(costStr || 0);
         if (i === 0) chosenFinishLabel = label;
-        return `<button type="button" onclick="selectFinish(${cost}, '${label}', this)" class="finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${label}${cost > 0 ? ' +₹'+cost : ''}</button>`;
+        return `<button type="button" onclick="selectFinish(${cost}, '${label}', this)" class="finish-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${label}${cost > 0 ? ' +₹'+cost : ''}</button>`;
       }).join('');
 
       updatePrice();
@@ -1017,10 +1168,13 @@
     }
 
     function closeModal() { document.getElementById('custom-modal').classList.add('hidden'); }
+
     function goToStep(stepNum) {
       [1, 2, 3, 4].forEach(n => document.getElementById('step-' + n).classList.add('hidden'));
       document.getElementById('step-' + stepNum).classList.remove('hidden');
       document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Next Step';
+      const pctMap = { 1: '33%', 2: '66%', 3: '100%', 4: '100%' };
+      document.getElementById('step-progress-bar').style.width = pctMap[stepNum] || '100%';
     }
 
     function validateStep2AndContinue() {
@@ -1032,36 +1186,36 @@
 
     function selectColor(name, btn) {
       chosenColor = name;
-      document.querySelectorAll('.shade-btn').forEach(b => b.className = "shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
-      btn.className = "shade-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      document.querySelectorAll('.shade-btn').forEach(b => b.className = "shade-btn tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
+      btn.className = "shade-btn tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
     }
     function selectSize(size, cost, btn) {
       chosenSize = size;
       extraSizeCost = cost;
-      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
-      btn.className = "size-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
+      btn.className = "size-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
       updatePrice();
     }
     function selectPlacement(cost, label, btn) {
       extraPlacement = cost;
       chosenPlacementLabel = label;
-      document.querySelectorAll('.place-pill').forEach(b => b.className = "place-pill py-2 border-2 border-black bg-white");
-      btn.className = "place-pill py-2 border-2 border-black bg-black text-white";
+      document.querySelectorAll('.place-pill').forEach(b => b.className = "place-pill tactile-btn py-2 border-2 border-black bg-white");
+      btn.className = "place-pill tactile-btn py-2 border-2 border-black bg-black text-white";
       updatePrice();
     }
     function selectFinish(cost, label, btn) {
       extraFinish = cost;
       chosenFinishLabel = label;
-      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
-      btn.className = "finish-pill px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
+      btn.className = "finish-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
       updatePrice();
     }
     function selectPayment(cost, mode, btn) {
       extraCodCost = cost;
       chosenPaymentMode = mode;
       document.getElementById('pay-upi-btn').className = mode === 'UPI'
-        ? "pay-pill py-2.5 px-2 border-2 border-black bg-black text-white"
-        : "pay-pill py-2.5 px-2 border-2 border-black bg-white text-black";
+        ? "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white"
+        : "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-white text-black";
       updateCodButtonUI();
       updatePrice();
     }
@@ -1073,7 +1227,6 @@
       document.getElementById('q-pay-amount').innerText = total;
     }
 
-    // Stores 100% Untouched Original File Objects for Cloud Bucket Upload!
     function previewMultiplePhotos(event) {
       const files = Array.from(event.target.files || []);
       if (!files.length) return;
@@ -1112,7 +1265,6 @@
       `).join('');
     }
 
-    // Uploads 100% Original Uncompressed File to skia-uploads Bucket!
     async function uploadOriginalFileToBucket(fileObj) {
       const ext = (fileObj.name.split('.').pop() || 'jpg').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
       const filePath = `customer/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
@@ -1160,7 +1312,6 @@
       const rawNotes = document.getElementById('cust-notes').value.trim();
 
       try {
-        // Upload all selected photos at 100% original resolution to skia-uploads bucket!
         const uploadedUrls = [];
         for (const item of selectedRawFiles) {
           const url = await uploadOriginalFileToBucket(item.file);
