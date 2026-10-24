@@ -84,25 +84,23 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <style>
     html { scroll-behavior: smooth; }
     body {
       background-color: #FFFFFF;
-      color: #000000;
+      color: #0F0F0F;
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-    .font-serif-luxury { font-family: 'Cormorant Garamond', serif; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .fire-bg-pattern {
       background-color: #FFFFFF;
-      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 10 C68 32, 42 45, 58 72 C65 55, 78 64, 70 90 C88 68, 95 40, 60 10 Z' fill='%23000000' fill-opacity='0.035'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='140' height='140' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 10 C68 32, 42 45, 58 72 C65 55, 78 64, 70 90 C88 68, 95 40, 60 10 Z' fill='%23000000' fill-opacity='0.022'/%3E%3C/svg%3E");
     }
 
-    /* 1. Infinite Pitch-Black Studio Marquee */
     @keyframes skiaMarquee {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
@@ -110,46 +108,50 @@
     .animate-marquee {
       display: flex;
       width: max-content;
-      animation: skiaMarquee 26s linear infinite;
+      animation: skiaMarquee 28s linear infinite;
     }
 
-    /* 2. Smooth Entrance & Scroll Reveal */
     @keyframes fadeUpSmooth {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .animate-hero-enter {
-      animation: fadeUpSmooth 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .animate-view-enter {
+      animation: fadeUpSmooth 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .reveal-card {
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+      transform: translateY(14px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal-card.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* 3. Silky Image Cross-Fade on Swipe / Swap */
     .img-crossfade {
-      transition: opacity 0.22s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.2s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .img-swapping {
       opacity: 0.25;
       transform: scale(0.97);
     }
 
-    /* 4. Bottom-Sheet Drawer Glide */
     @keyframes drawerSlideUp {
-      from { opacity: 0; transform: translateY(40px); }
+      from { opacity: 0; transform: translateY(36px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .animate-drawer-up {
-      animation: drawerSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: drawerSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    /* 5. Tactile Press Feel */
+    @keyframes menuSlideRight {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-menu-slide {
+      animation: menuSlideRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
     .tactile-btn {
       transition: transform 0.12s ease, background-color 0.18s ease, color 0.18s ease;
     }
@@ -160,273 +162,448 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between fire-bg-pattern">
 
-  <!-- 0. INFINITE PITCH-BLACK STUDIO TICKER -->
-  <div class="bg-black text-white py-2 overflow-hidden border-b border-black select-none">
-    <div class="animate-marquee text-[10px] font-bold uppercase tracking-[0.25em]">
+  <!-- 0. SUBTLE TOP STUDIO TICKER -->
+  <div class="bg-black text-white py-2 overflow-hidden select-none">
+    <div class="animate-marquee text-[10px] font-bold uppercase tracking-[0.22em]">
       <span class="mx-6">1-of-1 Custom Studio · Indore</span>
-      <span class="mx-6">✦</span>
+      <span class="mx-6">•</span>
       <span class="mx-6">Approve Your Digital Preview on WhatsApp Before Print</span>
-      <span class="mx-6">✦</span>
+      <span class="mx-6">•</span>
       <span class="mx-6">240–400 GSM Heavy Combed Cotton & Infused Objects</span>
-      <span class="mx-6">✦</span>
-      <span class="mx-6">Zero Minimum Order</span>
-      <span class="mx-6">✦</span>
+      <span class="mx-6">•</span>
       <span class="mx-6">1-of-1 Custom Studio · Indore</span>
-      <span class="mx-6">✦</span>
+      <span class="mx-6">•</span>
       <span class="mx-6">Approve Your Digital Preview on WhatsApp Before Print</span>
-      <span class="mx-6">✦</span>
+      <span class="mx-6">•</span>
       <span class="mx-6">240–400 GSM Heavy Combed Cotton & Infused Objects</span>
-      <span class="mx-6">✦</span>
-      <span class="mx-6">Zero Minimum Order</span>
     </div>
   </div>
 
-  <!-- 1. HEADER -->
-  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-black">
-    <nav class="max-w-5xl mx-auto px-4 sm:px-5 py-4 flex items-center justify-between gap-2" aria-label="Main Navigation">
-      <a href="#everything" onclick="showMainShop('ALL')" class="tactile-btn flex items-center gap-2 text-left">
-        <svg class="w-6 h-6 fill-black shrink-0" viewBox="0 0 24 24">
-          <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
-        </svg>
-        <span class="text-xl sm:text-2xl font-bold tracking-[0.35em]">SKIA</span>
-      </a>
+  <!-- 1. HEADER WITH LEFT "☰" MENU, CENTERED "SKIA" LOGO, AND RIGHT "ORDERS" PILL -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-neutral-100">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 grid grid-cols-3 items-center" aria-label="Main Navigation">
+      
+      <!-- Left: Hamburger Menu Button -->
+      <div class="flex items-center">
+        <button onclick="openSideMenu()" aria-label="Open Menu" class="tactile-btn p-2 -ml-2 rounded-full hover:bg-neutral-100 flex items-center gap-2">
+          <svg class="w-5 h-5 stroke-black" fill="none" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h12" />
+          </svg>
+          <span class="text-[11px] font-bold uppercase tracking-wider hidden sm:inline">Menu</span>
+        </button>
+      </div>
 
-      <div class="flex items-center gap-2">
-        <a href="#previews-orders" onclick="openCustomerOrdersView('PREVIEW')" class="tactile-btn text-[11px] font-bold tracking-wider uppercase border-2 border-black px-3 py-1.5 bg-white hover:bg-black hover:text-white">
-          Previews & Orders (<span id="nav-order-count">0</span>)
-        </a>
-        <a href="#for-crews" onclick="showMainShop('CREWS')" class="tactile-btn hidden sm:inline-block text-[11px] font-semibold tracking-widest uppercase border-2 border-black px-3 py-1.5 bg-black text-white">
-          For Crews →
-        </a>
+      <!-- Center: SKIA Flame & Wordmark -->
+      <div class="flex justify-center">
+        <button onclick="navigateMenu('CATALOG', 'ALL')" class="tactile-btn flex items-center gap-1.5">
+          <svg class="w-5 h-5 fill-black shrink-0" viewBox="0 0 24 24">
+            <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
+          </svg>
+          <span class="text-xl sm:text-2xl font-extrabold tracking-[0.32em]">SKIA</span>
+        </button>
+      </div>
+
+      <!-- Right: Previews & Orders Pill -->
+      <div class="flex justify-end">
+        <button onclick="navigateMenu('ORDERS', 'PREVIEW')" class="tactile-btn text-[11px] font-bold tracking-wider uppercase rounded-full px-3.5 py-1.5 bg-neutral-100 text-black hover:bg-black hover:text-white">
+          Orders (<span id="nav-order-count">0</span>)
+        </button>
       </div>
     </nav>
   </header>
 
-  <main class="max-w-5xl mx-auto px-5 pt-7 pb-16 w-full">
-
-    <!-- VIEW A: MAIN STOREFRONT -->
-    <div id="storefront-view">
-
-      <!-- STAGE 1: HERO ENTRANCE -->
-      <section class="animate-hero-enter bg-white border-2 border-black mb-5 overflow-hidden shadow-[6px_6px_0px_#000000]">
-        <div class="p-6 sm:p-10 pb-4">
-          <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
-          <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
-            Bring your photos.<br />
-            <span class="italic font-normal">Cast them on what you wear & hold.</span>
-          </h1>
-          <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-lg">
-            Swipe through our examples below, upload 1 or more full-resolution photos from your phone, and tell us your idea. You approve the digital preview on WhatsApp before we print.
-          </p>
+  <!-- 2. SLIDE-OUT LEFT NAVIGATION MENU DRAWER -->
+  <div id="side-menu-overlay" onclick="closeSideMenu()" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden">
+    <aside onclick="event.stopPropagation()" class="animate-menu-slide bg-white w-72 sm:w-80 h-full flex flex-col justify-between p-6 shadow-2xl overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-neutral-100">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 fill-black" viewBox="0 0 24 24">
+              <path d="M12 2C10.5 6 7 8.5 7 13.5C7 16.8 9.5 19.5 12.8 19.9C11.2 18.5 10.5 16.5 11.5 14C12.3 16 14 17 14 19.5C16.5 18.2 18 15.6 18 12.5C18 8 14.5 5 12 2Z"/>
+            </svg>
+            <span class="text-lg font-extrabold tracking-[0.3em]">SKIA</span>
+          </div>
+          <button onclick="closeSideMenu()" class="tactile-btn w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-bold">✕</button>
         </div>
-        <div class="w-full overflow-hidden leading-none pt-2">
-          <svg class="w-full h-10 sm:h-12 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,120 L0,65 C45,95 85,20 130,75 C175,20 220,90 270,35 C315,85 365,15 415,75 C460,25 510,90 560,30 C610,85 660,10 710,75 C760,25 810,90 860,35 C910,85 960,15 1010,75 C1060,30 1110,85 1155,40 C1180,70 1190,55 1200,80 L1200,120 Z"/>
-          </svg>
+
+        <div class="py-6 space-y-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 mb-2">Collections</p>
+          <button onclick="navigateMenu('CATALOG', 'ALL')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-extrabold flex justify-between items-center">
+            <span>All Custom Pieces</span><span>→</span>
+          </button>
+          <button onclick="navigateMenu('CATALOG', 'WEAR')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+            <span>To Wear · Apparel</span><span>→</span>
+          </button>
+          <button onclick="navigateMenu('CATALOG', 'HOLD')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+            <span>To Hold & Keep · Objects</span><span>→</span>
+          </button>
+          <button onclick="navigateMenu('CATALOG', 'CREWS')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+            <span>For Crews · Bulk (5+)</span><span>→</span>
+          </button>
+
+          <div class="pt-5">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 mb-2">Studio & Tracking</p>
+            <button onclick="navigateMenu('ORDERS', 'PREVIEW')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-extrabold flex justify-between items-center">
+              <span>My Previews & Orders</span>
+              <span class="bg-black text-white text-[10px] px-2 py-0.5 rounded-full" id="menu-order-count">0</span>
+            </button>
+            <button onclick="navigateMenu('HOW')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+              <span>How SKIA Works & Privacy</span><span>→</span>
+            </button>
+            <button onclick="navigateMenu('STUDIO_CHAT')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+              <span>Direct Studio Chat</span><span>→</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div class="pt-4 border-t border-neutral-100 space-y-3 text-xs text-neutral-500">
+        <div class="grid grid-cols-2 gap-2 text-[11px] underline">
+          <button onclick="closeSideMenu(); openPolicyModal('contact')" class="text-left">Contact Us</button>
+          <button onclick="closeSideMenu(); openPolicyModal('privacy')" class="text-left">Privacy Policy</button>
+          <button onclick="closeSideMenu(); openPolicyModal('terms')" class="text-left">Terms of Use</button>
+          <button onclick="closeSideMenu(); openPolicyModal('shipping')" class="text-left">Shipping & Refund</button>
+        </div>
+        <p class="text-[10px] text-neutral-400">SKIA Studio · Indore, MP</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 3. MAIN CONTENT AREA -->
+  <main class="max-w-6xl mx-auto px-3.5 sm:px-6 pt-5 pb-16 w-full flex-1">
+
+    <!-- PAGE 1: MAIN CATALOG GRID -->
+    <div id="storefront-view" class="animate-view-enter">
+      <section class="text-center max-w-xl mx-auto pt-2 pb-6">
+        <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400 mb-1.5">1-of-1 Custom Studio · Indore</p>
+        <h1 id="catalog-heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+          Bring your photos. <span class="font-normal italic text-neutral-500">Cast them in form.</span>
+        </h1>
+        <p class="text-xs text-neutral-500 mt-1.5">
+          Tap any piece below to view its full specifications & examples.
+        </p>
       </section>
 
-      <!-- STAGE 2: 3-SECOND VISUAL CLARITY STRIP -->
-      <section class="animate-hero-enter grid grid-cols-3 border-2 border-black bg-white mb-8 text-center py-3 px-2 shadow-[4px_4px_0px_#000000]">
-        <div class="px-1">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block">Step 01</span>
-          <span class="text-[11px] sm:text-xs font-bold block mt-0.5">Drop Your Photo(s)</span>
-        </div>
-        <div class="px-1 border-x-2 border-black">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block">Step 02</span>
-          <span class="text-[11px] sm:text-xs font-bold block mt-0.5">Approve on WhatsApp</span>
-        </div>
-        <div class="px-1">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block">Step 03</span>
-          <span class="text-[11px] sm:text-xs font-bold block mt-0.5">Crafted & Delivered</span>
-        </div>
-      </section>
-
-      <!-- CATEGORY PILLS -->
-      <section class="pb-6">
-        <div class="flex overflow-x-auto no-scrollbar gap-2.5 pb-2">
-          <a href="#everything" onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black">
-            Everything
-          </a>
-          <a href="#to-wear" onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black">
+      <section class="pb-5">
+        <div class="flex overflow-x-auto no-scrollbar justify-start sm:justify-center gap-2 pb-1">
+          <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-black text-white rounded-full">
+            All Pieces
+          </button>
+          <button onclick="filterCategory('WEAR')" id="tab-WEAR" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-neutral-100 text-neutral-700 rounded-full">
             To Wear
-          </a>
-          <a href="#to-hold" onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black">
+          </button>
+          <button onclick="filterCategory('HOLD')" id="tab-HOLD" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-neutral-100 text-neutral-700 rounded-full">
             To Hold & Keep
-          </a>
-          <a href="#for-crews" onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black">
+          </button>
+          <button onclick="filterCategory('CREWS')" id="tab-CREWS" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-neutral-100 text-neutral-700 rounded-full">
             For Crews
-          </a>
+          </button>
         </div>
       </section>
 
-      <!-- STAGE 3: TACTILE PRODUCT GRID -->
-      <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-500">
+      <div id="loading-status" class="text-center py-12 text-xs uppercase tracking-widest text-neutral-400">
         Loading SKIA Studio...
       </div>
-      <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></section>
-
-      <!-- STAGE 5: "HAVE SOMETHING SPECIFIC IN MIND?" CONVERSATIONAL STUDIO CLOSER -->
-      <section class="mt-12 border-2 border-black bg-black text-white p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[6px_6px_0px_#000000]">
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400 block mb-1">Direct Studio Line · Indore</span>
-          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-bold">Have a unique idea or a 5+ crew order?</h3>
-          <p class="text-xs text-neutral-300 mt-1">Talk directly with our studio on WhatsApp—send your photo and we’ll guide you personally.</p>
-        </div>
-        <a href="https://wa.me/918103423011?text=Hi%20SKIA%20Studio!%20I%20have%20a%20custom%20idea%20I'd%20like%20to%20discuss." target="_blank" class="tactile-btn shrink-0 bg-white text-black px-5 py-3 text-xs font-bold uppercase tracking-widest border-2 border-white hover:bg-black hover:text-white">
-          Chat With Studio →
-        </a>
-      </section>
+      <section id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6"></section>
     </div>
 
-    <!-- VIEW B: CUSTOMER "PREVIEWS" & "ORDERS" SECTION -->
-    <div id="customer-orders-view" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black pb-4">
-        <div>
-          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">100% Private Studio Archive</p>
-          <h2 class="font-serif-luxury text-3xl sm:text-4xl font-bold">My Previews & Orders</h2>
+    <!-- PAGE 1B: DEDICATED PRODUCT DETAIL & SPECIFICATIONS PAGE (OPENS WHEN TAPPING ANY TEMPLATE!) -->
+    <div id="product-detail-view" class="hidden animate-view-enter max-w-4xl mx-auto pt-1 pb-8">
+      
+      <!-- Top Back Bar -->
+      <div class="flex items-center justify-between pb-4 mb-5 border-b border-neutral-100">
+        <button onclick="navigateMenu('CATALOG', currentCategory)" class="tactile-btn text-xs font-bold uppercase tracking-wider rounded-full px-4 py-2 bg-neutral-100 text-black hover:bg-black hover:text-white">
+          ← Back to Catalog
+        </button>
+        <span id="pdp-cat-tag" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">STUDIO PIECE</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 items-start">
+        
+        <!-- Left Column: Full-Size Interactive Gallery -->
+        <div class="space-y-3">
+          <div ontouchstart="handlePdpTouchStart(event)" ontouchend="handlePdpTouchEnd(event)" class="relative aspect-[4/5] w-full rounded-3xl overflow-hidden bg-[#F4F4F4] select-none">
+            <img id="pdp-main-img" src="" alt="Product Preview" class="img-crossfade w-full h-full object-cover" />
+
+            <!-- Swipe Controls for Multi-Slide Templates -->
+            <button id="pdp-prev-btn" type="button" onclick="changePdpSlide(-1)" class="hidden tactile-btn absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-8 h-8 font-bold text-sm flex items-center justify-center shadow-md">‹</button>
+            <button id="pdp-next-btn" type="button" onclick="changePdpSlide(1)" class="hidden tactile-btn absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-8 h-8 font-bold text-sm flex items-center justify-center shadow-md">›</button>
+
+            <!-- Floating Raw Photo ⇄ Swap Pill -->
+            <div onclick="swapPdpImage()" class="tactile-btn cursor-pointer absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-xs rounded-2xl p-1.5 pr-3 flex items-center gap-2 shadow-lg hover:bg-black hover:text-white">
+              <img id="pdp-badge-img" src="" class="w-11 h-11 rounded-xl object-cover" />
+              <div>
+                <span class="text-[9px] font-extrabold uppercase tracking-wider block leading-tight">Raw Customer Photo</span>
+                <span class="text-[10px] text-neutral-500 block leading-tight mt-0.5">⇄ Tap to Compare</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-Example Thumbnail Strip Below Main Image -->
+          <div id="pdp-thumbs-row" class="hidden pt-1">
+            <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">More Examples of This Template:</p>
+            <div id="pdp-thumbs-list" class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
+          </div>
         </div>
-        <button onclick="showMainShop('ALL')" class="tactile-btn self-start text-xs font-bold uppercase tracking-wider border-2 border-black px-4 py-2 bg-white hover:bg-black hover:text-white">
+
+        <!-- Right Column: Complete Product Specifications & Customize Button -->
+        <div class="space-y-5 pt-1">
+          <div>
+            <span id="pdp-spec-pill" class="inline-block bg-black text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2.5">
+              240 GSM Heavy Cotton
+            </span>
+            <h1 id="pdp-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug">
+              Product Title
+            </h1>
+            <div class="flex items-baseline gap-2.5 mt-2">
+              <span class="text-2xl font-extrabold text-black">₹<span id="pdp-price">899</span></span>
+              <span class="text-xs text-neutral-400">· Includes Free WhatsApp Mockup Preview</span>
+            </div>
+          </div>
+
+          <!-- How This Template Works -->
+          <div class="bg-neutral-100 rounded-2xl p-4 space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block">How This Piece Works</span>
+            <p id="pdp-prompt" class="text-xs sm:text-sm font-semibold text-neutral-800 leading-relaxed"></p>
+          </div>
+
+          <!-- Detailed Specifications Breakdown -->
+          <div class="border-t border-b border-neutral-200 py-4 space-y-3.5 text-xs">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Specifications & Options</p>
+            
+            <div>
+              <span class="font-bold text-neutral-700 block mb-1">Available Shades:</span>
+              <div id="pdp-shades-list" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+            <div>
+              <span class="font-bold text-neutral-700 block mb-1">Available Sizes / Editions:</span>
+              <div id="pdp-sizes-list" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+            <div>
+              <span class="font-bold text-neutral-700 block mb-1">Available Craft Finishes / Layouts:</span>
+              <div id="pdp-finishes-list" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+            <div class="pt-2 space-y-1.5 text-[11px] text-neutral-500">
+              <p>✦ <strong>Material & Craft:</strong> <span id="pdp-spec-line"></span></p>
+              <p>✦ <strong>Preview First:</strong> Digital mockup sent to your WhatsApp before printing.</p>
+              <p>✦ <strong>Photo Privacy:</strong> 100% PIN-locked & deleted after production.</p>
+              <p>✦ <strong>Delivery:</strong> Dispatched in 2–4 business days across Indore & Pan-India.</p>
+            </div>
+          </div>
+
+          <!-- Primary CTA to Open Customization Drawer -->
+          <div class="pt-1 space-y-2.5">
+            <button type="button" onclick="openModalFromProductPage()" class="tactile-btn w-full bg-black text-white rounded-full py-4 text-xs font-extrabold uppercase tracking-widest shadow-lg">
+              Customize & Upload Your Photo(s) →
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PAGE 2: "HOW SKIA WORKS & STUDIO PRIVACY" -->
+    <div id="how-it-works-view" class="hidden animate-view-enter max-w-3xl mx-auto space-y-8 pt-2">
+      <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">The SKIA Process</p>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">How It Works & Privacy</h2>
+        </div>
+        <button onclick="navigateMenu('CATALOG', 'ALL')" class="tactile-btn text-xs font-bold uppercase tracking-wider rounded-full px-4 py-2 bg-neutral-100 text-black">
+          ← Shop Catalog
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div class="bg-neutral-100 rounded-2xl p-5">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Step 01</span>
+          <h3 class="text-base font-extrabold mt-1 mb-1.5">Drop Your Photo(s)</h3>
+          <p class="text-neutral-600 leading-relaxed">Pick any garment or object, upload 1 to 4 original resolution photos from your phone, and tell us how you want them styled.</p>
+        </div>
+        <div class="bg-neutral-100 rounded-2xl p-5">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Step 02</span>
+          <h3 class="text-base font-extrabold mt-1 mb-1.5">Approve on WhatsApp</h3>
+          <p class="text-neutral-600 leading-relaxed">Our studio prepares your custom digital mockup and sends it to your WhatsApp. Nothing is printed until you approve.</p>
+        </div>
+        <div class="bg-neutral-100 rounded-2xl p-5">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Step 03</span>
+          <h3 class="text-base font-extrabold mt-1 mb-1.5">Crafted & Shipped</h3>
+          <p class="text-neutral-600 leading-relaxed">Crafted on 240–400 GSM heavy combed cotton and infused ceramics/glass, and shipped straight to your door.</p>
+        </div>
+      </div>
+
+      <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-6 space-y-3 text-xs">
+        <h3 class="text-base font-extrabold">🔒 100% Photo Confidentiality Promise</h3>
+        <p class="text-neutral-600 leading-relaxed">
+          Your personal photos are protected behind your private 4-Digit PIN. We never share customer photos publicly without permission, and all raw files are permanently deleted from our production queue after printing.
+        </p>
+      </div>
+    </div>
+
+    <!-- PAGE 3: "DIRECT STUDIO CHAT & CREW INQUIRIES" -->
+    <div id="studio-chat-view" class="hidden animate-view-enter max-w-2xl mx-auto space-y-6 pt-2">
+      <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">SKIA Studio · Indore</p>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">Direct Studio Line</h2>
+        </div>
+        <button onclick="navigateMenu('CATALOG', 'ALL')" class="tactile-btn text-xs font-bold uppercase tracking-wider rounded-full px-4 py-2 bg-neutral-100 text-black">
+          ← Shop Catalog
+        </button>
+      </div>
+
+      <div class="bg-neutral-100 rounded-3xl p-6 sm:p-8 space-y-4 text-xs">
+        <h3 class="text-xl font-extrabold">Have a specific custom idea or a 5+ crew order?</h3>
+        <p class="text-neutral-600 leading-relaxed">
+          Whether you want a custom edit that isn't listed in the catalog, or need 5 to 100+ custom hoodies, tees, or cups for your college society, gym, cafe, or team in Indore—chat directly with us on WhatsApp.
+        </p>
+        <div class="pt-2">
+          <a href="https://wa.me/918103423011?text=Hi%20SKIA%20Studio!%20I%20have%20a%20custom%20idea%20I'd%20like%20to%20discuss." target="_blank" class="tactile-btn inline-block bg-black text-white px-6 py-3.5 rounded-full text-xs font-extrabold uppercase tracking-wider">
+            Chat on WhatsApp (+91 81034 23011) →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: CUSTOMER "PREVIEWS" & "ORDERS" SECTION -->
+    <div id="customer-orders-view" class="hidden animate-view-enter space-y-6 pt-2">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-200 pb-4">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">100% Private Studio Archive</p>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">My Previews & Orders</h2>
+        </div>
+        <button onclick="navigateMenu('CATALOG', 'ALL')" class="tactile-btn self-start text-xs font-bold uppercase tracking-wider rounded-full px-4 py-2 bg-neutral-100 text-black hover:bg-black hover:text-white">
           ← Back to Catalog
         </button>
       </div>
 
-      <div class="bg-white border-2 border-black p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-[4px_4px_0px_#000000]">
+      <div class="bg-neutral-100 rounded-2xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="text-xs">
           <span class="font-bold block">🔒 Protected by your 4-Digit Privacy PIN</span>
           <span id="cod-eligibility-badge" class="text-neutral-500 text-[11px]">Complete 1 online order to unlock Cash on Delivery (COD) for your number.</span>
         </div>
         <div class="flex flex-wrap sm:flex-nowrap gap-2">
-          <input type="tel" id="lookup-phone-input" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="10-Digit WhatsApp" class="border-2 border-black px-3 py-2 text-xs w-full sm:w-40 focus:outline-none" />
-          <input type="password" id="lookup-pin-input" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4-Digit PIN" class="border-2 border-black px-3 py-2 text-xs w-28 focus:outline-none text-center tracking-widest" />
-          <button onclick="syncCustomerOrdersByPhoneAndPin()" class="tactile-btn bg-black text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
+          <input type="tel" id="lookup-phone-input" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="10-Digit WhatsApp" class="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs w-full sm:w-40 focus:outline-none focus:border-black" />
+          <input type="password" id="lookup-pin-input" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4-Digit PIN" class="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs w-28 focus:outline-none focus:border-black text-center tracking-widest" />
+          <button onclick="syncCustomerOrdersByPhoneAndPin()" class="tactile-btn bg-black text-white rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider shrink-0">
             Unlock
           </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="tactile-btn py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
+      <div class="grid grid-cols-2 gap-2.5">
+        <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="tactile-btn py-3 px-4 rounded-xl bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
           1. Previews · Unpaid (<span id="count-previews">0</span>)
         </button>
-        <button onclick="switchCustomerTab('ORDER')" id="cust-tab-ORDER" class="tactile-btn py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center">
+        <button onclick="switchCustomerTab('ORDER')" id="cust-tab-ORDER" class="tactile-btn py-3 px-4 rounded-xl bg-neutral-100 text-black text-xs font-bold uppercase tracking-wider text-center">
           2. Orders · Processing & Confirmed (<span id="count-orders">0</span>)
         </button>
       </div>
 
-      <p id="cust-tab-subtitle" class="text-xs text-neutral-600 italic">
+      <p id="cust-tab-subtitle" class="text-xs text-neutral-500">
         Showing items awaiting your WhatsApp preview approval & payment.
       </p>
 
-      <div id="customer-items-list" class="space-y-4"></div>
+      <div id="customer-items-list" class="space-y-3.5"></div>
     </div>
 
-    <!-- PRIVACY & STUDIO PROMISE -->
-    <section class="mt-12 border-2 border-black bg-white p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs shadow-[4px_4px_0px_#000000]">
-      <div>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01 / PRIVACY FIRST</span>
-        <p class="font-bold text-sm mt-0.5">PIN-Locked Photo Privacy</p>
-        <p class="text-neutral-600 mt-1 text-[11px]">Your personal photos are locked behind your 4-digit PIN and permanently deleted after printing.</p>
-      </div>
-      <div class="sm:border-x sm:border-neutral-200 sm:px-6">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">02 / ZERO RISK</span>
-        <p class="font-bold text-sm mt-0.5">Approve Before Print</p>
-        <p class="text-neutral-600 mt-1 text-[11px]">We send your custom digital preview on WhatsApp first. Nothing goes to press until you love it.</p>
-      </div>
-      <div>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">03 / CRAFT</span>
-        <p class="font-bold text-sm mt-0.5">Studio Indore Quality</p>
-        <p class="text-neutral-600 mt-1 text-[11px]">240–400 GSM heavy combed cotton & high-definition infused ceramics and objects.</p>
-      </div>
-    </section>
   </main>
 
-  <!-- FOOTER -->
+  <!-- 4. MINIMALIST FOOTER -->
   <div class="w-full overflow-hidden leading-none pt-4">
-    <svg class="w-full h-12 sm:h-16 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <svg class="w-full h-8 sm:h-12 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
       <path d="M0,120 L0,70 C40,95 70,30 110,75 C150,25 190,85 240,40 C280,85 330,15 380,70 C420,30 470,90 520,35 C570,85 620,10 670,70 C720,25 760,85 810,40 C860,90 910,20 960,70 C1010,30 1060,85 1110,40 C1150,75 1180,50 1200,80 L1200,120 Z"/>
     </svg>
   </div>
-  <footer class="bg-black text-white py-10 px-5 text-center text-xs space-y-4">
+  <footer class="bg-black text-white py-9 px-5 text-center text-xs space-y-3">
     <div>
-      <p class="tracking-[0.4em] font-bold text-base mb-1">SKIA</p>
+      <p class="tracking-[0.4em] font-extrabold text-sm mb-1">SKIA</p>
       <p class="text-neutral-400 text-[11px]">To Wear · To Hold & Keep · Studio Indore</p>
     </div>
-    <div class="flex flex-wrap justify-center gap-4 text-[11px] text-neutral-300 underline pt-2">
+    <div class="flex flex-wrap justify-center gap-4 text-[11px] text-neutral-300 underline pt-1">
       <button onclick="openPolicyModal('contact')">Contact Us</button>
       <button onclick="openPolicyModal('privacy')">Privacy Policy</button>
       <button onclick="openPolicyModal('terms')">Terms & Conditions</button>
       <button onclick="openPolicyModal('shipping')">Shipping & Refund Policy</button>
     </div>
-    <p class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011 · semronak26@gmail.com</p>
+    <p class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011</p>
   </footer>
 
   <!-- LEGAL POLICIES MODAL -->
-  <div id="policy-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="animate-drawer-up bg-white border-2 border-black max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-[8px_8px_0px_#000000] text-xs space-y-4">
-      <div class="flex justify-between items-center border-b-2 border-black pb-3">
-        <h3 id="policy-title" class="font-serif-luxury text-2xl font-bold">Studio Policy</h3>
-        <button onclick="closePolicyModal()" class="font-bold uppercase underline">Close ✕</button>
+  <div id="policy-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="animate-drawer-up bg-white rounded-3xl max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-2xl text-xs space-y-4">
+      <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+        <h3 id="policy-title" class="text-xl font-extrabold">Studio Policy</h3>
+        <button onclick="closePolicyModal()" class="font-bold uppercase text-neutral-500 hover:text-black">Close ✕</button>
       </div>
       <div id="policy-body" class="space-y-3 text-neutral-700 leading-relaxed"></div>
     </div>
   </div>
 
-  <!-- STAGE 4: SLIDE-UP CONVERSATIONAL DRAWER WITH ANIMATED PROGRESS BAR -->
-  <div id="custom-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div id="drawer-box" class="animate-drawer-up bg-white w-full max-w-md border-t-4 sm:border-2 border-black p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-[8px_8px_0px_#000000]">
+  <!-- 5. ROUNDED APP DRAWER FOR CUSTOMIZATION -->
+  <div id="custom-modal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div id="drawer-box" class="animate-drawer-up bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 sm:p-7 max-h-[92vh] overflow-y-auto shadow-2xl">
       
       <div class="flex justify-between items-center pb-3">
         <div>
-          <p id="step-indicator" class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Step 1 of 3</p>
-          <h2 id="modal-title" class="font-serif-luxury text-2xl font-bold">Product</h2>
+          <p id="step-indicator" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Step 1 of 3</p>
+          <h2 id="modal-title" class="text-xl font-extrabold">Product</h2>
         </div>
         <div class="text-right">
-          <span class="text-sm font-bold block">₹<span id="live-price">899</span></span>
-          <button onclick="closeModal()" class="text-[11px] font-semibold uppercase underline">Close ✕</button>
+          <span class="text-sm font-extrabold block">₹<span id="live-price">899</span></span>
+          <button onclick="closeModal()" class="text-[11px] font-semibold text-neutral-400 hover:text-black">Close ✕</button>
         </div>
       </div>
 
-      <!-- LIVE ANIMATED PITCH-BLACK PROGRESS BAR -->
-      <div class="w-full h-1 bg-neutral-200 mb-2 overflow-hidden">
-        <div id="step-progress-bar" class="h-full bg-black transition-all duration-300" style="width: 33%;"></div>
+      <!-- LIVE PROGRESS BAR -->
+      <div class="w-full h-1.5 bg-neutral-100 rounded-full mb-3 overflow-hidden">
+        <div id="step-progress-bar" class="h-full bg-black rounded-full transition-all duration-300" style="width: 33%;"></div>
+      </div>
+
+      <!-- MULTI-PHOTO TEMPLATE GALLERY STRIP INSIDE DRAWER -->
+      <div id="modal-slides-strip" class="hidden pb-3 mb-2 border-b border-neutral-100">
+        <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1.5">Template Examples (Swipe):</p>
+        <div id="modal-slides-thumbnails" class="flex gap-2 overflow-x-auto no-scrollbar"></div>
       </div>
 
       <!-- STEP 1 -->
-      <div id="step-1" class="py-5 space-y-5">
-        <p class="font-serif-luxury text-2xl italic">"First, how should we build yours?"</p>
+      <div id="step-1" class="py-3 space-y-5">
+        <p class="text-lg font-bold tracking-tight">"First, how should we build yours?"</p>
         <div>
-          <p class="text-xs font-semibold mb-2">1. Pick Shade *</p>
+          <p class="text-xs font-semibold text-neutral-500 mb-2">1. Pick Shade *</p>
           <div id="dynamic-shades" class="flex flex-wrap gap-2"></div>
         </div>
         <div>
-          <p id="size-label" class="text-xs font-semibold mb-2">2. Pick Size / Edition *</p>
+          <p id="size-label" class="text-xs font-semibold text-neutral-500 mb-2">2. Pick Size / Edition *</p>
           <div id="dynamic-sizes" class="flex flex-wrap gap-2"></div>
         </div>
         <div id="placement-box">
-          <p class="text-xs font-semibold mb-2">3. Placement *</p>
-          <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
-            <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill tactile-btn py-2 border-2 border-black bg-black text-white">Front</button>
-            <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill tactile-btn py-2 border-2 border-black bg-white">Back</button>
-            <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill tactile-btn py-2 border-2 border-black bg-white">Both +₹150</button>
+          <p class="text-xs font-semibold text-neutral-500 mb-2">3. Placement *</p>
+          <div class="grid grid-cols-3 gap-2 text-xs font-bold">
+            <button type="button" onclick="selectPlacement(0, 'Front', this)" class="place-pill tactile-btn py-2.5 rounded-xl bg-black text-white">Front</button>
+            <button type="button" onclick="selectPlacement(0, 'Back', this)" class="place-pill tactile-btn py-2.5 rounded-xl bg-neutral-100 text-black">Back</button>
+            <button type="button" onclick="selectPlacement(150, 'Front + Back', this)" class="place-pill tactile-btn py-2.5 rounded-xl bg-neutral-100 text-black">Both +₹150</button>
           </div>
         </div>
         <div>
-          <p id="finish-label" class="text-xs font-semibold mb-2">4. Craft Finish / Layout *</p>
-          <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
+          <p id="finish-label" class="text-xs font-semibold text-neutral-500 mb-2">4. Craft Finish / Layout *</p>
+          <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-bold"></div>
         </div>
-        <button type="button" onclick="goToStep(2)" class="tactile-btn w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+        <button type="button" onclick="goToStep(2)" class="tactile-btn w-full bg-black text-white rounded-full py-3.5 text-xs font-extrabold uppercase tracking-widest">
           Next · Drop Your Photo(s) →
         </button>
       </div>
 
-      <!-- STEP 2: 100% ORIGINAL RESOLUTION MULTI-PHOTO UPLOAD -->
-      <div id="step-2" class="hidden py-5 space-y-5">
-        <p class="font-serif-luxury text-2xl italic">"Drop your photo(s), and tell us what's in your head."</p>
+      <!-- STEP 2 -->
+      <div id="step-2" class="hidden py-3 space-y-5">
+        <p class="text-lg font-bold tracking-tight">"Drop your photo(s), and tell us what's in your head."</p>
         
-        <div class="border-2 border-dashed border-black bg-white p-5 text-center">
+        <div class="border-2 border-dashed border-neutral-300 rounded-2xl bg-neutral-50 p-5 text-center">
           <label class="cursor-pointer block">
-            <span class="tactile-btn bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider inline-block mb-1.5">+ Add Full-Res Photo(s) *</span>
+            <span class="tactile-btn bg-black text-white rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-wider inline-block mb-1.5">+ Add Full-Res Photo(s) *</span>
             <span class="text-[11px] text-neutral-500 block">Select 1 to 4 photos (Sent in 100% original HD quality)</span>
             <input type="file" id="cust-photo" accept="image/*" multiple onchange="previewMultiplePhotos(event)" class="hidden" />
           </label>
@@ -436,45 +613,45 @@
         </div>
 
         <div>
-          <p class="text-xs font-semibold mb-1.5">Talk to us—how should we style or combine them? *</p>
-          <textarea id="cust-notes" rows="3" placeholder="Mandatory: Tell us how to use your photo(s), what background to remove, or what text/model to include..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
+          <p class="text-xs font-semibold text-neutral-500 mb-1.5">Talk to us—how should we style or combine them? *</p>
+          <textarea id="cust-notes" rows="3" placeholder="Mandatory: Tell us how to use your photo(s), what background to remove, or what text/model to include..." class="w-full rounded-2xl border border-neutral-300 bg-neutral-50 p-3.5 text-xs focus:outline-none focus:border-black"></textarea>
         </div>
         <div class="flex gap-2">
-          <button type="button" onclick="goToStep(1)" class="tactile-btn px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
-          <button type="button" onclick="validateStep2AndContinue()" class="tactile-btn flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="goToStep(1)" class="tactile-btn px-4 py-3.5 rounded-full bg-neutral-100 text-xs font-bold">←</button>
+          <button type="button" onclick="validateStep2AndContinue()" class="tactile-btn flex-1 bg-black text-white rounded-full py-3.5 text-xs font-extrabold uppercase tracking-widest">
             Next · Delivery & Preview →
           </button>
         </div>
       </div>
 
       <!-- STEP 3 -->
-      <div id="step-3" class="hidden py-5 space-y-4">
-        <p class="font-serif-luxury text-2xl italic">"Where do we send your preview & parcel?"</p>
+      <div id="step-3" class="hidden py-3 space-y-4">
+        <p class="text-lg font-bold tracking-tight">"Where do we send your preview & parcel?"</p>
         
         <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Your Full Name *</label>
-          <input type="text" id="cust-name" placeholder="e.g. Aarav Sharma" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none" />
+          <label class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1">Your Full Name *</label>
+          <input type="text" id="cust-name" placeholder="e.g. Aarav Sharma" class="w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3.5 py-2.5 text-xs focus:outline-none focus:border-black" />
         </div>
 
-        <div id="saved-identity-banner" class="hidden border-2 border-black bg-neutral-100 p-3 flex justify-between items-center text-xs">
+        <div id="saved-identity-banner" class="hidden rounded-2xl bg-neutral-100 p-3.5 flex justify-between items-center text-xs">
           <div>
             <span class="font-bold block">🔒 WhatsApp & Privacy PIN Saved</span>
-            <span id="saved-phone-display" class="text-neutral-600 text-[11px]">9876543210 (PIN Active)</span>
+            <span id="saved-phone-display" class="text-neutral-500 text-[11px]">9876543210 (PIN Active)</span>
           </div>
           <button type="button" onclick="unlockIdentityFields()" class="text-[10px] font-bold uppercase underline">
             Change Number
           </button>
         </div>
 
-        <div id="first-time-identity-fields" class="space-y-3 bg-neutral-50 border-2 border-black p-3">
+        <div id="first-time-identity-fields" class="space-y-3 bg-neutral-100 rounded-2xl p-3.5">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">10-Digit WhatsApp *</label>
-              <input type="tel" id="cust-phone" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,''); checkCodEligibilityByPhone(this.value);" placeholder="e.g. 9876543210" class="w-full border-2 border-black bg-white px-3 py-2 text-xs focus:outline-none" />
+              <label class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1">10-Digit WhatsApp *</label>
+              <input type="tel" id="cust-phone" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,''); checkCodEligibilityByPhone(this.value);" placeholder="e.g. 9876543210" class="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs focus:outline-none focus:border-black" />
             </div>
             <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Set 4-Digit Privacy PIN *</label>
-              <input type="password" id="cust-pin" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4 Digits (e.g. 2409)" class="w-full border-2 border-black bg-white px-3 py-2 text-xs focus:outline-none text-center tracking-widest" />
+              <label class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1">Set 4-Digit Privacy PIN *</label>
+              <input type="password" id="cust-pin" maxlength="4" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="4 Digits (e.g. 2409)" class="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs focus:outline-none focus:border-black text-center tracking-widest" />
             </div>
           </div>
           <p class="text-[10px] text-neutral-500 leading-snug">
@@ -483,17 +660,17 @@
         </div>
 
         <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider block mb-1">Full Delivery Address & 6-Digit Pincode *</label>
-          <textarea id="cust-address" rows="2" placeholder="House/Flat No, Building, Area, City & 6-digit Pincode" class="w-full border-2 border-black px-3.5 py-2.5 text-xs focus:outline-none"></textarea>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1">Full Delivery Address & 6-Digit Pincode *</label>
+          <textarea id="cust-address" rows="2" placeholder="House/Flat No, Building, Area, City & 6-digit Pincode" class="w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3.5 py-2.5 text-xs focus:outline-none focus:border-black"></textarea>
         </div>
 
         <div>
-          <p class="text-xs font-semibold mb-1.5">Choose payment method:</p>
-          <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-            <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI', this)" class="pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white">
+          <p class="text-xs font-semibold text-neutral-500 mb-1.5">Choose payment method:</p>
+          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+            <button type="button" id="pay-upi-btn" onclick="selectPayment(0, 'UPI', this)" class="pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white">
               Online UPI (+₹0 Free)
             </button>
-            <button type="button" id="pay-cod-btn" onclick="trySelectCod(this)" class="pay-pill tactile-btn py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400">
+            <button type="button" id="pay-cod-btn" onclick="trySelectCod(this)" class="pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-neutral-100 text-neutral-400">
               🔒 COD (Unlocks on 2nd Order)
             </button>
           </div>
@@ -502,93 +679,93 @@
           </p>
         </div>
 
-        <label class="flex items-center gap-2.5 border-2 border-black p-3 cursor-pointer">
+        <label class="flex items-center gap-2.5 rounded-xl bg-neutral-100 p-3 cursor-pointer">
           <input type="checkbox" id="cust-gift" class="accent-black w-4 h-4" />
           <span class="text-xs font-medium">Urgent gift? Send a 2-Hour Digital Reveal Card today.</span>
         </label>
 
         <div class="flex gap-2 pt-2">
-          <button type="button" onclick="goToStep(2)" class="tactile-btn px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
-          <button type="button" id="submit-btn" onclick="finishOrder()" class="tactile-btn flex-1 bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="goToStep(2)" class="tactile-btn px-4 py-3.5 rounded-full bg-neutral-100 text-xs font-bold">←</button>
+          <button type="button" id="submit-btn" onclick="finishOrder()" class="tactile-btn flex-1 bg-black text-white rounded-full py-3.5 text-xs font-extrabold uppercase tracking-widest">
             Send Commission · ₹<span id="final-btn-price">899</span>
           </button>
         </div>
       </div>
 
       <!-- STEP 4 -->
-      <div id="step-4" class="hidden py-5 space-y-4">
-        <div class="border-2 border-black p-3 bg-neutral-50 text-xs flex justify-between items-center">
+      <div id="step-4" class="hidden py-3 space-y-4">
+        <div class="rounded-2xl bg-neutral-100 p-3.5 text-xs flex justify-between items-center">
           <div>
-            <span class="bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">Reference</span>
-            <p id="ticket-code" class="text-sm font-bold tracking-widest mt-1">SKIA-0000</p>
-            <p id="ticket-item" class="text-neutral-600 text-[11px]"></p>
+            <span class="bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">Reference</span>
+            <p id="ticket-code" class="text-sm font-extrabold tracking-widest mt-1">SKIA-0000</p>
+            <p id="ticket-item" class="text-neutral-500 text-[11px]"></p>
           </div>
-          <span class="text-lg font-bold">₹<span id="upi-now-amount">899</span></span>
+          <span class="text-lg font-extrabold">₹<span id="upi-now-amount">899</span></span>
         </div>
 
         <div id="upi-question-box" class="space-y-3">
-          <p class="font-serif-luxury text-2xl italic">
+          <p class="text-lg font-extrabold tracking-tight">
             "Would you like to pay now, or after seeing your WhatsApp preview?"
           </p>
-          <p class="text-xs text-neutral-600 leading-relaxed">
+          <p class="text-xs text-neutral-500 leading-relaxed">
             If you tap <strong>Pay Now</strong>, your commission immediately moves into <strong>Orders (Under Processing)</strong>. If you tap <strong>After Preview</strong>, it waits safely in your <strong>Previews</strong> tab.
           </p>
 
-          <button type="button" onclick="choosePayNowAndMoveToProcessing()" class="tactile-btn w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="choosePayNowAndMoveToProcessing()" class="tactile-btn w-full bg-black text-white rounded-full py-3.5 text-xs font-extrabold uppercase tracking-widest">
             1. Pay ₹<span id="q-pay-amount">899</span> Now (Move to Processing) →
           </button>
 
-          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="tactile-btn w-full border-2 border-black bg-white text-black py-3.5 text-xs font-bold uppercase tracking-wider">
+          <button type="button" onclick="closeAndOpenSection('PREVIEW')" class="tactile-btn w-full rounded-full bg-neutral-100 text-black py-3.5 text-xs font-bold uppercase tracking-wider">
             2. Pay After WhatsApp Preview (Move to Previews) →
           </button>
         </div>
 
         <div id="upi-payment-methods-box" class="hidden space-y-3">
-          <div class="bg-neutral-100 border-2 border-black p-2.5 text-[11px] font-medium text-center">
+          <div class="bg-neutral-100 rounded-xl p-2.5 text-[11px] font-medium text-center">
             ✓ Moved to <strong>Orders (Under Processing)</strong>! Complete your payment below:
           </div>
 
           <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold uppercase">
-            <button type="button" onclick="switchPayMethodTab('APP')" id="pm-tab-APP" class="tactile-btn py-2 border-2 border-black bg-black text-white">1. PhonePe / App</button>
-            <button type="button" onclick="switchPayMethodTab('QR')" id="pm-tab-QR" class="tactile-btn py-2 border-2 border-black bg-white text-black">2. Scan QR</button>
-            <button type="button" onclick="switchPayMethodTab('ID')" id="pm-tab-ID" class="tactile-btn py-2 border-2 border-black bg-white text-black">3. UPI ID</button>
+            <button type="button" onclick="switchPayMethodTab('APP')" id="pm-tab-APP" class="tactile-btn py-2 rounded-xl bg-black text-white">1. PhonePe / App</button>
+            <button type="button" onclick="switchPayMethodTab('QR')" id="pm-tab-QR" class="tactile-btn py-2 rounded-xl bg-neutral-100 text-black">2. Scan QR</button>
+            <button type="button" onclick="switchPayMethodTab('ID')" id="pm-tab-ID" class="tactile-btn py-2 rounded-xl bg-neutral-100 text-black">3. UPI ID</button>
           </div>
 
-          <div id="pm-box-APP" class="border-2 border-black p-4 text-center space-y-2.5 bg-white">
+          <div id="pm-box-APP" class="rounded-2xl bg-neutral-50 border border-neutral-200 p-4 text-center space-y-2.5">
             <p class="text-xs font-semibold">Tap below to pay via PhonePe, Google Pay, or Paytm:</p>
-            <button type="button" onclick="openUpiAppLink()" class="tactile-btn w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">
+            <button type="button" onclick="openUpiAppLink()" class="tactile-btn w-full bg-black text-white rounded-full py-3 text-xs font-extrabold uppercase tracking-widest">
               Open PhonePe / UPI App →
             </button>
             <p class="text-[10px] text-neutral-500">Official Studio UPI: <strong>skiastudio@ybl</strong></p>
           </div>
 
-          <div id="pm-box-QR" class="hidden border-2 border-black p-4 text-center space-y-2 bg-white">
+          <div id="pm-box-QR" class="hidden rounded-2xl bg-neutral-50 border border-neutral-200 p-4 text-center space-y-2">
             <p class="text-xs font-semibold">Scan with PhonePe, GPay, or Paytm (or screenshot & scan):</p>
-            <img id="dynamic-upi-qr" src="" alt="SKIA UPI QR" class="w-44 h-44 mx-auto border-2 border-black p-1" />
+            <img id="dynamic-upi-qr" src="" alt="SKIA UPI QR" class="w-44 h-44 mx-auto rounded-xl border border-neutral-200 p-1 bg-white" />
             <p class="text-[10px] text-neutral-500">UPI ID: <strong>skiastudio@ybl</strong></p>
           </div>
 
-          <div id="pm-box-ID" class="hidden border-2 border-black p-4 text-center space-y-2.5 bg-white">
+          <div id="pm-box-ID" class="hidden rounded-2xl bg-neutral-50 border border-neutral-200 p-4 text-center space-y-2.5">
             <p class="text-xs font-semibold">Copy our Studio UPI ID & pay inside your UPI app:</p>
-            <div class="border-2 border-black bg-neutral-100 p-2.5 font-mono text-sm font-bold">
+            <div class="rounded-xl bg-white border border-neutral-200 p-2.5 font-mono text-sm font-bold">
               skiastudio@ybl
             </div>
-            <button type="button" onclick="copyStudioUpiId()" class="tactile-btn border-2 border-black bg-black text-white px-4 py-2 text-xs font-bold uppercase">
+            <button type="button" onclick="copyStudioUpiId()" class="tactile-btn rounded-full bg-black text-white px-5 py-2 text-xs font-bold uppercase">
               Copy UPI ID
             </button>
           </div>
 
-          <button type="button" onclick="closeAndOpenSection('ORDER')" class="tactile-btn w-full border-2 border-black bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white">
+          <button type="button" onclick="closeAndOpenSection('ORDER')" class="tactile-btn w-full rounded-full bg-neutral-100 text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white">
             View in My Orders (Under Processing) →
           </button>
         </div>
 
         <div id="cod-confirmed-box" class="hidden space-y-3 text-center">
-          <p class="font-serif-luxury text-2xl font-bold">✓ Cash on Delivery Confirmed</p>
-          <p class="text-xs text-neutral-700 leading-relaxed">
+          <p class="text-xl font-extrabold">✓ Cash on Delivery Confirmed</p>
+          <p class="text-xs text-neutral-600 leading-relaxed">
             Your COD order is confirmed and placed inside your <strong>Orders</strong> section! We will WhatsApp your digital preview before shipping.
           </p>
-          <button type="button" onclick="closeAndOpenSection('ORDER')" class="tactile-btn w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
+          <button type="button" onclick="closeAndOpenSection('ORDER')" class="tactile-btn w-full bg-black text-white rounded-full py-3.5 text-xs font-extrabold uppercase tracking-widest">
             View in My Confirmed Orders →
           </button>
         </div>
@@ -610,9 +787,12 @@
     let customerOrders = [];
     let cardSlideState = {};
     let touchStartX = {};
+    let pdpTouchStartX = 0;
     let currentCategory = 'ALL';
     let currentCustomerTab = 'PREVIEW';
     let activeProduct = null;
+    let activePdpProduct = null;
+    let activePdpSlideIdx = 0;
     let lastCreatedOrder = null;
     let isCustomerCodEligible = false;
     let extraSizeCost = 0;
@@ -625,6 +805,147 @@
     let chosenFinishLabel = 'HD Ink';
     let chosenPaymentMode = 'UPI';
     let selectedRawFiles = [];
+
+    function openSideMenu() {
+      document.getElementById('side-menu-overlay').classList.remove('hidden');
+    }
+    function closeSideMenu() {
+      document.getElementById('side-menu-overlay').classList.add('hidden');
+    }
+    function hideAllMainViews() {
+      ['storefront-view', 'product-detail-view', 'how-it-works-view', 'studio-chat-view', 'customer-orders-view'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+    }
+    async function navigateMenu(page, subParam) {
+      closeSideMenu();
+      hideAllMainViews();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (page === 'CATALOG') {
+        document.getElementById('storefront-view').classList.remove('hidden');
+        filterCategory(subParam || 'ALL');
+      } else if (page === 'HOW') {
+        document.getElementById('how-it-works-view').classList.remove('hidden');
+      } else if (page === 'STUDIO_CHAT') {
+        document.getElementById('studio-chat-view').classList.remove('hidden');
+      } else if (page === 'ORDERS') {
+        await openCustomerOrdersView(subParam || 'PREVIEW');
+      }
+    }
+
+    // OPEN DEDICATED PRODUCT DETAIL & SPECIFICATIONS PAGE WHEN TAPPING ANY TEMPLATE!
+    function openProductPage(prodId) {
+      const p = products.find(x => x.id === prodId);
+      if (!p) return;
+      activePdpProduct = p;
+      activePdpSlideIdx = cardSlideState[p.id] || 0;
+
+      const { cleanSpec, conf } = parseProductConfig(p);
+      const slides = getProductSlides(p);
+      const currSlide = slides[activePdpSlideIdx] || slides[0];
+
+      const catNames = { 'WEAR': 'To Wear · Heavy Apparel', 'HOLD': 'To Hold & Keep · Objects', 'CREWS': 'For Crews · Bulk Drops' };
+      document.getElementById('pdp-cat-tag').innerText = catNames[normalizeCat(p)] || 'SKIA Studio Piece';
+      document.getElementById('pdp-spec-pill').innerText = cleanSpec;
+      document.getElementById('pdp-spec-line').innerText = cleanSpec;
+      document.getElementById('pdp-title').innerText = p.title;
+      document.getElementById('pdp-price').innerText = p.base_price;
+      document.getElementById('pdp-prompt').innerText = p.prompt;
+
+      document.getElementById('pdp-main-img').src = currSlide.finalImg;
+      document.getElementById('pdp-badge-img').src = currSlide.rawImg;
+
+      // Render Specification Pills
+      document.getElementById('pdp-shades-list').innerHTML = conf.shades.map(sh =>
+        `<span class="bg-neutral-100 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${sh}</span>`
+      ).join('');
+      document.getElementById('pdp-sizes-list').innerHTML = conf.sizes.map(sz =>
+        `<span class="bg-neutral-100 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${sz}</span>`
+      ).join('');
+      document.getElementById('pdp-finishes-list').innerHTML = conf.finishes.map(fn => {
+        const [label, costStr] = fn.split('|');
+        const c = Number(costStr || 0);
+        return `<span class="bg-neutral-100 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${label}${c > 0 ? ' (+₹'+c+')' : ''}</span>`;
+      }).join('');
+
+      // Multi-Slide Controls on Product Page
+      const prevBtn = document.getElementById('pdp-prev-btn');
+      const nextBtn = document.getElementById('pdp-next-btn');
+      const thumbsRow = document.getElementById('pdp-thumbs-row');
+      if (slides.length > 1) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+        thumbsRow.classList.remove('hidden');
+        renderPdpThumbnails(slides);
+      } else {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+        thumbsRow.classList.add('hidden');
+      }
+
+      hideAllMainViews();
+      document.getElementById('product-detail-view').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderPdpThumbnails(slides) {
+      const box = document.getElementById('pdp-thumbs-list');
+      box.innerHTML = slides.map((s, idx) => `
+        <button type="button" onclick="selectPdpSlide(${idx})" class="tactile-btn flex items-center gap-1.5 p-1 rounded-2xl border-2 ${idx === activePdpSlideIdx ? 'border-black bg-neutral-100' : 'border-transparent bg-neutral-50'} shrink-0">
+          <img src="${s.finalImg}" class="w-12 h-12 rounded-xl object-cover" />
+          <img src="${s.rawImg}" class="w-8 h-8 rounded-lg object-cover opacity-80" />
+        </button>
+      `).join('');
+    }
+
+    function selectPdpSlide(idx) {
+      if (!activePdpProduct) return;
+      const slides = getProductSlides(activePdpProduct);
+      activePdpSlideIdx = idx;
+      const mainImg = document.getElementById('pdp-main-img');
+      const badgeImg = document.getElementById('pdp-badge-img');
+      mainImg.classList.add('img-swapping');
+      setTimeout(() => {
+        mainImg.src = slides[idx].finalImg;
+        badgeImg.src = slides[idx].rawImg;
+        mainImg.classList.remove('img-swapping');
+      }, 140);
+      renderPdpThumbnails(slides);
+    }
+
+    function changePdpSlide(dir) {
+      if (!activePdpProduct) return;
+      const slides = getProductSlides(activePdpProduct);
+      if (slides.length <= 1) return;
+      const nextIdx = (activePdpSlideIdx + dir + slides.length) % slides.length;
+      selectPdpSlide(nextIdx);
+    }
+
+    function swapPdpImage() {
+      const mainImg = document.getElementById('pdp-main-img');
+      const badgeImg = document.getElementById('pdp-badge-img');
+      mainImg.classList.add('img-swapping');
+      setTimeout(() => {
+        const temp = mainImg.src;
+        mainImg.src = badgeImg.src;
+        badgeImg.src = temp;
+        mainImg.classList.remove('img-swapping');
+      }, 140);
+    }
+
+    function handlePdpTouchStart(e) {
+      pdpTouchStartX = e.changedTouches[0].screenX;
+    }
+    function handlePdpTouchEnd(e) {
+      const diff = pdpTouchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) > 35) changePdpSlide(diff > 0 ? 1 : -1);
+    }
+
+    function openModalFromProductPage() {
+      if (!activePdpProduct) return;
+      openModal(activePdpProduct.id);
+    }
 
     function resolveImgUrl(u) {
       if (!u) return '';
@@ -685,7 +1006,6 @@
       return { cleanNotes, meta };
     }
 
-    // Staggered Scroll-Reveal Observer for Product Cards
     function initScrollReveal() {
       const cards = document.querySelectorAll('.reveal-card');
       const obs = new IntersectionObserver((entries) => {
@@ -695,9 +1015,9 @@
             obs.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.08 });
+      }, { threshold: 0.05 });
       cards.forEach((c, idx) => {
-        c.style.transitionDelay = `${(idx % 3) * 70}ms`;
+        c.style.transitionDelay = `${(idx % 4) * 50}ms`;
         obs.observe(c);
       });
     }
@@ -762,16 +1082,16 @@
       if (isCustomerCodEligible) {
         codBtn.innerText = "Cash on Delivery (+₹50)";
         codBtn.className = chosenPaymentMode === 'COD'
-          ? "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white"
-          : "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-white text-black";
+          ? "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white"
+          : "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-neutral-100 text-black";
         hint.innerText = "✓ Cash on Delivery is unlocked for your verified number!";
         if (badge) badge.innerText = "✓ Verified Member: Cash on Delivery (COD) is unlocked for your number!";
       } else {
         chosenPaymentMode = 'UPI';
         extraCodCost = 0;
         codBtn.innerText = "🔒 COD (After 1st Order)";
-        codBtn.className = "pay-pill py-2.5 px-2 border-2 border-neutral-300 bg-neutral-100 text-neutral-400";
-        document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white";
+        codBtn.className = "pay-pill py-2.5 px-2 rounded-xl bg-neutral-100 text-neutral-400";
+        document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white";
         hint.innerText = "* Cash on Delivery (+₹50) unlocks automatically after you complete 1 online paid order.";
         if (badge) badge.innerText = "Complete 1 online order to unlock Cash on Delivery (COD) for your number.";
         if (activeProduct) updatePrice();
@@ -850,18 +1170,17 @@
       const previews = customerOrders.filter(o => parseOrderMeta(o).meta.bucket === 'PREVIEW');
       const confirmed = customerOrders.filter(o => parseOrderMeta(o).meta.bucket === 'ORDER');
       document.getElementById('nav-order-count').innerText = customerOrders.length;
+      document.getElementById('menu-order-count').innerText = customerOrders.length;
       document.getElementById('count-previews').innerText = previews.length;
       document.getElementById('count-orders').innerText = confirmed.length;
     }
 
     function showMainShop(cat) {
-      document.getElementById('customer-orders-view').classList.add('hidden');
-      document.getElementById('storefront-view').classList.remove('hidden');
-      if (cat) filterCategory(cat);
+      navigateMenu('CATALOG', cat || 'ALL');
     }
 
     async function openCustomerOrdersView(tab) {
-      document.getElementById('storefront-view').classList.add('hidden');
+      hideAllMainViews();
       document.getElementById('customer-orders-view').classList.remove('hidden');
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
       const savedPin = localStorage.getItem('skia_customer_pin') || '';
@@ -874,11 +1193,11 @@
     function switchCustomerTab(tab) {
       currentCustomerTab = tab;
       document.getElementById('cust-tab-PREVIEW').className = tab === 'PREVIEW'
-        ? "tactile-btn py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
-        : "tactile-btn py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
+        ? "tactile-btn py-3 px-4 rounded-xl bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
+        : "tactile-btn py-3 px-4 rounded-xl bg-neutral-100 text-black text-xs font-bold uppercase tracking-wider text-center";
       document.getElementById('cust-tab-ORDER').className = tab === 'ORDER'
-        ? "tactile-btn py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
-        : "tactile-btn py-3 px-4 border-2 border-black bg-white text-black text-xs font-bold uppercase tracking-wider text-center";
+        ? "tactile-btn py-3 px-4 rounded-xl bg-black text-white text-xs font-bold uppercase tracking-wider text-center"
+        : "tactile-btn py-3 px-4 rounded-xl bg-neutral-100 text-black text-xs font-bold uppercase tracking-wider text-center";
 
       document.getElementById('cust-tab-subtitle').innerText = tab === 'PREVIEW'
         ? "Unpaid commissions waiting for your WhatsApp preview approval. Tap 'Pay Now' anytime to move an item into Orders!"
@@ -892,7 +1211,7 @@
 
       if (filtered.length === 0) {
         box.innerHTML = `
-          <div class="border-2 border-dashed border-black p-8 text-center bg-white text-xs text-neutral-500">
+          <div class="rounded-2xl bg-neutral-100 p-8 text-center text-xs text-neutral-500">
             No items in your <strong>${currentCustomerTab === 'PREVIEW' ? 'Previews (Unpaid)' : 'Orders'}</strong> section yet.
           </div>`;
         return;
@@ -901,26 +1220,26 @@
       box.innerHTML = filtered.map(o => {
         const { cleanNotes, meta } = parseOrderMeta(o);
         const photos = (o.photo_data || '').split('|||SLIDE|||').filter(Boolean).map(resolveImgUrl);
-        let statusStyle = "bg-amber-100 text-black border border-black";
+        let statusStyle = "bg-amber-100 text-black";
         if (meta.payStatus === 'SUCCESS' || meta.payStatus === 'COD') statusStyle = "bg-emerald-900 text-white";
         if (meta.payStatus === 'CANCELLED') statusStyle = "bg-red-700 text-white";
 
         return `
-        <div class="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row justify-between gap-4 text-xs">
+        <div class="rounded-2xl bg-neutral-50 border border-neutral-200 p-4 flex flex-col sm:flex-row justify-between gap-4 text-xs">
           <div class="space-y-1.5">
             <div class="flex flex-wrap gap-2 items-center">
-              <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
-              <span class="px-2 py-0.5 text-[10px] font-bold uppercase ${statusStyle}">${meta.payment}</span>
-              <span class="bg-neutral-100 border border-black px-2 py-0.5 text-[10px] font-semibold">${meta.stage || 'In Studio'}</span>
+              <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${o.order_code}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${statusStyle}">${meta.payment}</span>
+              <span class="bg-white border border-neutral-200 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">${meta.stage || 'In Studio'}</span>
             </div>
-            <h3 class="font-serif-luxury text-2xl font-bold pt-1">${o.product_title} — ₹${o.price}</h3>
+            <h3 class="text-lg font-extrabold pt-1">${o.product_title} — ₹${o.price}</h3>
             <p class="text-neutral-600"><strong>Spec:</strong> ${o.color} · ${o.size} · ${o.placement} · ${o.finish}</p>
             <p class="text-neutral-600"><strong>Your Note:</strong> "${cleanNotes}"</p>
             <p class="text-neutral-500 text-[11px]"><strong>Delivery Address:</strong> ${meta.address}</p>
 
             ${meta.bucket === 'PREVIEW' || meta.payStatus === 'CANCELLED' || meta.payStatus === 'PROCESSING' ? `
               <div class="pt-3">
-                <button onclick="openPayModalForExistingOrder(${o.id})" class="tactile-btn bg-black text-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider">
+                <button onclick="openPayModalForExistingOrder(${o.id})" class="tactile-btn bg-black text-white rounded-full px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider">
                   ${meta.payStatus === 'PROCESSING' ? 'Open Payment Options (PhonePe / QR / UPI) →' : 'Pay ₹' + o.price + ' Now (Move to Processing) →'}
                 </button>
               </div>
@@ -928,7 +1247,7 @@
           </div>
           ${photos.length > 0 ? `
             <div class="flex gap-1.5 shrink-0 flex-wrap">
-              ${photos.map(ph => `<img src="${ph}" class="w-16 h-16 object-cover border-2 border-black" />`).join('')}
+              ${photos.map(ph => `<img src="${ph}" class="w-16 h-16 rounded-xl object-cover border border-neutral-200" />`).join('')}
             </div>
           ` : ''}
         </div>`;
@@ -946,6 +1265,7 @@
       document.getElementById('ticket-item').innerText = `${target.product_title}`;
       setupQrCodeForAmount(target.price);
 
+      document.getElementById('modal-slides-strip').classList.add('hidden');
       document.getElementById('cod-confirmed-box').classList.add('hidden');
       await choosePayNowAndMoveToProcessing();
       goToStep(4);
@@ -972,10 +1292,10 @@
     function switchPayMethodTab(tab) {
       ['APP', 'QR', 'ID'].forEach(t => {
         document.getElementById('pm-box-' + t).classList.add('hidden');
-        document.getElementById('pm-tab-' + t).className = "tactile-btn py-2 border-2 border-black bg-white text-black";
+        document.getElementById('pm-tab-' + t).className = "tactile-btn py-2 rounded-xl bg-neutral-100 text-black";
       });
       document.getElementById('pm-box-' + tab).classList.remove('hidden');
-      document.getElementById('pm-tab-' + tab).className = "tactile-btn py-2 border-2 border-black bg-black text-white";
+      document.getElementById('pm-tab-' + tab).className = "tactile-btn py-2 rounded-xl bg-black text-white";
     }
 
     function setupQrCodeForAmount(amount) {
@@ -993,7 +1313,6 @@
       alert("✓ Copied UPI ID: " + OWNER_UPI_ID);
     }
 
-    // Silky Cross-Fade Slide Change + Expanding Pill Dots Update!
     function changeCardSlide(event, prodId, dir) {
       if (event) event.stopPropagation();
       const prod = products.find(x => x.id === prodId);
@@ -1014,11 +1333,10 @@
         mainImg.classList.remove('img-swapping');
       }, 140);
 
-      // Update Expanding Pill Dots
       const dotsBox = document.getElementById('dots-box-' + prodId);
       if (dotsBox) {
         dotsBox.innerHTML = slides.map((_, i) => `
-          <span class="h-1.5 transition-all duration-300 border border-black ${i === curr ? 'w-5 bg-black' : 'w-1.5 bg-white'}"></span>
+          <span class="h-1.5 rounded-full transition-all duration-300 ${i === curr ? 'w-4 bg-black' : 'w-1.5 bg-neutral-300'}"></span>
         `).join('');
       }
     }
@@ -1030,12 +1348,11 @@
     function handleTouchEnd(event, prodId) {
       const endX = event.changedTouches[0].screenX;
       const diff = (touchStartX[prodId] || endX) - endX;
-      if (Math.abs(diff) > 40) {
+      if (Math.abs(diff) > 35) {
         changeCardSlide(event, prodId, diff > 0 ? 1 : -1);
       }
     }
 
-    // Silky Cross-Fade When Tapping "Raw Photo ⇄ Tap to Swap"
     function swapCardImage(event, prodId) {
       event.stopPropagation();
       const mainImg = document.getElementById('main-img-' + prodId);
@@ -1060,37 +1377,41 @@
         const activeSlide = slides[idx] || slides[0];
 
         return `
-        <div onclick="openModal(${p.id})" class="reveal-card group cursor-pointer bg-white border-2 border-black p-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000]">
-          <div ontouchstart="handleTouchStart(event, ${p.id})" ontouchend="handleTouchEnd(event, ${p.id})" class="relative h-72 overflow-hidden bg-neutral-100 border border-black mb-3 select-none">
-            <img id="main-img-${p.id}" src="${activeSlide.finalImg}" alt="${p.title}" class="img-crossfade w-full h-full object-cover group-hover:scale-105" />
-            
-            ${slides.length > 1 ? `
-              <button type="button" onclick="changeCardSlide(event, ${p.id}, -1)" class="tactile-btn absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">‹</button>
-              <button type="button" onclick="changeCardSlide(event, ${p.id}, 1)" class="tactile-btn absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">›</button>
-              <div id="dots-box-${p.id}" class="absolute bottom-3 right-3 flex items-center gap-1 bg-white/90 border border-black px-2 py-1">
-                ${slides.map((_, i) => `<span class="h-1.5 transition-all duration-300 border border-black ${i === idx ? 'w-5 bg-black' : 'w-1.5 bg-white'}"></span>`).join('')}
-              </div>
-            ` : ''}
+        <div onclick="openProductPage(${p.id})" class="reveal-card group cursor-pointer flex flex-col justify-between">
+          <div>
+            <div ontouchstart="handleTouchStart(event, ${p.id})" ontouchend="handleTouchEnd(event, ${p.id})" class="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-[#F4F4F4] mb-2.5 select-none">
+              <img id="main-img-${p.id}" src="${activeSlide.finalImg}" alt="${p.title}" class="img-crossfade w-full h-full object-cover group-hover:scale-105" />
+              
+              <span class="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-xs text-white text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full max-w-[80%] truncate">
+                ${cleanSpec}
+              </span>
 
-            <div onclick="swapCardImage(event, ${p.id})" class="tactile-btn absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000] hover:bg-black hover:text-white">
-              <img id="badge-img-${p.id}" src="${activeSlide.rawImg}" class="w-10 h-10 object-cover border border-black" />
-              <div class="pr-1">
-                <span class="text-[9px] font-bold uppercase tracking-wider block leading-tight">Raw Photo</span>
-                <span class="text-[10px] font-serif-luxury italic block leading-tight">⇄ Tap to Swap</span>
+              ${slides.length > 1 ? `
+                <button type="button" onclick="changeCardSlide(event, ${p.id}, -1)" class="tactile-btn absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-6 h-6 sm:w-7 sm:h-7 font-bold text-xs flex items-center justify-center shadow-sm">‹</button>
+                <button type="button" onclick="changeCardSlide(event, ${p.id}, 1)" class="tactile-btn absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-6 h-6 sm:w-7 sm:h-7 font-bold text-xs flex items-center justify-center shadow-sm">›</button>
+                <div id="dots-box-${p.id}" class="absolute top-2.5 right-2.5 flex items-center gap-1 bg-white/90 backdrop-blur-xs rounded-full px-2 py-1">
+                  ${slides.map((_, i) => `<span class="h-1.5 rounded-full transition-all duration-300 ${i === idx ? 'w-4 bg-black' : 'w-1.5 bg-neutral-300'}"></span>`).join('')}
+                </div>
+              ` : ''}
+
+              <div onclick="swapCardImage(event, ${p.id})" class="tactile-btn absolute bottom-2 left-2 bg-white/95 backdrop-blur-xs rounded-xl p-1 pr-2 flex items-center gap-1.5 shadow-md hover:bg-black hover:text-white">
+                <img id="badge-img-${p.id}" src="${activeSlide.rawImg}" class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg object-cover" />
+                <div>
+                  <span class="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider block leading-none">Raw Photo</span>
+                  <span class="text-[8px] sm:text-[9px] text-neutral-500 block leading-none mt-0.5">⇄ Swap</span>
+                </div>
+              </div>
+
+              <div class="tactile-btn absolute bottom-2 right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold shadow-md group-hover:scale-110 transition-transform">
+                →
               </div>
             </div>
 
-            <span class="absolute top-2.5 right-2.5 bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-1">
-              ${cleanSpec}
-            </span>
-          </div>
-          <div class="flex justify-between items-baseline">
-            <h3 class="font-serif-luxury text-2xl font-bold">${p.title}</h3>
-            <span class="text-sm font-bold">₹${p.base_price}</span>
-          </div>
-          <p class="text-[11px] text-neutral-600 mt-1 pb-3 border-b border-neutral-200">${p.prompt}</p>
-          <div class="pt-2.5 flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-            <span>Start With This</span><span class="group-hover:translate-x-1 transition-transform">→</span>
+            <div class="px-0.5">
+              <h3 class="text-xs sm:text-sm font-extrabold text-neutral-900 leading-snug line-clamp-1">${p.title}</h3>
+              <p class="text-[10px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">${p.prompt}</p>
+              <p class="text-xs sm:text-sm font-extrabold text-black mt-1">₹${p.base_price}</p>
+            </div>
           </div>
         </div>`;
       }).join('');
@@ -1101,16 +1422,17 @@
     function filterCategory(cat) {
       currentCategory = cat;
       document.querySelectorAll('.cat-pill').forEach(btn => {
-        btn.className = "cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-white text-black border-2 border-black";
+        btn.className = "cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-neutral-100 text-neutral-700 rounded-full";
       });
       const active = document.getElementById('tab-' + cat);
-      if (active) active.className = "cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-black text-white border-2 border-black";
+      if (active) active.className = "cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-black text-white rounded-full";
       renderProducts();
     }
 
     async function openModal(id) {
       activeProduct = products.find(p => p.id === id);
       const { conf } = parseProductConfig(activeProduct);
+      const slides = getProductSlides(activeProduct);
       extraSizeCost = 0;
       extraPlacement = 0;
       extraFinish = 0;
@@ -1121,6 +1443,20 @@
       document.getElementById('cust-photo').value = '';
       document.getElementById('cust-notes').value = '';
       document.getElementById('modal-title').innerText = activeProduct.title;
+
+      const stripBox = document.getElementById('modal-slides-strip');
+      const thumbsBox = document.getElementById('modal-slides-thumbnails');
+      if (slides.length > 1) {
+        stripBox.classList.remove('hidden');
+        thumbsBox.innerHTML = slides.map((s, i) => `
+          <div class="flex items-center gap-1 bg-neutral-100 rounded-xl p-1 shrink-0">
+            <img src="${s.finalImg}" class="w-12 h-12 rounded-lg object-cover" />
+            <span class="text-[9px] font-bold px-1">Ex #${i+1}</span>
+          </div>
+        `).join('');
+      } else {
+        stripBox.classList.add('hidden');
+      }
 
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
       const savedPin = localStorage.getItem('skia_customer_pin') || '';
@@ -1135,12 +1471,12 @@
         updateCodButtonUI();
       }
 
-      document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white";
+      document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white";
 
       const shadesBox = document.getElementById('dynamic-shades');
       chosenColor = conf.shades[0] || 'Standard';
       shadesBox.innerHTML = conf.shades.map((sh, i) => `
-        <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sh}</button>
+        <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${sh}</button>
       `).join('');
 
       const sizesBox = document.getElementById('dynamic-sizes');
@@ -1148,7 +1484,7 @@
       sizesBox.innerHTML = conf.sizes.map((sz, i) => {
         const match = sz.match(/\+₹(\d+)/);
         const addCost = match ? Number(match[1]) : 0;
-        return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${sz}</button>`;
+        return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${sz}</button>`;
       }).join('');
 
       document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
@@ -1159,7 +1495,7 @@
         const [label, costStr] = fn.split('|');
         const cost = Number(costStr || 0);
         if (i === 0) chosenFinishLabel = label;
-        return `<button type="button" onclick="selectFinish(${cost}, '${label}', this)" class="finish-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black ${i===0 ? 'bg-black text-white' : 'bg-white text-black'}">${label}${cost > 0 ? ' +₹'+cost : ''}</button>`;
+        return `<button type="button" onclick="selectFinish(${cost}, '${label}', this)" class="finish-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${label}${cost > 0 ? ' +₹'+cost : ''}</button>`;
       }).join('');
 
       updatePrice();
@@ -1186,36 +1522,36 @@
 
     function selectColor(name, btn) {
       chosenColor = name;
-      document.querySelectorAll('.shade-btn').forEach(b => b.className = "shade-btn tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
-      btn.className = "shade-btn tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      document.querySelectorAll('.shade-btn').forEach(b => b.className = "shade-btn tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-neutral-100 text-black");
+      btn.className = "shade-btn tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-black text-white";
     }
     function selectSize(size, cost, btn) {
       chosenSize = size;
       extraSizeCost = cost;
-      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
-      btn.className = "size-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      document.querySelectorAll('.size-pill').forEach(b => b.className = "size-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-neutral-100 text-black");
+      btn.className = "size-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-black text-white";
       updatePrice();
     }
     function selectPlacement(cost, label, btn) {
       extraPlacement = cost;
       chosenPlacementLabel = label;
-      document.querySelectorAll('.place-pill').forEach(b => b.className = "place-pill tactile-btn py-2 border-2 border-black bg-white");
-      btn.className = "place-pill tactile-btn py-2 border-2 border-black bg-black text-white";
+      document.querySelectorAll('.place-pill').forEach(b => b.className = "place-pill tactile-btn py-2.5 rounded-xl bg-neutral-100 text-black");
+      btn.className = "place-pill tactile-btn py-2.5 rounded-xl bg-black text-white";
       updatePrice();
     }
     function selectFinish(cost, label, btn) {
       extraFinish = cost;
       chosenFinishLabel = label;
-      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-white text-black");
-      btn.className = "finish-pill tactile-btn px-3 py-1.5 text-xs font-semibold border-2 border-black bg-black text-white";
+      document.querySelectorAll('.finish-pill').forEach(b => b.className = "finish-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-neutral-100 text-black");
+      btn.className = "finish-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-black text-white";
       updatePrice();
     }
     function selectPayment(cost, mode, btn) {
       extraCodCost = cost;
       chosenPaymentMode = mode;
       document.getElementById('pay-upi-btn').className = mode === 'UPI'
-        ? "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-black text-white"
-        : "pay-pill tactile-btn py-2.5 px-2 border-2 border-black bg-white text-black";
+        ? "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white"
+        : "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-neutral-100 text-black";
       updateCodButtonUI();
       updatePrice();
     }
@@ -1259,8 +1595,8 @@
       label.innerText = `✓ ${selectedRawFiles.length} / 4 Original HD Photo(s) Ready`;
       grid.innerHTML = selectedRawFiles.map((item, i) => `
         <div class="relative">
-          <img src="${item.previewUrl}" class="w-full h-16 object-cover border-2 border-black" />
-          <button type="button" onclick="removeCustomerPhoto(${i})" class="absolute -top-1.5 -right-1.5 bg-black text-white w-5 h-5 text-[10px] font-bold flex items-center justify-center">✕</button>
+          <img src="${item.previewUrl}" class="w-full h-16 rounded-xl object-cover border border-neutral-300" />
+          <button type="button" onclick="removeCustomerPhoto(${i})" class="absolute -top-1.5 -right-1.5 bg-black text-white rounded-full w-5 h-5 text-[10px] font-bold flex items-center justify-center">✕</button>
         </div>
       `).join('');
     }
