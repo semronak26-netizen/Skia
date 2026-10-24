@@ -8,17 +8,17 @@
   <meta name="keywords" content="SKIA, SKIA Studio Indore, custom t-shirt printing Indore, custom mug Indore, custom hoodie India, personalized gifts Indore, Ronak Sem" />
   <link rel="canonical" href="https://skia-indore.vercel.app/" />
 
-  <!-- Circular Pitch-Black Flame Favicon for Google Search & Browser Tabs -->
+  <!-- Circular Pitch-Black Flame Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23000000'/%3E%3Cpath d='M50 16 C43 33, 28 43, 28 63 C28 77, 39 87, 53 88 C46 82, 43 74, 47 64 C51 72, 58 76, 58 86 C69 81, 75 70, 75 57 C75 39, 61 27, 50 16 Z' fill='%23FFFFFF'/%3E%3C/svg%3E" />
 
-  <!-- WhatsApp & Instagram Rich Link Preview (OpenGraph) -->
+  <!-- OpenGraph Rich Preview -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SKIA Studio Indore" />
   <meta property="og:title" content="SKIA — Bring a Photo. Cast It on What You Wear & Hold." />
   <meta property="og:description" content="1-of-1 Custom 240–400 GSM Apparel, Ceramic Cups & Objects. Approve your digital preview on WhatsApp before we print." />
   <meta property="og:url" content="https://skia-indore.vercel.app/" />
 
-  <!-- Google Search Branded Card & Sitelinks Structured Data (JSON-LD) -->
+  <!-- Google Search Sitelinks Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -59,7 +59,7 @@
             "@type": "SiteNavigationElement",
             "position": 2,
             "name": "To Hold & Keep (Cups & Objects)",
-            "description": "Custom Studio Ceramic Cups, Magic Mugs, Totes, Metal Posters & Desk Mats",
+            "description": "Custom Studio Ceramic Cups, Phone Cases, Totes, Metal Posters & Desk Mats",
             "url": "https://skia-indore.vercel.app/#to-hold"
           },
           {
@@ -132,11 +132,11 @@
         <div class="p-6 sm:p-10 pb-4">
           <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 text-neutral-500">SKIA Studio · Indore</p>
           <h1 class="font-serif-luxury text-4xl sm:text-6xl font-bold leading-[1.05] mb-3">
-            Bring a photo.<br />
-            <span class="italic font-normal">Cast it on what you wear & hold.</span>
+            Bring your photos.<br />
+            <span class="italic font-normal">Cast them on what you wear & hold.</span>
           </h1>
           <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-lg">
-            Tap any piece below, drop a photo from your phone, and tell us your idea. You see and approve the digital preview on WhatsApp before we craft it.
+            Swipe through our examples below, upload 1 or more full-resolution photos from your phone, and tell us your idea. You approve the digital preview on WhatsApp before we print.
           </p>
         </div>
         <div class="w-full overflow-hidden leading-none pt-2">
@@ -181,7 +181,6 @@
         </button>
       </div>
 
-      <!-- Protected Lookup Bar -->
       <div class="bg-white border-2 border-black p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-[4px_4px_0px_#000000]">
         <div class="text-xs">
           <span class="font-bold block">🔒 Protected by your 4-Digit Privacy PIN</span>
@@ -196,7 +195,6 @@
         </div>
       </div>
 
-      <!-- TWO TABS: 1. PREVIEWS (UNPAID) vs 2. ORDERS (PROCESSING, PAID & COD) -->
       <div class="grid grid-cols-2 gap-3">
         <button onclick="switchCustomerTab('PREVIEW')" id="cust-tab-PREVIEW" class="py-3 px-4 border-2 border-black bg-black text-white text-xs font-bold uppercase tracking-wider text-center">
           1. Previews · Unpaid (<span id="count-previews">0</span>)
@@ -233,7 +231,7 @@
     </section>
   </main>
 
-  <!-- FOOTER WITH 4 OFFICIAL POLICY LINKS -->
+  <!-- FOOTER -->
   <div class="w-full overflow-hidden leading-none pt-4">
     <svg class="w-full h-12 sm:h-16 fill-black" viewBox="0 0 1200 120" preserveAspectRatio="none">
       <path d="M0,120 L0,70 C40,95 70,30 110,75 C150,25 190,85 240,40 C280,85 330,15 380,70 C420,30 470,90 520,35 C570,85 620,10 670,70 C720,25 760,85 810,40 C860,90 910,20 960,70 C1010,30 1060,85 1110,40 C1150,75 1180,50 1200,80 L1200,120 Z"/>
@@ -253,7 +251,7 @@
     <p class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011 · semronak26@gmail.com</p>
   </footer>
 
-  <!-- LEGAL & CONTACT POLICIES MODAL -->
+  <!-- LEGAL POLICIES MODAL -->
   <div id="policy-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white border-2 border-black max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-[8px_8px_0px_#000000] text-xs space-y-4">
       <div class="flex justify-between items-center border-b-2 border-black pb-3">
@@ -303,22 +301,28 @@
           <div id="dynamic-finishes" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
         </div>
         <button type="button" onclick="goToStep(2)" class="w-full bg-black text-white py-3.5 text-xs font-bold uppercase tracking-widest">
-          Next · Drop Your Photo →
+          Next · Drop Your Photo(s) →
         </button>
       </div>
 
-      <!-- STEP 2 -->
+      <!-- STEP 2: 100% ORIGINAL RESOLUTION MULTI-PHOTO UPLOAD -->
       <div id="step-2" class="hidden py-5 space-y-5">
-        <p class="font-serif-luxury text-2xl italic">"Drop your photo, and tell us what's in your head."</p>
-        <label class="block border-2 border-dashed border-black bg-white p-6 text-center cursor-pointer hover:bg-neutral-50">
-          <span class="text-xs font-bold uppercase tracking-wider block mb-1">+ Tap to pick a photo from your phone *</span>
-          <span class="text-[11px] text-neutral-500 block">Mandatory · 100% private & PIN-protected</span>
-          <input type="file" id="cust-photo" accept="image/*" onchange="previewPhoto(event)" class="hidden" />
-          <img id="photo-preview" class="hidden h-28 mx-auto mt-3 object-cover border-2 border-black" />
-        </label>
+        <p class="font-serif-luxury text-2xl italic">"Drop your photo(s), and tell us what's in your head."</p>
+        
+        <div class="border-2 border-dashed border-black bg-white p-5 text-center">
+          <label class="cursor-pointer block">
+            <span class="bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider inline-block mb-1.5">+ Add Full-Res Photo(s) *</span>
+            <span class="text-[11px] text-neutral-500 block">Select 1 to 4 photos (Sent in 100% original HD quality)</span>
+            <input type="file" id="cust-photo" accept="image/*" multiple onchange="previewMultiplePhotos(event)" class="hidden" />
+          </label>
+
+          <div id="photo-preview-grid" class="hidden grid grid-cols-4 gap-2 mt-4 pt-3 border-t border-neutral-200"></div>
+          <p id="photo-count-label" class="hidden text-[10px] font-bold uppercase tracking-wider text-emerald-800 mt-2"></p>
+        </div>
+
         <div>
-          <p class="text-xs font-semibold mb-1.5">Talk to us—how should we style or edit it? *</p>
-          <textarea id="cust-notes" rows="3" placeholder="Mandatory: Tell us what background to remove, what text/date to write, or how you want it styled..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
+          <p class="text-xs font-semibold mb-1.5">Talk to us—how should we style or combine them? *</p>
+          <textarea id="cust-notes" rows="3" placeholder="Mandatory: Tell us how to use your photo(s), what background to remove, or what text/model to include..." class="w-full border-2 border-black p-3 text-xs focus:outline-none"></textarea>
         </div>
         <div class="flex gap-2">
           <button type="button" onclick="goToStep(1)" class="px-4 py-3.5 border-2 border-black text-xs font-bold">←</button>
@@ -328,7 +332,7 @@
         </div>
       </div>
 
-      <!-- STEP 3: PHONE + PIN + COD LOCKED UNTIL 1ST APPROVED PAYMENT -->
+      <!-- STEP 3 -->
       <div id="step-3" class="hidden py-5 space-y-4">
         <p class="font-serif-luxury text-2xl italic">"Where do we send your preview & parcel?"</p>
         
@@ -396,7 +400,7 @@
         </div>
       </div>
 
-      <!-- STEP 4: TWO-QUESTION SCREEN FIRST -> THEN PAYMENT OPTIONS -->
+      <!-- STEP 4 -->
       <div id="step-4" class="hidden py-5 space-y-4">
         <div class="border-2 border-black p-3 bg-neutral-50 text-xs flex justify-between items-center">
           <div>
@@ -407,7 +411,6 @@
           <span class="text-lg font-bold">₹<span id="upi-now-amount">899</span></span>
         </div>
 
-        <!-- SCREEN 4A: THE 2 QUESTIONS (PAY NOW vs PAY AFTER PREVIEW) -->
         <div id="upi-question-box" class="space-y-3">
           <p class="font-serif-luxury text-2xl italic">
             "Would you like to pay now, or after seeing your WhatsApp preview?"
@@ -425,20 +428,17 @@
           </button>
         </div>
 
-        <!-- SCREEN 4B: PAYMENT OPTIONS (SHOWN ONLY AFTER TAPPING "PAY NOW" — ALREADY MOVED TO PROCESSING!) -->
         <div id="upi-payment-methods-box" class="hidden space-y-3">
           <div class="bg-neutral-100 border-2 border-black p-2.5 text-[11px] font-medium text-center">
             ✓ Moved to <strong>Orders (Under Processing)</strong>! Complete your payment below:
           </div>
 
-          <!-- 3 PAYMENT METHOD TABS -->
           <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold uppercase">
             <button type="button" onclick="switchPayMethodTab('APP')" id="pm-tab-APP" class="py-2 border-2 border-black bg-black text-white">1. PhonePe / App</button>
             <button type="button" onclick="switchPayMethodTab('QR')" id="pm-tab-QR" class="py-2 border-2 border-black bg-white text-black">2. Scan QR</button>
             <button type="button" onclick="switchPayMethodTab('ID')" id="pm-tab-ID" class="py-2 border-2 border-black bg-white text-black">3. UPI ID</button>
           </div>
 
-          <!-- METHOD 1: PHONEPE / UPI APP -->
           <div id="pm-box-APP" class="border-2 border-black p-4 text-center space-y-2.5 bg-white">
             <p class="text-xs font-semibold">Tap below to pay via PhonePe, Google Pay, or Paytm:</p>
             <button type="button" onclick="openUpiAppLink()" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">
@@ -447,14 +447,12 @@
             <p class="text-[10px] text-neutral-500">Official Studio UPI: <strong>skiastudio@ybl</strong></p>
           </div>
 
-          <!-- METHOD 2: LIVE DYNAMIC QR CODE -->
           <div id="pm-box-QR" class="hidden border-2 border-black p-4 text-center space-y-2 bg-white">
             <p class="text-xs font-semibold">Scan with PhonePe, GPay, or Paytm (or screenshot & scan):</p>
             <img id="dynamic-upi-qr" src="" alt="SKIA UPI QR" class="w-44 h-44 mx-auto border-2 border-black p-1" />
             <p class="text-[10px] text-neutral-500">UPI ID: <strong>skiastudio@ybl</strong></p>
           </div>
 
-          <!-- METHOD 3: COPY UPI ID -->
           <div id="pm-box-ID" class="hidden border-2 border-black p-4 text-center space-y-2.5 bg-white">
             <p class="text-xs font-semibold">Copy our Studio UPI ID & pay inside your UPI app:</p>
             <div class="border-2 border-black bg-neutral-100 p-2.5 font-mono text-sm font-bold">
@@ -470,7 +468,6 @@
           </button>
         </div>
 
-        <!-- SCREEN 4C: SHOWN FOR COD (ALREADY CONFIRMED!) -->
         <div id="cod-confirmed-box" class="hidden space-y-3 text-center">
           <p class="font-serif-luxury text-2xl font-bold">✓ Cash on Delivery Confirmed</p>
           <p class="text-xs text-neutral-700 leading-relaxed">
@@ -496,6 +493,8 @@
 
     let products = [];
     let customerOrders = [];
+    let cardSlideState = {};
+    let touchStartX = {};
     let currentCategory = 'ALL';
     let currentCustomerTab = 'PREVIEW';
     let activeProduct = null;
@@ -510,12 +509,35 @@
     let chosenPlacementLabel = 'Front';
     let chosenFinishLabel = 'HD Ink';
     let chosenPaymentMode = 'UPI';
-    let uploadedPhotoData = '';
+    let selectedRawFiles = []; // Stores 100% original uncompressed File objects!
+
+    // Routes Supabase Storage URLs through your unblockable Vercel tunnel!
+    function resolveImgUrl(u) {
+      if (!u) return '';
+      if (window.location.hostname.includes('vercel.app') && u.includes('giffvjhztnjgftvqirdx.supabase.co')) {
+        return u.replace('https://giffvjhztnjgftvqirdx.supabase.co', window.location.origin + '/supaproxy');
+      }
+      return u;
+    }
 
     function normalizeCat(p) {
       if (p.category === 'HOLD' || p.is_apparel === false) return 'HOLD';
       if (p.category === 'CREWS' || p.category === 'KAFILA') return 'CREWS';
       return 'WEAR';
+    }
+
+    function getProductSlides(p) {
+      const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean).map(resolveImgUrl);
+      const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean).map(resolveImgUrl);
+      const count = Math.max(finals.length, 1);
+      const slides = [];
+      for (let i = 0; i < count; i++) {
+        slides.push({
+          finalImg: finals[i] || finals[0] || '',
+          rawImg: raws[i] || raws[0] || ''
+        });
+      }
+      return slides;
     }
 
     function parseProductConfig(p) {
@@ -747,6 +769,7 @@
 
       box.innerHTML = filtered.map(o => {
         const { cleanNotes, meta } = parseOrderMeta(o);
+        const photos = (o.photo_data || '').split('|||SLIDE|||').filter(Boolean).map(resolveImgUrl);
         let statusStyle = "bg-amber-100 text-black border border-black";
         if (meta.payStatus === 'SUCCESS' || meta.payStatus === 'COD') statusStyle = "bg-emerald-900 text-white";
         if (meta.payStatus === 'CANCELLED') statusStyle = "bg-red-700 text-white";
@@ -772,16 +795,15 @@
               </div>
             ` : ''}
           </div>
-          ${o.photo_data ? `
-            <div class="shrink-0">
-              <img src="${o.photo_data}" class="w-20 h-20 object-cover border-2 border-black" />
+          ${photos.length > 0 ? `
+            <div class="flex gap-1.5 shrink-0 flex-wrap">
+              ${photos.map(ph => `<img src="${ph}" class="w-16 h-16 object-cover border-2 border-black" />`).join('')}
             </div>
           ` : ''}
         </div>`;
       }).join('');
     }
 
-    // Tapping "Pay Now" on a Preview item automatically moves it to Orders (Under Processing) and opens Payment Options!
     async function openPayModalForExistingOrder(orderId) {
       const target = customerOrders.find(x => x.id === orderId);
       if (!target) return;
@@ -799,7 +821,6 @@
       document.getElementById('custom-modal').classList.remove('hidden');
     }
 
-    // Automatically moves order to Orders (Under Processing) and shows the 3 Payment Methods!
     async function choosePayNowAndMoveToProcessing() {
       document.getElementById('upi-question-box').classList.add('hidden');
       document.getElementById('upi-payment-methods-box').classList.remove('hidden');
@@ -841,6 +862,35 @@
       alert("✓ Copied UPI ID: " + OWNER_UPI_ID);
     }
 
+    function changeCardSlide(event, prodId, dir) {
+      if (event) event.stopPropagation();
+      const prod = products.find(x => x.id === prodId);
+      if (!prod) return;
+      const slides = getProductSlides(prod);
+      if (slides.length <= 1) return;
+
+      let curr = cardSlideState[prodId] || 0;
+      curr = (curr + dir + slides.length) % slides.length;
+      cardSlideState[prodId] = curr;
+
+      document.getElementById('main-img-' + prodId).src = slides[curr].finalImg;
+      document.getElementById('badge-img-' + prodId).src = slides[curr].rawImg;
+      const counterEl = document.getElementById('slide-count-' + prodId);
+      if (counterEl) counterEl.innerText = `${curr + 1} / ${slides.length} Swipe ⇄`;
+    }
+
+    function handleTouchStart(event, prodId) {
+      touchStartX[prodId] = event.changedTouches[0].screenX;
+    }
+
+    function handleTouchEnd(event, prodId) {
+      const endX = event.changedTouches[0].screenX;
+      const diff = (touchStartX[prodId] || endX) - endX;
+      if (Math.abs(diff) > 40) {
+        changeCardSlide(event, prodId, diff > 0 ? 1 : -1);
+      }
+    }
+
     function swapCardImage(event, prodId) {
       event.stopPropagation();
       const mainImg = document.getElementById('main-img-' + prodId);
@@ -856,17 +906,31 @@
 
       grid.innerHTML = list.map(p => {
         const { cleanSpec } = parseProductConfig(p);
+        const slides = getProductSlides(p);
+        const idx = cardSlideState[p.id] || 0;
+        const activeSlide = slides[idx] || slides[0];
+
         return `
         <div onclick="openModal(${p.id})" class="group cursor-pointer bg-white border-2 border-black p-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition">
-          <div class="relative h-72 overflow-hidden bg-neutral-100 border border-black mb-3">
-            <img id="main-img-${p.id}" src="${p.final_image}" alt="${p.title}" class="w-full h-full object-cover transition duration-500" />
+          <div ontouchstart="handleTouchStart(event, ${p.id})" ontouchend="handleTouchEnd(event, ${p.id})" class="relative h-72 overflow-hidden bg-neutral-100 border border-black mb-3 select-none">
+            <img id="main-img-${p.id}" src="${activeSlide.finalImg}" alt="${p.title}" class="w-full h-full object-cover transition duration-500" />
+            
+            ${slides.length > 1 ? `
+              <span id="slide-count-${p.id}" class="absolute top-2.5 left-2.5 bg-white/95 border border-black text-black text-[9px] font-bold uppercase tracking-wider px-2 py-0.5">
+                ${idx + 1} / ${slides.length} Swipe ⇄
+              </span>
+              <button type="button" onclick="changeCardSlide(event, ${p.id}, -1)" class="absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">‹</button>
+              <button type="button" onclick="changeCardSlide(event, ${p.id}, 1)" class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 border-2 border-black w-7 h-7 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white">›</button>
+            ` : ''}
+
             <div onclick="swapCardImage(event, ${p.id})" class="absolute bottom-2.5 left-2.5 bg-white border-2 border-black p-1.5 flex items-center gap-2 shadow-[3px_3px_0px_#000000] hover:bg-black hover:text-white transition">
-              <img id="badge-img-${p.id}" src="${p.raw_photo}" class="w-10 h-10 object-cover border border-black" />
+              <img id="badge-img-${p.id}" src="${activeSlide.rawImg}" class="w-10 h-10 object-cover border border-black" />
               <div class="pr-1">
                 <span class="text-[9px] font-bold uppercase tracking-wider block leading-tight">Raw Photo</span>
                 <span class="text-[10px] font-serif-luxury italic block leading-tight">⇄ Tap to Swap</span>
               </div>
             </div>
+
             <span class="absolute top-2.5 right-2.5 bg-black text-white text-[9px] font-bold uppercase tracking-widest px-2 py-1">
               ${cleanSpec}
             </span>
@@ -901,8 +965,8 @@
       extraFinish = 0;
       extraCodCost = 0;
       chosenPaymentMode = 'UPI';
-      uploadedPhotoData = '';
-      document.getElementById('photo-preview').classList.add('hidden');
+      selectedRawFiles = [];
+      renderCustomerUploadedThumbnails();
       document.getElementById('cust-photo').value = '';
       document.getElementById('cust-notes').value = '';
       document.getElementById('modal-title').innerText = activeProduct.title;
@@ -960,9 +1024,9 @@
     }
 
     function validateStep2AndContinue() {
-      if (!uploadedPhotoData) return alert("Please upload a reference photo from your phone first!");
+      if (selectedRawFiles.length === 0) return alert("Please upload at least 1 reference photo from your phone!");
       const notes = document.getElementById('cust-notes').value.trim();
-      if (notes.length < 3) return alert("Please write a short note telling us how you want your photo styled!");
+      if (notes.length < 3) return alert("Please write a short note telling us how you want your photo(s) styled!");
       goToStep(3);
     }
 
@@ -1009,36 +1073,55 @@
       document.getElementById('q-pay-amount').innerText = total;
     }
 
-    function compressAndLoadImage(file, callback) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 700;
-          let w = img.width, h = img.height;
-          if (w > maxDim || h > maxDim) {
-            if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
-            else { w = Math.round(w * (maxDim / h)); h = maxDim; }
-          }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          callback(canvas.toDataURL('image/jpeg', 0.75));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+    // Stores 100% Untouched Original File Objects for Cloud Bucket Upload!
+    function previewMultiplePhotos(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      files.forEach(file => {
+        if (selectedRawFiles.length < 4) {
+          selectedRawFiles.push({
+            file: file,
+            previewUrl: URL.createObjectURL(file)
+          });
+        }
+      });
+      renderCustomerUploadedThumbnails();
     }
 
-    function previewPhoto(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      compressAndLoadImage(file, dataUrl => {
-        uploadedPhotoData = dataUrl;
-        const img = document.getElementById('photo-preview');
-        img.src = uploadedPhotoData;
-        img.classList.remove('hidden');
+    function removeCustomerPhoto(idx) {
+      selectedRawFiles.splice(idx, 1);
+      renderCustomerUploadedThumbnails();
+    }
+
+    function renderCustomerUploadedThumbnails() {
+      const grid = document.getElementById('photo-preview-grid');
+      const label = document.getElementById('photo-count-label');
+      if (selectedRawFiles.length === 0) {
+        grid.classList.add('hidden');
+        label.classList.add('hidden');
+        return;
+      }
+      grid.classList.remove('hidden');
+      label.classList.remove('hidden');
+      label.innerText = `✓ ${selectedRawFiles.length} / 4 Original HD Photo(s) Ready`;
+      grid.innerHTML = selectedRawFiles.map((item, i) => `
+        <div class="relative">
+          <img src="${item.previewUrl}" class="w-full h-16 object-cover border-2 border-black" />
+          <button type="button" onclick="removeCustomerPhoto(${i})" class="absolute -top-1.5 -right-1.5 bg-black text-white w-5 h-5 text-[10px] font-bold flex items-center justify-center">✕</button>
+        </div>
+      `).join('');
+    }
+
+    // Uploads 100% Original Uncompressed File to skia-uploads Bucket!
+    async function uploadOriginalFileToBucket(fileObj) {
+      const ext = (fileObj.name.split('.').pop() || 'jpg').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      const filePath = `customer/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await db.storage.from('skia-uploads').upload(filePath, fileObj, {
+        cacheControl: '3600',
+        upsert: false
       });
+      if (error) throw error;
+      return `https://giffvjhztnjgftvqirdx.supabase.co/storage/v1/object/public/skia-uploads/${filePath}`;
     }
 
     async function finishOrder() {
@@ -1053,7 +1136,7 @@
       if (address.length < 8) return alert("Please enter your complete delivery address and 6-digit Pincode.");
 
       const btn = document.getElementById('submit-btn');
-      btn.innerText = "Verifying PIN & Saving...";
+      btn.innerText = "Uploading Original HD Photo(s)...";
       btn.disabled = true;
 
       const pinCheck = await verifyPhonePinOnCloud(phone, pin);
@@ -1076,32 +1159,38 @@
       const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
       const rawNotes = document.getElementById('cust-notes').value.trim();
 
-      // COD is immediately Confirmed; UPI starts in Previews and asks the 2 Questions!
-      const isCod = (chosenPaymentMode === 'COD' && isCustomerCodEligible);
-      const metaObj = {
-        bucket: isCod ? 'ORDER' : 'PREVIEW',
-        payStatus: isCod ? 'COD' : 'UNPAID',
-        payment: isCod ? '✓ Confirmed · Cash on Delivery (+₹50)' : 'Unpaid · Awaiting WhatsApp Preview',
-        address: address,
-        stage: isCod ? 'Confirmed COD · Crafting Preview' : 'Awaiting WhatsApp Preview'
-      };
-
-      const orderPayload = {
-        order_code: "SKIA-" + Math.floor(1000 + Math.random() * 9000),
-        product_title: activeProduct.title,
-        price: total,
-        color: chosenColor,
-        size: chosenSize,
-        placement: chosenPlacementLabel,
-        finish: chosenFinishLabel,
-        notes: rawNotes + "||META:" + JSON.stringify(metaObj),
-        urgent_gift: document.getElementById('cust-gift').checked,
-        customer_name: name,
-        customer_phone: `${phone}#${pin}`,
-        photo_data: uploadedPhotoData
-      };
-
       try {
+        // Upload all selected photos at 100% original resolution to skia-uploads bucket!
+        const uploadedUrls = [];
+        for (const item of selectedRawFiles) {
+          const url = await uploadOriginalFileToBucket(item.file);
+          uploadedUrls.push(url);
+        }
+
+        const isCod = (chosenPaymentMode === 'COD' && isCustomerCodEligible);
+        const metaObj = {
+          bucket: isCod ? 'ORDER' : 'PREVIEW',
+          payStatus: isCod ? 'COD' : 'UNPAID',
+          payment: isCod ? '✓ Confirmed · Cash on Delivery (+₹50)' : 'Unpaid · Awaiting WhatsApp Preview',
+          address: address,
+          stage: isCod ? 'Confirmed COD · Crafting Preview' : 'Awaiting WhatsApp Preview'
+        };
+
+        const orderPayload = {
+          order_code: "SKIA-" + Math.floor(1000 + Math.random() * 9000),
+          product_title: activeProduct.title,
+          price: total,
+          color: chosenColor,
+          size: chosenSize,
+          placement: chosenPlacementLabel,
+          finish: chosenFinishLabel,
+          notes: rawNotes + "||META:" + JSON.stringify(metaObj),
+          urgent_gift: document.getElementById('cust-gift').checked,
+          customer_name: name,
+          customer_phone: `${phone}#${pin}`,
+          photo_data: uploadedUrls.join('|||SLIDE|||')
+        };
+
         const { data, error } = await db.from('skia_orders').insert([orderPayload]).select('*');
         btn.disabled = false;
         btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
@@ -1129,7 +1218,7 @@
       } catch (err) {
         btn.disabled = false;
         btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
-        alert("Connection hiccup—please tap Send again!");
+        alert("Upload error: " + (err.message || "Please check connection and tap Send again!"));
       }
     }
 
