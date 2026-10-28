@@ -6,23 +6,22 @@
   <title>SKIA — Private Cloud Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { background-color: #FFFFFF; color: #000000; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .font-serif-luxury { font-family: 'Cormorant Garamond', serif; }
+    body { background-color: #FFFFFF; color: #0F0F0F; font-family: 'Plus Jakarta Sans', sans-serif; }
   </style>
 </head>
-<body class="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto">
+<body class="min-h-screen p-4 sm:p-8 max-w-4xl mx-auto">
 
   <!-- ENCRYPTED SUPABASE CLOUD LOGIN -->
   <div id="pin-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-6">
-    <div class="border-2 border-black p-6 w-full max-w-xs text-center shadow-[6px_6px_0px_#000000]">
-      <p class="text-[10px] font-bold uppercase tracking-widest mb-1">SKIA Studio Vault</p>
-      <h2 class="font-serif-luxury text-3xl font-bold mb-4">Encrypted Owner Login</h2>
+    <div class="border-2 border-black rounded-3xl p-6 w-full max-w-xs text-center shadow-xl">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">SKIA Studio Vault</p>
+      <h2 class="text-2xl font-extrabold mb-4">Owner Login</h2>
       <form onsubmit="unlockWithCloudAuth(event)" class="space-y-3">
-        <input type="email" id="owner-email" required placeholder="Owner Email Address" class="w-full border-2 border-black p-2.5 text-xs focus:outline-none" />
-        <input type="password" id="owner-password" required placeholder="Secret Password" class="w-full border-2 border-black p-2.5 text-xs focus:outline-none" />
-        <button type="submit" id="login-btn" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">
+        <input type="email" id="owner-email" required placeholder="Owner Email Address" class="w-full rounded-xl border border-neutral-300 p-2.5 text-xs focus:outline-none focus:border-black" />
+        <input type="password" id="owner-password" required placeholder="Secret Password" class="w-full rounded-xl border border-neutral-300 p-2.5 text-xs focus:outline-none focus:border-black" />
+        <button type="submit" id="login-btn" class="w-full bg-black text-white rounded-full py-3 text-xs font-extrabold uppercase tracking-widest">
           Sign In to Studio
         </button>
       </form>
@@ -30,22 +29,22 @@
   </div>
 
   <!-- HEADER -->
-  <header class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
+  <header class="border-b border-neutral-200 pb-4 mb-6 flex justify-between items-center">
     <div>
-      <span class="text-[10px] font-bold uppercase tracking-widest bg-black text-white px-2 py-0.5">Encrypted Mumbai Cloud</span>
-      <h1 class="font-serif-luxury text-3xl font-bold mt-1">SKIA Owner Control</h1>
+      <span class="text-[10px] font-bold uppercase tracking-widest bg-black text-white px-2.5 py-0.5 rounded-full">Encrypted Mumbai Cloud</span>
+      <h1 class="text-2xl sm:text-3xl font-extrabold mt-1">SKIA Inventory & Orders</h1>
     </div>
     <div class="flex gap-2">
-      <button onclick="loadAllCloudData()" class="border-2 border-black px-3 py-1.5 text-xs font-bold uppercase hover:bg-black hover:text-white">↻ Refresh</button>
-      <button onclick="signOutOwner()" class="border-2 border-black px-3 py-1.5 text-xs font-bold uppercase bg-neutral-100 hover:bg-black hover:text-white">Lock</button>
+      <button onclick="loadAllCloudData()" class="rounded-full border border-black px-3.5 py-1.5 text-xs font-bold uppercase hover:bg-black hover:text-white">↻ Refresh</button>
+      <button onclick="signOutOwner()" class="rounded-full bg-neutral-100 px-3.5 py-1.5 text-xs font-bold uppercase hover:bg-black hover:text-white">Lock</button>
     </div>
   </header>
 
   <!-- TABS -->
   <div class="flex gap-2 mb-6 overflow-x-auto">
-    <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white">1. Previews & Orders (<span id="order-badge">0</span>)</button>
-    <button onclick="showTab('add')" id="btn-add" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">2. + Upload Piece</button>
-    <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black">3. Edit / Manage Slides</button>
+    <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-black text-white">1. Previews & Orders (<span id="order-badge">0</span>)</button>
+    <button onclick="showTab('add')" id="btn-add" class="px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">2. + Upload New Piece</button>
+    <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">3. Inventory & Slides (<span id="prod-badge">0</span>)</button>
   </div>
 
   <!-- TAB 1: ORDERS & PREVIEWS -->
@@ -53,164 +52,270 @@
     <div id="orders-container" class="space-y-4 text-xs">Loading orders...</div>
   </section>
 
-  <!-- TAB 2: UPLOAD NEW PIECE -->
-  <section id="tab-add" class="hidden border-2 border-black p-5 shadow-[6px_6px_0px_#000000]">
-    <h2 class="font-serif-luxury text-2xl font-bold mb-4">Publish a New Piece to SKIA</h2>
-    <form onsubmit="publishProductToCloud(event)" class="space-y-5 text-xs">
-      <div class="bg-neutral-100 border-2 border-black p-3.5">
-        <label class="font-bold block mb-2 uppercase tracking-wider text-[10px]">Step 1: Choose Section</label>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <label class="flex items-center gap-2 bg-white border-2 border-black p-2.5 cursor-pointer">
-            <input type="radio" name="p-mode" value="WEAR" checked onchange="toggleModeOptions()" class="accent-black" />
-            <span><strong>To Wear</strong> (Clothing)</span>
-          </label>
-          <label class="flex items-center gap-2 bg-white border-2 border-black p-2.5 cursor-pointer">
-            <input type="radio" name="p-mode" value="HOLD" onchange="toggleModeOptions()" class="accent-black" />
-            <span><strong>To Hold & Keep</strong> (Cups/Objects)</span>
-          </label>
-          <label class="flex items-center gap-2 bg-white border-2 border-black p-2.5 cursor-pointer">
-            <input type="radio" name="p-mode" value="CREWS" onchange="toggleModeOptions()" class="accent-black" />
-            <span><strong>For Crews</strong> (Teams 5+)</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- WEARABLE CHECKLIST -->
-      <div id="wear-config-box" class="border-2 border-black p-4 space-y-4 bg-white">
-        <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2 py-0.5">Step 2: Tick Available Clothing Options</p>
+  <!-- TAB 2: UPLOAD NEW PIECE (WITH 2-LEVEL SLIDES & CUSTOM OPTIONS!) -->
+  <section id="tab-add" class="hidden border border-neutral-200 rounded-3xl p-5 sm:p-6 bg-neutral-50/50 space-y-5 text-xs">
+    <h2 class="text-xl font-extrabold">Publish a New Piece to SKIA</h2>
+    <form onsubmit="publishProductToCloud(event)" class="space-y-5">
+      
+      <!-- SECTION & STOCK STATUS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-4 rounded-2xl border border-neutral-200">
         <div>
-          <label class="font-bold block mb-1.5">Available Sizes:</label>
-          <div class="flex flex-wrap gap-2">
-            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="S" checked /> S</label>
-            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="M" checked /> M</label>
-            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="L" checked /> L</label>
-            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="XL" checked /> XL</label>
-            <label class="border border-black px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="XXL" checked /> XXL</label>
-          </div>
+          <label class="font-bold block mb-1.5 uppercase tracking-wider text-[10px] text-neutral-400">1. Collection Section</label>
+          <select id="p-mode" onchange="toggleModeOptions()" class="w-full rounded-xl border border-neutral-300 p-2.5 bg-white font-bold">
+            <option value="WEAR">To Wear (Clothing)</option>
+            <option value="HOLD">To Hold & Keep (Cups, Cases, Objects)</option>
+            <option value="CREWS">For Crews (Bulk 5+ Drops)</option>
+          </select>
         </div>
         <div>
-          <label class="font-bold block mb-1.5">Available Shades:</label>
-          <div class="flex flex-wrap gap-2">
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pure White" checked /> Pure White</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Charcoal Acid" checked /> Charcoal Acid</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Espresso" checked /> Espresso</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Navy Blue" /> Navy Blue</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Olive Green" /> Olive Green</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Lavender" /> Lavender</label>
-          </div>
-        </div>
-        <div>
-          <label class="font-bold block mb-1.5">Allowed Print Finishes:</label>
-          <div class="flex flex-wrap gap-2">
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="HD Ink|0" checked /> HD Soft Ink (Included)</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="3D Puff|100" checked /> 3D Puff (+₹100)</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="Stitch|150" checked /> Embroidery (+₹150)</label>
+          <label class="font-bold block mb-1.5 uppercase tracking-wider text-[10px] text-neutral-400">2. Initial Stock & Pin Status</label>
+          <div class="flex items-center gap-3 pt-1.5">
+            <select id="p-stock" class="rounded-xl border border-neutral-300 p-2 bg-white font-bold">
+              <option value="IN_STOCK">🟢 In Stock</option>
+              <option value="SOLD_OUT">🔴 Sold Out</option>
+              <option value="HIDDEN">⚪ Hidden (Draft)</option>
+            </select>
+            <label class="flex items-center gap-1.5 font-bold cursor-pointer">
+              <input type="checkbox" id="p-pinned" class="accent-black w-4 h-4" />
+              <span>📌 Pin to Top</span>
+            </label>
           </div>
         </div>
       </div>
 
-      <!-- OBJECT CHECKLIST -->
-      <div id="hold-config-box" class="hidden border-2 border-black p-4 space-y-4 bg-white">
-        <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2 py-0.5">Step 2: Tick Available Object / Cup Options</p>
+      <!-- WEARABLE OPTIONS -->
+      <div id="wear-config-box" class="bg-white p-4 rounded-2xl border border-neutral-200 space-y-4">
+        <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2.5 py-0.5 rounded-full">Clothing Inventory Options</p>
         <div>
-          <label class="font-bold block mb-1.5">Tick Editions / Sizes Available:</label>
-          <div class="flex flex-wrap gap-2">
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Classic 325ml Cup" checked /> Classic 325ml Cup</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Black Contrast Cup (+₹50)" checked /> Black Contrast Cup (+₹50)</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Magic Heat Cup (+₹120)" checked /> Magic Heat Cup (+₹120)</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Steel Sipper (+₹180)" /> Steel Sipper (+₹180)</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Standard Size" /> Standard Size (Cases/Totes/Posters)</label>
+          <label class="font-bold block mb-1.5">Tick Sizes (or type custom sizes comma-separated below):</label>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <label class="border border-neutral-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="S" checked /> S</label>
+            <label class="border border-neutral-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="M" checked /> M</label>
+            <label class="border border-neutral-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="L" checked /> L</label>
+            <label class="border border-neutral-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="XL" checked /> XL</label>
+            <label class="border border-neutral-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-size accent-black" value="XXL" checked /> XXL</label>
           </div>
+          <input type="text" id="w-custom-sizes" placeholder="Optional extra sizes (e.g. 3XL (+₹80), Kids M)" class="w-full rounded-xl border border-neutral-300 p-2" />
         </div>
         <div>
-          <label class="font-bold block mb-1.5">Available Base Shades:</label>
-          <div class="flex flex-wrap gap-2">
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pure White" checked /> Pure White</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Matte / Clear" /> Matte / Clear</label>
+          <label class="font-bold block mb-1.5">Tick Garment Shades:</label>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Pure White" checked /> Pure White</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Charcoal Acid" checked /> Charcoal Acid</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Espresso" checked /> Espresso</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Navy Blue" /> Navy Blue</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Olive Green" /> Olive Green</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-shade accent-black" value="Lavender" /> Lavender</label>
           </div>
+          <input type="text" id="w-custom-shades" placeholder="Optional extra shades (e.g. Maroon, Beige)" class="w-full rounded-xl border border-neutral-300 p-2" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold block mb-1.5">Allowed Print Finishes:</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="HD Ink|0" checked /> HD Ink</label>
+              <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="3D Puff|100" checked /> 3D Puff (+₹100)</label>
+              <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="Stitch|150" checked /> Stitch (+₹150)</label>
+            </div>
+          </div>
+          <div>
+            <label class="font-bold block mb-1.5">Front + Back Extra Price (₹):</label>
+            <input type="number" id="w-both-cost" value="150" class="w-full rounded-xl border border-neutral-300 p-2" />
+          </div>
+        </div>
+      </div>
+
+      <!-- OBJECT / CUP / CASE OPTIONS -->
+      <div id="hold-config-box" class="hidden bg-white p-4 rounded-2xl border border-neutral-200 space-y-4">
+        <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2.5 py-0.5 rounded-full">Object / Cup / Case Options</p>
+        <div>
+          <label class="font-bold block mb-1.5">Tick Editions / Sizes (or type custom phone models below):</label>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Classic 325ml Cup" checked /> Classic 325ml Cup</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Black Contrast Cup (+₹50)" checked /> Black Contrast Cup (+₹50)</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Magic Heat Cup (+₹120)" checked /> Magic Heat Cup (+₹120)</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Standard Size" /> Standard Size</label>
+          </div>
+          <input type="text" id="h-custom-sizes" placeholder="Or type custom models/editions comma-separated (e.g. iPhone 13, iPhone 14, iPhone 15, iPhone 16 Pro)" class="w-full rounded-xl border border-neutral-300 p-2" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1.5">Base Shades:</label>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pure White" checked /> Pure White</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Clear / Glass" /> Clear / Glass</label>
+          </div>
+          <input type="text" id="h-custom-shades" placeholder="Optional extra shades (e.g. Matte Black, Frosted)" class="w-full rounded-xl border border-neutral-300 p-2" />
         </div>
         <div>
           <label class="font-bold block mb-1.5">Allowed Print Layouts:</label>
           <div class="flex flex-wrap gap-2">
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Center Focus|0" checked /> Center Focus</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Full Wrap|0" checked /> Full Wrap Panorama</label>
-            <label class="border border-black px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="2-Sided (Photo + Quote)|50" checked /> 2-Sided: Photo + Text (+₹50)</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Center Focus|0" checked /> Center Focus</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Full Wrap|0" checked /> Full Wrap</label>
+            <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="2-Sided (Photo + Quote)|50" checked /> 2-Sided (+₹50)</label>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="font-bold block mb-1">Product Title</label>
-          <input type="text" id="p-title" required placeholder="e.g. Custom Studio Ceramic Cup" class="w-full border-2 border-black p-2.5" />
+      <!-- DETAILS -->
+      <div class="bg-white p-4 rounded-2xl border border-neutral-200 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold block mb-1">Product Title *</label>
+            <input type="text" id="p-title" required placeholder="e.g. The Graphite Sketch iPhone Case" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1">Base Price (₹) *</label>
+            <input type="number" id="p-price" required placeholder="499" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+          </div>
         </div>
         <div>
-          <label class="font-bold block mb-1">Base Price (₹)</label>
-          <input type="number" id="p-price" required placeholder="399" class="w-full border-2 border-black p-2.5" />
+          <label class="font-bold block mb-1">Short Spec Badge *</label>
+          <input type="text" id="p-spec" required placeholder="e.g. Tempered Glass · All iPhone Models" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1">1-Line Customer Prompt *</label>
+          <input type="text" id="p-prompt" required placeholder="You send: Any photo → We craft: Pencil sketch case" class="w-full rounded-xl border border-neutral-300 p-2.5" />
         </div>
       </div>
 
-      <div>
-        <label class="font-bold block mb-1">Short Spec Badge</label>
-        <input type="text" id="p-spec" required placeholder="e.g. 325 ml Ceramic · Gloss & Matte" class="w-full border-2 border-black p-2.5" />
-      </div>
-
-      <div>
-        <label class="font-bold block mb-1">1-Line Customer Prompt</label>
-        <input type="text" id="p-prompt" required placeholder="You send: Any photo or quote → We craft: Minimal ceramic wrap" class="w-full border-2 border-black p-2.5" />
-      </div>
-
+      <!-- 2-LEVEL SLIDES BUILDER: EACH EXAMPLE CAN HAVE MULTIPLE MOCKUP ANGLES! -->
       <div class="space-y-3">
-        <label class="font-bold block uppercase tracking-wider text-[10px]">Step 3: Upload Example Slide Pairs (Mockup + Raw Photo)</label>
+        <label class="font-bold block uppercase tracking-wider text-[10px] text-neutral-500">
+          3. Upload Examples (Each Original Photo Can Have Multiple Mockup Angles!)
+        </label>
         <div id="slides-builder-list" class="space-y-3"></div>
-        <button type="button" onclick="addSlidePairRow()" class="w-full border-2 border-dashed border-black py-2.5 font-bold uppercase tracking-wider hover:bg-black hover:text-white transition">
-          + Add Another Example Slide (Mockup + Raw Photo)
+        <button type="button" onclick="addSlidePairRow()" class="w-full rounded-2xl border-2 border-dashed border-black py-3 font-bold uppercase tracking-wider hover:bg-black hover:text-white transition">
+          + Add Another Template Example (Different Original Photo)
         </button>
       </div>
 
-      <button type="submit" id="pub-btn" class="w-full bg-black text-white py-3.5 font-bold uppercase tracking-widest">
+      <button type="submit" id="pub-btn" class="w-full bg-black text-white rounded-full py-4 font-extrabold uppercase tracking-widest">
         Publish Live to SKIA →
       </button>
     </form>
   </section>
 
-  <!-- TAB 3: EDIT PRICE, MANAGE / DELETE SLIDES, OR DELETE PRODUCT -->
+  <!-- TAB 3: INVENTORY & SLIDES MANAGER -->
   <section id="tab-manage" class="hidden space-y-3">
-    <div id="manage-container" class="space-y-2 text-xs"></div>
+    <div id="manage-container" class="space-y-3 text-xs"></div>
   </section>
 
-  <!-- POPUP MODAL TO VIEW / DELETE EXISTING SLIDES + ADD NEW SLIDE -->
+  <!-- MODAL A: 2-LEVEL SLIDES & ANGLES MANAGER FOR EXISTING PRODUCTS -->
   <div id="add-slide-modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white border-2 border-black p-5 max-w-md w-full max-h-[90vh] overflow-y-auto space-y-4 text-xs shadow-[6px_6px_0px_#000000]">
-      <div class="flex justify-between items-center border-b-2 border-black pb-2">
-        <h3 class="font-serif-luxury text-2xl font-bold">Manage Product Slides</h3>
-        <button onclick="closeAddSlideModal()" class="font-bold underline">Close ✕</button>
-      </div>
-      <p id="add-slide-prod-title" class="font-bold text-neutral-600"></p>
-
-      <!-- LIST OF CURRENT SLIDES WITH DELETE BUTTON ON EACH SLIDE! -->
-      <div class="space-y-2">
-        <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Current Slides on This Card:</p>
-        <div id="existing-slides-list" class="space-y-2"></div>
+    <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto space-y-4 text-xs shadow-2xl">
+      <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">2-Level Gallery Control</span>
+          <h3 id="add-slide-prod-title" class="text-lg font-extrabold">Manage Examples & Angles</h3>
+        </div>
+        <button onclick="closeAddSlideModal()" class="font-bold uppercase text-neutral-500">Close ✕</button>
       </div>
 
-      <!-- ADD A NEW SLIDE SECTION -->
-      <div class="border-t-2 border-black pt-3 space-y-3">
-        <p class="text-[10px] font-bold uppercase tracking-wider bg-black text-white inline-block px-2 py-0.5">+ Add a New Slide</p>
-        <div class="border-2 border-dashed border-black p-3">
-          <label class="font-bold block mb-1">1. New Final Mockup Photo *</label>
-          <input type="file" id="extra-final-file" accept="image/*" onchange="loadExtraSlideFile(event, 'final')" class="w-full" />
+      <!-- Existing Examples & Their Multiple Mockup Angles -->
+      <div id="existing-slides-list" class="space-y-3"></div>
+
+      <!-- Add a Whole New Template Example (New Original Photo + Multiple Mockups) -->
+      <div class="border-t-2 border-black pt-4 space-y-3">
+        <p class="text-[10px] font-bold uppercase tracking-wider bg-black text-white inline-block px-2.5 py-0.5 rounded-full">
+          + Add a New Template Example (Different Original Photo)
+        </p>
+        <div class="border border-dashed border-black rounded-xl p-3">
+          <label class="font-bold block mb-1">1. Select 1 or More Mockup Angles for This New Example *</label>
+          <input type="file" id="extra-final-files" accept="image/*" multiple class="w-full" />
         </div>
-        <div class="border-2 border-dashed border-black p-3">
-          <label class="font-bold block mb-1">2. New Corner "Raw Customer Photo" *</label>
-          <input type="file" id="extra-raw-file" accept="image/*" onchange="loadExtraSlideFile(event, 'raw')" class="w-full" />
+        <div class="border border-dashed border-black rounded-xl p-3">
+          <label class="font-bold block mb-1">2. Select the 1 Original Raw Customer Photo *</label>
+          <input type="file" id="extra-raw-file" accept="image/*" class="w-full" />
         </div>
-        <button onclick="saveExtraSlideToProduct()" id="save-slide-btn" class="w-full bg-black text-white py-3 font-bold uppercase tracking-widest">
-          Save New Slide to Card →
+        <button onclick="saveExtraSlideToProduct()" id="save-slide-btn" class="w-full bg-black text-white rounded-full py-3 font-bold uppercase tracking-widest">
+          Save New Example to Product →
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL B: FULL INVENTORY, STOCK, SIZES & DETAILS EDITOR -->
+  <div id="inventory-modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full max-h-[92vh] overflow-y-auto space-y-4 text-xs shadow-2xl">
+      <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Full Inventory Control</span>
+          <h3 class="text-lg font-extrabold">Edit Product & Stock</h3>
+        </div>
+        <button onclick="closeInventoryModal()" class="font-bold uppercase text-neutral-500">Close ✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold block mb-1">Stock Status</label>
+          <select id="inv-stock" class="w-full rounded-xl border border-neutral-300 p-2.5 font-bold bg-white">
+            <option value="IN_STOCK">🟢 In Stock</option>
+            <option value="SOLD_OUT">🔴 Sold Out</option>
+            <option value="HIDDEN">⚪ Hidden (Draft)</option>
+          </select>
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Section</label>
+          <select id="inv-cat" class="w-full rounded-xl border border-neutral-300 p-2.5 font-bold bg-white">
+            <option value="WEAR">To Wear</option>
+            <option value="HOLD">To Hold & Keep</option>
+            <option value="CREWS">For Crews</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="flex items-center gap-2 bg-neutral-100 p-3 rounded-xl font-bold cursor-pointer">
+        <input type="checkbox" id="inv-pinned" class="accent-black w-4 h-4" />
+        <span>📌 Pin this product to the top of the storefront</span>
+      </label>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold block mb-1">Product Title</label>
+          <input type="text" id="inv-title" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Base Price (₹)</label>
+          <input type="number" id="inv-price" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold block mb-1">Short Spec Badge</label>
+          <input type="text" id="inv-spec" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Front+Back Extra (₹)</label>
+          <input type="number" id="inv-both-cost" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+      </div>
+
+      <div>
+        <label class="font-bold block mb-1">1-Line Customer Prompt</label>
+        <input type="text" id="inv-prompt" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+      </div>
+
+      <div>
+        <label class="font-bold block mb-1">Active Sizes / Models / Editions (Comma-separated — edit or delete any out-of-stock size!):</label>
+        <input type="text" id="inv-sizes" class="w-full rounded-xl border border-neutral-300 p-2.5 font-mono" />
+      </div>
+
+      <div>
+        <label class="font-bold block mb-1">Active Shades (Comma-separated):</label>
+        <input type="text" id="inv-shades" class="w-full rounded-xl border border-neutral-300 p-2.5 font-mono" />
+      </div>
+
+      <div>
+        <label class="font-bold block mb-1">Active Finishes/Layouts (Format: Name|ExtraPrice, comma-separated):</label>
+        <input type="text" id="inv-finishes" class="w-full rounded-xl border border-neutral-300 p-2.5 font-mono" />
+      </div>
+
+      <button onclick="saveInventoryChanges()" id="save-inv-btn" class="w-full bg-black text-white rounded-full py-3.5 font-extrabold uppercase tracking-widest">
+        Save Inventory Changes →
+      </button>
     </div>
   </div>
 
@@ -223,10 +328,10 @@
 
     let products = [];
     let orders = [];
-    let slidePairsData = [{ finalFile: null, rawFile: null, finalPreview: "", rawPreview: "" }];
+    // Each Example row has multiple finalFiles (Mockup Angles) + 1 rawFile (Original Photo)
+    let slidePairsData = [{ finalFiles: [], rawFile: null, finalPreviews: [], rawPreview: "" }];
     let targetSlideProductId = null;
-    let extraFinalFile = null;
-    let extraRawFile = null;
+    let targetInvProductId = null;
 
     function resolveImgUrl(u) {
       if (!u) return '';
@@ -234,6 +339,23 @@
         return u.replace('https://giffvjhztnjgftvqirdx.supabase.co', window.location.origin + '/supaproxy');
       }
       return u;
+    }
+
+    function parseProdConf(p) {
+      const parts = (p.spec || '').split('||CONF:');
+      const cleanSpec = parts[0];
+      let conf = null;
+      if (parts[1]) {
+        try { conf = JSON.parse(parts[1]); } catch(e) {}
+      }
+      if (!conf) {
+        conf = p.is_apparel
+          ? { sizes: ['S','M','L','XL','XXL'], shades: ['Pitch Black','Pure White'], finishes: ['HD Ink|0','3D Puff|100','Stitch|150'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150 }
+          : { sizes: ['Classic 325ml Cup','Black Contrast Cup (+₹50)','Magic Heat Cup (+₹120)'], shades: ['Pure White','Pitch Black'], finishes: ['Center Focus|0','Full Wrap|0'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150 };
+      }
+      conf.stockStatus = conf.stockStatus || 'IN_STOCK';
+      conf.bothCost = (conf.bothCost !== undefined) ? Number(conf.bothCost) : 150;
+      return { cleanSpec, conf };
     }
 
     async function uploadFileToSkiaBucket(fileObj, folder) {
@@ -249,10 +371,9 @@
 
     async function downloadOriginalPhoto(rawUrl, filename, btn) {
       const originalText = btn.innerText;
-      btn.innerText = "Downloading HD...";
+      btn.innerText = "Downloading...";
       try {
-        const fetchUrl = resolveImgUrl(rawUrl);
-        const res = await fetch(fetchUrl);
+        const res = await fetch(resolveImgUrl(rawUrl));
         const blob = await res.blob();
         const blobUrl = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -305,14 +426,14 @@
     function showTab(t) {
       ['orders', 'add', 'manage'].forEach(x => {
         document.getElementById('tab-' + x).classList.add('hidden');
-        document.getElementById('btn-' + x).className = "px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-white text-black";
+        document.getElementById('btn-' + x).className = "px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black";
       });
       document.getElementById('tab-' + t).classList.remove('hidden');
-      document.getElementById('btn-' + t).className = "px-4 py-2 text-xs font-bold uppercase border-2 border-black bg-black text-white";
+      document.getElementById('btn-' + t).className = "px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-black text-white";
     }
 
     function toggleModeOptions() {
-      const mode = document.querySelector('input[name="p-mode"]:checked').value;
+      const mode = document.getElementById('p-mode').value;
       if (mode === 'HOLD') {
         document.getElementById('wear-config-box').classList.add('hidden');
         document.getElementById('hold-config-box').classList.remove('hidden');
@@ -322,24 +443,30 @@
       }
     }
 
+    // 2-Level Builder in Tab 2: Each Example has Multiple Mockup Angles + 1 Original Photo!
     function renderSlideBuilderRows() {
       const box = document.getElementById('slides-builder-list');
       box.innerHTML = slidePairsData.map((pair, idx) => `
-        <div class="border-2 border-black p-3 bg-neutral-50 space-y-2">
+        <div class="rounded-2xl border border-neutral-300 p-3.5 bg-white space-y-2.5">
           <div class="flex justify-between items-center">
-            <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold uppercase">Example Slide #${idx + 1}</span>
-            ${idx > 0 ? `<button type="button" onclick="removeSlidePairRow(${idx})" class="text-red-700 font-bold text-[10px] underline">Remove Slide</button>` : ''}
+            <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase">Template Example #${idx + 1}</span>
+            ${idx > 0 ? `<button type="button" onclick="removeSlidePairRow(${idx})" class="text-red-700 font-bold text-[10px] underline">Remove Example</button>` : ''}
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <div class="border border-dashed border-black bg-white p-2.5">
-              <label class="font-bold block mb-1 text-[11px]">1. Main Final Mockup #${idx + 1}</label>
-              <input type="file" accept="image/*" ${idx === 0 && !pair.finalFile ? 'required' : ''} onchange="loadSlidePairFile(event, ${idx}, 'final')" class="text-xs w-full" />
-              ${pair.finalPreview ? `<img src="${pair.finalPreview}" class="h-14 mt-1.5 object-cover border border-black" />` : ''}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="border border-dashed border-neutral-400 rounded-xl p-2.5">
+              <label class="font-bold block mb-1 text-[11px]">1. Mockup Angles (Select 1 or more views) *</label>
+              <input type="file" accept="image/*" multiple onchange="loadSlidePairFiles(event, ${idx}, 'final')" class="text-xs w-full" />
+              ${pair.finalPreviews.length ? `
+                <div class="flex gap-1.5 flex-wrap mt-2">
+                  ${pair.finalPreviews.map(pr => `<img src="${pr}" class="h-12 w-12 rounded-lg object-cover border border-black" />`).join('')}
+                </div>
+                <span class="text-[10px] text-emerald-700 font-bold block mt-1">✓ ${pair.finalPreviews.length} Mockup Angle(s) Attached</span>
+              ` : ''}
             </div>
-            <div class="border border-dashed border-black bg-white p-2.5">
-              <label class="font-bold block mb-1 text-[11px]">2. Corner Raw Photo #${idx + 1}</label>
-              <input type="file" accept="image/*" ${idx === 0 && !pair.rawFile ? 'required' : ''} onchange="loadSlidePairFile(event, ${idx}, 'raw')" class="text-xs w-full" />
-              ${pair.rawPreview ? `<img src="${pair.rawPreview}" class="h-14 mt-1.5 object-cover border border-black" />` : ''}
+            <div class="border border-dashed border-neutral-400 rounded-xl p-2.5">
+              <label class="font-bold block mb-1 text-[11px]">2. The 1 Original Raw Customer Photo *</label>
+              <input type="file" accept="image/*" onchange="loadSlidePairFiles(event, ${idx}, 'raw')" class="text-xs w-full" />
+              ${pair.rawPreview ? `<img src="${pair.rawPreview}" class="h-12 w-12 mt-2 rounded-lg object-cover border border-black" />` : ''}
             </div>
           </div>
         </div>
@@ -347,7 +474,7 @@
     }
 
     function addSlidePairRow() {
-      slidePairsData.push({ finalFile: null, rawFile: null, finalPreview: "", rawPreview: "" });
+      slidePairsData.push({ finalFiles: [], rawFile: null, finalPreviews: [], rawPreview: "" });
       renderSlideBuilderRows();
     }
 
@@ -356,15 +483,17 @@
       renderSlideBuilderRows();
     }
 
-    function loadSlidePairFile(e, idx, type) {
-      const file = e.target.files[0];
-      if (!file) return;
+    function loadSlidePairFiles(e, idx, type) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
       if (type === 'final') {
-        slidePairsData[idx].finalFile = file;
-        slidePairsData[idx].finalPreview = URL.createObjectURL(file);
+        files.forEach(f => {
+          slidePairsData[idx].finalFiles.push(f);
+          slidePairsData[idx].finalPreviews.push(URL.createObjectURL(f));
+        });
       } else {
-        slidePairsData[idx].rawFile = file;
-        slidePairsData[idx].rawPreview = URL.createObjectURL(file);
+        slidePairsData[idx].rawFile = files[0];
+        slidePairsData[idx].rawPreview = URL.createObjectURL(files[0]);
       }
       renderSlideBuilderRows();
     }
@@ -379,45 +508,67 @@
 
     async function publishProductToCloud(e) {
       e.preventDefault();
-      const validSlides = slidePairsData.filter(s => s.finalFile && s.rawFile);
-      if (validSlides.length === 0) return alert("Please select both the Mockup and Raw Photo for Slide #1!");
+      const validSlides = slidePairsData.filter(s => s.finalFiles.length > 0 && s.rawFile);
+      if (validSlides.length === 0) return alert("Please select at least 1 Mockup Angle and 1 Original Raw Photo for Example #1!");
 
       const btn = document.getElementById('pub-btn');
-      btn.innerText = "Uploading HD Slides to Cloud...";
+      btn.innerText = "Uploading HD Angles to Cloud...";
       btn.disabled = true;
 
       try {
-        const finalUrls = [];
+        const exampleBlocks = [];
         const rawUrls = [];
         for (const s of validSlides) {
-          const fUrl = await uploadFileToSkiaBucket(s.finalFile, 'products');
+          const uploadedAngles = [];
+          for (const f of s.finalFiles) {
+            const aUrl = await uploadFileToSkiaBucket(f, 'products');
+            uploadedAngles.push(aUrl);
+          }
           const rUrl = await uploadFileToSkiaBucket(s.rawFile, 'products');
-          finalUrls.push(fUrl);
+          exampleBlocks.push(uploadedAngles.join('||ANGLE||'));
           rawUrls.push(rUrl);
         }
 
-        const selectedMode = document.querySelector('input[name="p-mode"]:checked').value;
+        const selectedMode = document.getElementById('p-mode').value;
         const isWearable = (selectedMode !== 'HOLD');
 
         const sizeClass = isWearable ? '.w-size:checked' : '.h-size:checked';
         const shadeClass = isWearable ? '.w-shade:checked' : '.h-shade:checked';
         const finishClass = isWearable ? '.w-finish:checked' : '.h-finish:checked';
 
-        const sizes = Array.from(document.querySelectorAll(sizeClass)).map(el => el.value);
-        const shades = Array.from(document.querySelectorAll(shadeClass)).map(el => el.value);
+        let sizes = Array.from(document.querySelectorAll(sizeClass)).map(el => el.value);
+        let shades = Array.from(document.querySelectorAll(shadeClass)).map(el => el.value);
         const finishes = Array.from(document.querySelectorAll(finishClass)).map(el => el.value);
 
-        const cleanSpec = document.getElementById('p-spec').value;
-        const packedSpec = cleanSpec + "||CONF:" + JSON.stringify({ sizes, shades, finishes });
+        const customSizesStr = document.getElementById(isWearable ? 'w-custom-sizes' : 'h-custom-sizes').value.trim();
+        if (customSizesStr) {
+          sizes = sizes.concat(customSizesStr.split(',').map(x => x.trim()).filter(Boolean));
+        }
+        const customShadesStr = document.getElementById(isWearable ? 'w-custom-shades' : 'h-custom-shades').value.trim();
+        if (customShadesStr) {
+          shades = shades.concat(customShadesStr.split(',').map(x => x.trim()).filter(Boolean));
+        }
+
+        const confObj = {
+          sizes,
+          shades,
+          finishes,
+          stockStatus: document.getElementById('p-stock').value,
+          pinned: document.getElementById('p-pinned').checked,
+          bothCost: Number(document.getElementById('w-both-cost').value || 150)
+        };
+
+        const cleanSpec = document.getElementById('p-spec').value.trim();
+        const packedSpec = cleanSpec + "||CONF:" + JSON.stringify(confObj);
 
         const newP = {
-          title: document.getElementById('p-title').value,
+          title: document.getElementById('p-title').value.trim(),
           base_price: Number(document.getElementById('p-price').value),
           category: selectedMode,
           spec: packedSpec,
-          prompt: document.getElementById('p-prompt').value,
+          prompt: document.getElementById('p-prompt').value.trim(),
           is_apparel: isWearable,
-          final_image: finalUrls.join('|||SLIDE|||'),
+          final_image: exampleBlocks.join('|||SLIDE|||'),
           raw_photo: rawUrls.join('|||SLIDE|||')
         };
 
@@ -429,10 +580,10 @@
           alert("Error: " + error.message);
         } else {
           e.target.reset();
-          slidePairsData = [{ finalFile: null, rawFile: null, finalPreview: "", rawPreview: "" }];
+          slidePairsData = [{ finalFiles: [], rawFile: null, finalPreviews: [], rawPreview: "" }];
           renderSlideBuilderRows();
           toggleModeOptions();
-          alert("✓ Published in Full HD with " + validSlides.length + " swipeable slide(s)!");
+          alert("✓ Published to SKIA!");
           await loadAllCloudData();
           showTab('manage');
         }
@@ -443,14 +594,12 @@
       }
     }
 
-    // Open Manage Slides Modal (Shows Existing Slides with Delete Buttons + Add New Slide)
+    // 2-LEVEL SLIDES & ANGLES MANAGER MODAL
     function openAddSlideModal(prodId) {
       const p = products.find(x => x.id === prodId);
       if (!p) return;
       targetSlideProductId = prodId;
-      extraFinalFile = null;
-      extraRawFile = null;
-      document.getElementById('extra-final-file').value = "";
+      document.getElementById('extra-final-files').value = "";
       document.getElementById('extra-raw-file').value = "";
       document.getElementById('add-slide-prod-title').innerText = p.title;
       renderExistingSlidesInModal();
@@ -460,24 +609,84 @@
     function renderExistingSlidesInModal() {
       const p = products.find(x => x.id === targetSlideProductId);
       if (!p) return;
-      const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const exBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
       const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean);
       const listBox = document.getElementById('existing-slides-list');
 
-      listBox.innerHTML = finals.map((fImg, idx) => {
-        const rImg = raws[idx] || raws[0] || '';
+      listBox.innerHTML = exBlocks.map((block, exIdx) => {
+        const angles = block.split('||ANGLE||').filter(Boolean);
+        const rImg = raws[exIdx] || raws[0] || '';
         return `
-        <div class="flex items-center justify-between border border-black p-2 bg-neutral-50">
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-[10px] w-14">Slide #${idx + 1}</span>
-            <img src="${resolveImgUrl(fImg)}" class="w-10 h-10 object-cover border border-black" title="Mockup" />
-            <img src="${resolveImgUrl(rImg)}" class="w-10 h-10 object-cover border border-black" title="Raw Photo" />
+        <div class="border border-neutral-300 rounded-2xl p-3 bg-neutral-50 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="bg-black text-white px-2.5 py-0.5 rounded-full font-bold text-[10px]">Example #${exIdx + 1}</span>
+              <img src="${resolveImgUrl(rImg)}" class="w-8 h-8 rounded-lg object-cover border border-black" title="Original Photo" />
+              <span class="text-[10px] text-neutral-500">Original Photo</span>
+            </div>
+            <button type="button" onclick="deleteExistingSlideFromProduct(${exIdx})" class="text-red-700 text-[10px] font-bold underline">
+              Delete Example
+            </button>
           </div>
-          <button type="button" onclick="deleteExistingSlideFromProduct(${idx})" class="border border-red-700 text-red-700 px-2.5 py-1 text-[10px] font-bold uppercase hover:bg-red-700 hover:text-white">
-            Delete Slide
-          </button>
+
+          <!-- Mockup Angles Inside This Example -->
+          <div>
+            <p class="text-[10px] font-bold text-neutral-500 mb-1.5">Mockup Angles for Example #${exIdx + 1} (${angles.length}):</p>
+            <div class="flex flex-wrap gap-2 items-center">
+              ${angles.map((aUrl, aIdx) => `
+                <div class="relative">
+                  <img src="${resolveImgUrl(aUrl)}" class="w-14 h-14 rounded-xl object-cover border border-black" />
+                  <button type="button" onclick="deleteMockupAngleFromExample(${exIdx}, ${aIdx})" class="absolute -top-1.5 -right-1.5 bg-red-700 text-white rounded-full w-4 h-4 text-[9px] font-bold flex items-center justify-center">✕</button>
+                </div>
+              `).join('')}
+              <label class="cursor-pointer border-2 border-dashed border-black rounded-xl w-14 h-14 flex flex-col items-center justify-center text-[9px] font-bold hover:bg-black hover:text-white">
+                <span>+ Angle</span>
+                <input type="file" accept="image/*" multiple onchange="addAnglesToExistingExample(event, ${exIdx})" class="hidden" />
+              </label>
+            </div>
+          </div>
         </div>`;
       }).join('');
+    }
+
+    // Add More Mockup Angles to an Existing Example (Same Original Photo!)
+    async function addAnglesToExistingExample(event, exIdx) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p) return;
+
+      const exBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const currAngles = (exBlocks[exIdx] || '').split('||ANGLE||').filter(Boolean);
+
+      try {
+        for (const f of files) {
+          const url = await uploadFileToSkiaBucket(f, 'products');
+          currAngles.push(url);
+        }
+        exBlocks[exIdx] = currAngles.join('||ANGLE||');
+        await db.from('skia_products').update({ final_image: exBlocks.join('|||SLIDE|||') }).eq('id', p.id);
+        await loadAllCloudData();
+        renderExistingSlidesInModal();
+      } catch (err) {
+        alert("Upload error: " + err.message);
+      }
+    }
+
+    // Delete 1 Specific Mockup Angle from an Example
+    async function deleteMockupAngleFromExample(exIdx, angleIdx) {
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p) return;
+      const exBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const currAngles = (exBlocks[exIdx] || '').split('||ANGLE||').filter(Boolean);
+      if (currAngles.length <= 1) {
+        return alert("Each Example must have at least 1 Mockup Angle! Add another angle first or delete the whole Example.");
+      }
+      currAngles.splice(angleIdx, 1);
+      exBlocks[exIdx] = currAngles.join('||ANGLE||');
+      await db.from('skia_products').update({ final_image: exBlocks.join('|||SLIDE|||') }).eq('id', p.id);
+      await loadAllCloudData();
+      renderExistingSlidesInModal();
     }
 
     async function deleteExistingSlideFromProduct(slideIdx) {
@@ -487,77 +696,130 @@
       const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean);
 
       if (finals.length <= 1) {
-        return alert("A product card must have at least 1 slide! Add a new slide first before deleting this one, or delete the whole product.");
+        return alert("A product must have at least 1 Example!");
       }
-      if (!confirm(`Delete Slide #${slideIdx + 1} from ${p.title}?`)) return;
+      if (!confirm(`Delete Example #${slideIdx + 1}?`)) return;
 
       finals.splice(slideIdx, 1);
       if (raws.length > slideIdx) raws.splice(slideIdx, 1);
 
-      const { error } = await db.from('skia_products')
-        .update({
-          final_image: finals.join('|||SLIDE|||'),
-          raw_photo: raws.join('|||SLIDE|||')
-        })
+      await db.from('skia_products')
+        .update({ final_image: finals.join('|||SLIDE|||'), raw_photo: raws.join('|||SLIDE|||') })
         .eq('id', targetSlideProductId);
 
-      if (error) {
-        alert("Error deleting slide: " + error.message);
-      } else {
-        await loadAllCloudData();
-        renderExistingSlidesInModal();
-      }
+      await loadAllCloudData();
+      renderExistingSlidesInModal();
     }
 
     function closeAddSlideModal() {
       document.getElementById('add-slide-modal').classList.add('hidden');
     }
 
-    function loadExtraSlideFile(e, type) {
-      const file = e.target.files[0];
-      if (!file) return;
-      if (type === 'final') extraFinalFile = file;
-      if (type === 'raw') extraRawFile = file;
-    }
-
     async function saveExtraSlideToProduct() {
-      if (!extraFinalFile || !extraRawFile) return alert("Please pick both the new Mockup photo and new Raw photo!");
+      const finalFiles = Array.from(document.getElementById('extra-final-files').files || []);
+      const rawFile = document.getElementById('extra-raw-file').files[0];
+      if (!finalFiles.length || !rawFile) return alert("Please pick at least 1 Mockup photo and 1 Original Raw photo!");
       const p = products.find(x => x.id === targetSlideProductId);
       if (!p) return;
 
       const btn = document.getElementById('save-slide-btn');
-      btn.innerText = "Uploading HD Slide...";
+      btn.innerText = "Uploading HD Example...";
       btn.disabled = true;
 
       try {
-        const newFinalUrl = await uploadFileToSkiaBucket(extraFinalFile, 'products');
-        const newRawUrl = await uploadFileToSkiaBucket(extraRawFile, 'products');
+        const uploadedAngles = [];
+        for (const f of finalFiles) {
+          const u = await uploadFileToSkiaBucket(f, 'products');
+          uploadedAngles.push(u);
+        }
+        const newRawUrl = await uploadFileToSkiaBucket(rawFile, 'products');
 
-        const updatedFinal = p.final_image + "|||SLIDE|||" + newFinalUrl;
-        const updatedRaw = p.raw_photo + "||SLIDE||".replace('||SLIDE||','|||SLIDE|||') + newRawUrl;
+        const updatedFinal = p.final_image + "|||SLIDE|||" + uploadedAngles.join('||ANGLE||');
+        const updatedRaw = p.raw_photo + "|||SLIDE|||" + newRawUrl;
 
-        const { error } = await db.from('skia_products')
+        await db.from('skia_products')
           .update({ final_image: updatedFinal, raw_photo: updatedRaw })
           .eq('id', targetSlideProductId);
 
         btn.disabled = false;
-        btn.innerText = "Save New Slide to Card →";
-
-        if (error) {
-          alert("Error: " + error.message);
-        } else {
-          extraFinalFile = null;
-          extraRawFile = null;
-          document.getElementById('extra-final-file').value = "";
-          document.getElementById('extra-raw-file').value = "";
-          await loadAllCloudData();
-          renderExistingSlidesInModal();
-          alert("✓ New HD slide added!");
-        }
+        btn.innerText = "Save New Example to Product →";
+        document.getElementById('extra-final-files').value = "";
+        document.getElementById('extra-raw-file').value = "";
+        await loadAllCloudData();
+        renderExistingSlidesInModal();
+        alert("✓ New Example added!");
       } catch (err) {
         btn.disabled = false;
-        btn.innerText = "Save New Slide to Card →";
+        btn.innerText = "Save New Example to Product →";
         alert("Upload error: " + err.message);
+      }
+    }
+
+    // FULL INVENTORY & SPEC EDITOR MODAL
+    function openInventoryModal(prodId) {
+      const p = products.find(x => x.id === prodId);
+      if (!p) return;
+      targetInvProductId = prodId;
+      const { cleanSpec, conf } = parseProdConf(p);
+
+      document.getElementById('inv-stock').value = conf.stockStatus || 'IN_STOCK';
+      document.getElementById('inv-cat').value = (p.category === 'HOLD' || !p.is_apparel) ? 'HOLD' : (p.category === 'CREWS' ? 'CREWS' : 'WEAR');
+      document.getElementById('inv-pinned').checked = !!conf.pinned;
+      document.getElementById('inv-title').value = p.title || '';
+      document.getElementById('inv-price').value = p.base_price || 0;
+      document.getElementById('inv-spec').value = cleanSpec || '';
+      document.getElementById('inv-both-cost').value = conf.bothCost !== undefined ? conf.bothCost : 150;
+      document.getElementById('inv-prompt').value = p.prompt || '';
+      document.getElementById('inv-sizes').value = (conf.sizes || []).join(', ');
+      document.getElementById('inv-shades').value = (conf.shades || []).join(', ');
+      document.getElementById('inv-finishes').value = (conf.finishes || []).join(', ');
+
+      document.getElementById('inventory-modal').classList.remove('hidden');
+    }
+
+    function closeInventoryModal() {
+      document.getElementById('inventory-modal').classList.add('hidden');
+    }
+
+    async function saveInventoryChanges() {
+      const p = products.find(x => x.id === targetInvProductId);
+      if (!p) return;
+      const btn = document.getElementById('save-inv-btn');
+      btn.innerText = "Saving Inventory...";
+      btn.disabled = true;
+
+      const cat = document.getElementById('inv-cat').value;
+      const isWear = (cat !== 'HOLD');
+      const confObj = {
+        stockStatus: document.getElementById('inv-stock').value,
+        pinned: document.getElementById('inv-pinned').checked,
+        bothCost: Number(document.getElementById('inv-both-cost').value || 150),
+        sizes: document.getElementById('inv-sizes').value.split(',').map(x => x.trim()).filter(Boolean),
+        shades: document.getElementById('inv-shades').value.split(',').map(x => x.trim()).filter(Boolean),
+        finishes: document.getElementById('inv-finishes').value.split(',').map(x => x.trim()).filter(Boolean)
+      };
+
+      const cleanSpec = document.getElementById('inv-spec').value.trim();
+      const packedSpec = cleanSpec + "||CONF:" + JSON.stringify(confObj);
+
+      const { error } = await db.from('skia_products').update({
+        title: document.getElementById('inv-title').value.trim(),
+        base_price: Number(document.getElementById('inv-price').value),
+        category: cat,
+        is_apparel: isWear,
+        spec: packedSpec,
+        prompt: document.getElementById('inv-prompt').value.trim()
+      }).eq('id', targetInvProductId);
+
+      btn.disabled = false;
+      btn.innerText = "Save Inventory Changes →";
+
+      if (error) {
+        alert("Error: " + error.message);
+      } else {
+        closeInventoryModal();
+        await loadAllCloudData();
+        alert("✓ Inventory & Product Updated!");
       }
     }
 
@@ -588,15 +850,24 @@
       await loadAllCloudData();
     }
 
-    async function editProductPrice(id, oldPrice) {
-      const newPrice = prompt("Enter new Base Price (₹):", oldPrice);
-      if (!newPrice || isNaN(newPrice)) return;
-      await db.from('skia_products').update({ base_price: Number(newPrice) }).eq('id', id);
+    async function updateOrderStageAdmin(orderId) {
+      const target = orders.find(x => x.id === orderId);
+      if (!target) return;
+      const parts = (target.notes || '').split('||META:');
+      const cleanNotes = parts[0];
+      let meta = {};
+      if (parts[1]) {
+        try { meta = JSON.parse(parts[1]); } catch(e) {}
+      }
+      const nextStage = prompt("Enter live Order Stage / Tracking Note for customer:", meta.stage || "In Print at Studio · Dispatched Soon");
+      if (!nextStage) return;
+      meta.stage = nextStage.trim();
+      await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(meta) }).eq('id', orderId);
       await loadAllCloudData();
     }
 
     async function deleteProdFromCloud(id) {
-      if (!confirm("Delete this product from SKIA?")) return;
+      if (!confirm("Delete this product permanently from SKIA?")) return;
       await db.from('skia_products').delete().eq('id', id);
       await loadAllCloudData();
     }
@@ -609,9 +880,10 @@
 
     function renderAdmin() {
       document.getElementById('order-badge').innerText = orders.length;
+      document.getElementById('prod-badge').innerText = products.length;
       const oBox = document.getElementById('orders-container');
       if (orders.length === 0) {
-        oBox.innerHTML = `<p class="text-xs text-neutral-500 border-2 border-dashed border-black p-6 text-center">No customer orders yet.</p>`;
+        oBox.innerHTML = `<p class="text-xs text-neutral-500 border border-dashed border-neutral-300 rounded-2xl p-6 text-center">No customer orders yet.</p>`;
       } else {
         oBox.innerHTML = orders.map(o => {
           const phoneParts = (o.customer_phone || '').split('#');
@@ -624,46 +896,47 @@
           let payStatus = "UNPAID";
           let paymentMode = "Unpaid · Preview Requested";
           let deliveryAddress = "Not provided";
+          let stageText = "In Studio";
           if (noteParts[1]) {
             try {
               const meta = JSON.parse(noteParts[1]);
               payStatus = meta.payStatus || payStatus;
               paymentMode = meta.payment || paymentMode;
               deliveryAddress = meta.address || deliveryAddress;
+              stageText = meta.stage || stageText;
             } catch(e) {}
           }
 
-          let badgeColor = "bg-amber-200 text-black border border-black";
+          let badgeColor = "bg-amber-100 text-black";
           if (payStatus === 'SUCCESS' || payStatus === 'COD') badgeColor = "bg-emerald-900 text-white";
           if (payStatus === 'CANCELLED') badgeColor = "bg-red-700 text-white";
 
           const waMsg = encodeURIComponent(`Hi ${o.customer_name}! This is SKIA Studio Indore regarding your custom commission (${o.order_code} - ${o.product_title}, ₹${o.price}).`);
           return `
-          <div class="border-2 border-black p-4 bg-white shadow-[4px_4px_0px_#000000] flex flex-col justify-between gap-4">
+          <div class="border border-neutral-200 rounded-2xl p-4 bg-white shadow-xs flex flex-col justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex flex-wrap gap-2 items-center">
-                <span class="bg-black text-white px-2 py-0.5 text-[10px] font-bold">${o.order_code}</span>
-                <span class="px-2 py-0.5 text-[10px] font-bold uppercase ${badgeColor}">
-                  ${paymentMode}
-                </span>
-                <span class="bg-neutral-100 border border-black px-2 py-0.5 text-[10px] font-bold">PIN: ${custPin}</span>
+                <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${o.order_code}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${badgeColor}">${paymentMode}</span>
+                <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-bold">PIN: ${custPin}</span>
+                <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Stage: ${stageText}</span>
               </div>
-              <h3 class="font-serif-luxury text-2xl font-bold">${o.product_title} — ₹${o.price}</h3>
+              <h3 class="text-lg font-extrabold">${o.product_title} — ₹${o.price}</h3>
               <p><strong>Customer:</strong> ${o.customer_name} · <strong>WhatsApp:</strong> ${cleanPhone}</p>
               <p><strong>Spec:</strong> ${o.color} · ${o.size} · ${o.placement} · ${o.finish}</p>
-              <p class="bg-neutral-100 border border-black p-2"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
-              <p class="bg-white border border-black p-2"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
+              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
+              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
             </div>
 
             ${custPhotos.length > 0 ? `
-              <div class="border-t border-neutral-200 pt-3">
+              <div class="border-t border-neutral-100 pt-3">
                 <p class="text-[10px] font-bold uppercase tracking-wider mb-2">Customer Original HD Photo(s) (${custPhotos.length}):</p>
                 <div class="flex flex-wrap gap-3">
                   ${custPhotos.map((ph, idx) => `
                     <div class="text-center">
-                      <img src="${resolveImgUrl(ph)}" class="w-20 h-20 object-cover border-2 border-black mb-1" />
-                      <button type="button" onclick="downloadOriginalPhoto('${ph}', '${o.order_code}-original-${idx+1}.jpg', this)" class="block w-full bg-black text-white px-2 py-1 text-[9px] font-bold uppercase">
+                      <img src="${resolveImgUrl(ph)}" class="w-20 h-20 rounded-xl object-cover border border-neutral-300 mb-1" />
+                      <button type="button" onclick="downloadOriginalPhoto('${ph}', '${o.order_code}-original-${idx+1}.jpg', this)" class="block w-full bg-black text-white rounded-lg px-2 py-1 text-[9px] font-bold uppercase">
                         Download HD #${idx+1}
                       </button>
                     </div>
@@ -672,15 +945,18 @@
               </div>
             ` : ''}
 
-            <div class="pt-2 border-t border-neutral-200 flex flex-wrap gap-2 items-center">
-              <button onclick="setOrderPaymentDecision(${o.id}, 'SUCCESS')" class="bg-emerald-900 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
-                ✓ Payment Successful (Unlocks COD)
+            <div class="pt-2 border-t border-neutral-100 flex flex-wrap gap-2 items-center">
+              <button onclick="setOrderPaymentDecision(${o.id}, 'SUCCESS')" class="bg-emerald-900 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
+                ✓ Payment Successful
               </button>
-              <button onclick="setOrderPaymentDecision(${o.id}, 'CANCELLED')" class="bg-red-700 text-white px-3 py-1.5 text-[10px] font-bold uppercase">
+              <button onclick="setOrderPaymentDecision(${o.id}, 'CANCELLED')" class="bg-red-700 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
                 ✕ Payment Cancelled
               </button>
-              <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="border-2 border-black px-3 py-1 text-[10px] font-bold uppercase">WhatsApp →</a>
-              <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-500 underline ml-1">Delete</button>
+              <button onclick="updateOrderStageAdmin(${o.id})" class="bg-neutral-100 text-black rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
+                Update Stage / Tracking
+              </button>
+              <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="border border-black rounded-full px-3.5 py-1 text-[10px] font-bold uppercase">WhatsApp →</a>
+              <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-400 underline ml-1">Delete</button>
             </div>
           </div>`;
         }).join('');
@@ -688,21 +964,27 @@
 
       const mBox = document.getElementById('manage-container');
       mBox.innerHTML = products.map(p => {
-        const cleanSpec = (p.spec || '').split('||CONF:')[0];
-        const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+        const { cleanSpec, conf } = parseProdConf(p);
+        const exBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+        const firstAngle = (exBlocks[0] || '').split('||ANGLE||')[0] || '';
+        const stockLabel = conf.stockStatus === 'SOLD_OUT' ? '🔴 Sold Out' : (conf.stockStatus === 'HIDDEN' ? '⚪ Hidden' : '🟢 In Stock');
+
         return `
-        <div class="border-2 border-black p-3 flex flex-col sm:flex-row justify-between sm:items-center bg-white gap-3">
+        <div class="border border-neutral-200 rounded-2xl p-3.5 flex flex-col sm:flex-row justify-between sm:items-center bg-white gap-3">
           <div class="flex items-center gap-3">
-            <img src="${resolveImgUrl(finals[0])}" class="w-12 h-12 object-cover border border-black shrink-0" />
+            <img src="${resolveImgUrl(firstAngle)}" class="w-14 h-14 rounded-xl object-cover border border-neutral-200 shrink-0" />
             <div>
-              <p class="font-bold">${p.title} — ₹${p.base_price}</p>
-              <p class="text-[10px] text-neutral-500"><strong>${finals.length} Slide(s)</strong> · ${p.is_apparel ? 'To Wear' : 'To Hold & Keep'} · ${cleanSpec}</p>
+              <div class="flex items-center gap-2">
+                <p class="font-extrabold text-sm">${conf.pinned ? '📌 ' : ''}${p.title} — ₹${p.base_price}</p>
+                <span class="text-[10px] font-bold bg-neutral-100 px-2 py-0.5 rounded-full">${stockLabel}</span>
+              </div>
+              <p class="text-[11px] text-neutral-500 mt-0.5"><strong>${exBlocks.length} Example(s)</strong> · ${cleanSpec}</p>
             </div>
           </div>
           <div class="flex flex-wrap gap-1.5 shrink-0">
-            <button onclick="openAddSlideModal(${p.id})" class="bg-black text-white px-2.5 py-1 font-bold uppercase text-[10px]">Manage / + Slides</button>
-            <button onclick="editProductPrice(${p.id}, ${p.base_price})" class="border-2 border-black px-2.5 py-1 font-bold uppercase text-[10px] hover:bg-black hover:text-white">Edit ₹</button>
-            <button onclick="deleteProdFromCloud(${p.id})" class="border-2 border-black px-2.5 py-1 font-bold uppercase text-[10px] text-red-700 hover:bg-red-700 hover:text-white">Delete</button>
+            <button onclick="openInventoryModal(${p.id})" class="bg-black text-white rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Edit Inventory</button>
+            <button onclick="openAddSlideModal(${p.id})" class="bg-neutral-100 text-black rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Slides & Angles</button>
+            <button onclick="deleteProdFromCloud(${p.id})" class="bg-red-50 text-red-700 rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Delete</button>
           </div>
         </div>`;
       }).join('');
