@@ -1160,14 +1160,8 @@
         updateCodButtonUI();
         return;
       }
-      const { data } = await db.from('skia_orders')
-        .select('notes')
-        .like('customer_phone', `${phone}#%`);
-
-      isCustomerCodEligible = (data || []).some(row => {
-        const { meta } = parseOrderMeta(row);
-        return meta.payStatus === 'SUCCESS';
-      });
+      const { data } = await db.rpc('skia_check_cod', { p_phone: phone });
+      isCustomerCodEligible = !!data;
       updateCodButtonUI();
     }
 
@@ -1202,20 +1196,9 @@
     }
 
     async function verifyPhonePinOnCloud(phone, pin) {
-      const { data } = await db.from('skia_orders')
-        .select('customer_phone')
-        .like('customer_phone', `${phone}#%`)
-        .limit(5);
-
-      if (data && data.length > 0) {
-        const existingKey = data[0].customer_phone;
-        const existingPin = existingKey.split('#')[1];
-        if (existingPin && existingPin !== pin) {
-          return { valid: false, exists: true };
-        }
-        return { valid: true, exists: true };
-      }
-      return { valid: true, exists: false };
+      const { data, error } = await db.rpc('skia_verify_pin', { p_phone: phone, p_pin: pin });
+      if (error) return { valid: false, exists: true };
+      return { valid: !!data, exists: true };
     }
 
     async function fetchCustomerOrdersFromCloud(phone, pin, silent = false) {
@@ -1233,11 +1216,8 @@
         return false;
       }
 
-      const lockedKey = `${phone}#${pin}`;
-      const { data } = await db.from('skia_orders')
-        .select('*')
-        .eq('customer_phone', lockedKey)
-        .order('id', { ascending: false });
+     const lockedKey = `${phone}#${pin}`;
+        const { data } = await db.rpc('skia_get_my_orders', { p_locked_key: lockedKey });
 
       customerOrders = data || [];
       await checkCodEligibilityByPhone(phone);
@@ -1380,7 +1360,12 @@
         meta.payment = '⏳ Under Processing (Verifying Payment)';
         meta.stage = 'Order Under Processing';
         const updatedNotes = cleanNotes + "||META:" + JSON.stringify(meta);
-        await db.from('skia_orders').update({ notes: updatedNotes }).eq('id', lastCreatedOrder.id);
+        const lockedKey = `${localStorage.getItem('skia_customer_phone')}#${localStorage.getItem('skia_customer_pin')}`;
+        await db.rpc('skia_set_order_processing', {
+          p_order_id: lastCreatedOrder.id,
+          p_locked_key: lockedKey,
+          p_notes: updatedNotes
+        });
         await fetchCustomerOrdersFromCloud(localStorage.getItem('skia_customer_phone'), localStorage.getItem('skia_customer_pin'), true);
       }
     }
@@ -1783,14 +1768,14 @@
           photo_data: uploadedUrls.join('|||SLIDE|||')
         };
 
-        const { data, error } = await db.from('skia_orders').insert([orderPayload]).select('*');
-        btn.disabled = false;
-        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
-        if (error) {
-          alert("Could not send order: " + error.message);
-        } else {
-          lastCreatedOrder = (data && data[0]) ? data[0] : orderPayload;
-          await fetchCustomerOrdersFromCloud(phone, pin, true);
+   const { error } = await db.from('skia_orders').insert([orderPayload]);
+          btn.disabled = false;
+          btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
+          if (error) {
+            alert("Could not send order: " + error.message);
+          } else {
+            await fetchCustomerOrdersFromCloud(phone, pin, true);
+            lastCreatedOrder = customerOrders[0] || orderPayload;
 
           document.getElementById('ticket-code').innerText = orderPayload.order_code;
           document.getElementById('ticket-item').innerText = `${orderPayload.product_title}`;
