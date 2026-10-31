@@ -5,38 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="W87l4ZPHJR-KDDOqgl10y2Tzss8wiyGe0lS7y6qwcTw" />
   <title>SKIA Studio Indore — Custom Apparel, Ceramic Cups & Everyday Objects</title>
+  <meta name="application-name" content="SKIA Studio" />
+  <meta name="apple-mobile-web-app-title" content="SKIA Studio" />
   <meta name="description" content="Bring any photo from your phone and tell us your idea. Custom 240–400 GSM heavy cotton tees, hoodies, varsity jackets, ceramic cups & crew drops in Indore. Free WhatsApp preview before print." />
   <meta name="keywords" content="SKIA, SKIA Studio, SKIA Studio Indore, custom t-shirt printing Indore, custom mug Indore, custom hoodie India, personalized gifts Indore, Ronak Sem" />
   <link rel="canonical" href="https://skia-studio.vercel.app/" />
 
-  <!-- Circular Pitch-Black Flame Favicon -->
- <link rel="icon" type="image/svg+xml" href="https://skia-studio.vercel.app/favicon.svg" />
-  <link rel="shortcut icon" href="https://skia-studio.vercel.app/favicon.svg" />
-  <link rel="apple-touch-icon" href="https://skia-studio.vercel.app/favicon.svg" />
-  <!-- OpenGraph Rich Preview -->
+  <!-- Circular Pitch-Black Flame Favicon (With sizes="any" for Google Search Bot) -->
+  <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+
+  <!-- OpenGraph Rich Preview (Matches 'SKIA Studio' Site Name) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="SKIA Studio Indore" />
-  <meta property="og:title" content="SKIA — Bring a Photo. Cast It on What You Wear & Hold." />
+  <meta property="og:site_name" content="SKIA Studio" />
+  <meta property="og:title" content="SKIA Studio Indore — Custom Apparel, Ceramic Cups & Everyday Objects" />
   <meta property="og:description" content="1-of-1 Custom 240–400 GSM Apparel, Ceramic Cups & Objects. Approve your digital preview on WhatsApp before we print." />
   <meta property="og:url" content="https://skia-studio.vercel.app/" />
 
-  <!-- Google Search Sitelinks Structured Data -->
+  <!-- 1. Standalone WebSite Schema (Forces Google to Replace 'Vercel' with 'SKIA Studio') -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SKIA Studio",
+    "alternateName": ["SKIA Studio Indore", "SKIA"],
+    "url": "https://skia-studio.vercel.app/"
+  }
+  </script>
+
+  <!-- 2. Organization & Sitelinks Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebSite",
-        "@id": "https://skia-studio.vercel.app/#website",
-        "url": "https://skia-studio.vercel.app/",
-        "name": "SKIA Studio Indore",
-        "alternateName": "SKIA",
-        "description": "Custom 1-of-1 Apparel, Outerwear, Ceramic Cups & Objects crafted from your photos."
-      },
-      {
         "@type": "Organization",
-        "name": "SKIA Studio Indore",
+        "name": "SKIA Studio",
         "url": "https://skia-studio.vercel.app/",
+        "logo": "https://skia-studio.vercel.app/favicon.svg",
         "founder": "Ronak Sem",
         "telephone": "+91-8103423011",
         "email": "semronak26@gmail.com",
@@ -54,28 +61,24 @@
             "@type": "SiteNavigationElement",
             "position": 1,
             "name": "To Wear (240-400 GSM Apparel)",
-            "description": "Custom Oversized Tees, Acid-Wash Tees, Heavy Hoodies & Varsity Jackets",
             "url": "https://skia-studio.vercel.app/#to-wear"
           },
           {
             "@type": "SiteNavigationElement",
             "position": 2,
             "name": "To Hold & Keep (Cups & Objects)",
-            "description": "Custom Studio Ceramic Cups, Phone Cases, Totes, Metal Posters & Desk Mats",
             "url": "https://skia-studio.vercel.app/#to-hold"
           },
           {
             "@type": "SiteNavigationElement",
             "position": 3,
             "name": "For Crews (College & Team Drops)",
-            "description": "Custom merchandise for Indore colleges, gyms, cafes & startups",
             "url": "https://skia-studio.vercel.app/#for-crews"
           },
           {
             "@type": "SiteNavigationElement",
             "position": 4,
             "name": "My Previews & Orders",
-            "description": "Track your custom WhatsApp previews and confirmed orders with your 4-digit PIN",
             "url": "https://skia-studio.vercel.app/#previews-orders"
           }
         ]
@@ -83,7 +86,7 @@
     ]
   }
   </script>
-
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
