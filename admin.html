@@ -878,6 +878,15 @@
       await loadAllCloudData();
     }
 
+   function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function renderAdmin() {
       document.getElementById('order-badge').innerText = orders.length;
       document.getElementById('prod-badge').innerText = products.length;
@@ -887,12 +896,12 @@
       } else {
         oBox.innerHTML = orders.map(o => {
           const phoneParts = (o.customer_phone || '').split('#');
-          const cleanPhone = phoneParts[0] || 'N/A';
-          const custPin = phoneParts[1] || 'None';
+          const cleanPhone = (phoneParts[0] || '').replace(/\D/g, '') || 'N/A';
+          const custPin = escapeHtml(phoneParts[1] || 'None');
           const custPhotos = (o.photo_data || '').split('|||SLIDE|||').filter(Boolean);
 
           const noteParts = (o.notes || '').split('||META:');
-          const cleanNotes = noteParts[0];
+          const cleanNotes = escapeHtml(noteParts[0]);
           let payStatus = "UNPAID";
           let paymentMode = "Unpaid · Preview Requested";
           let deliveryAddress = "Not provided";
@@ -916,16 +925,16 @@
           <div class="border border-neutral-200 rounded-2xl p-4 bg-white shadow-xs flex flex-col justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex flex-wrap gap-2 items-center">
-                <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${o.order_code}</span>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${badgeColor}">${paymentMode}</span>
+                <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${escapeHtml(o.order_code)}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${badgeColor}">${escapeHtml(paymentMode)}</span>
                 <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-bold">PIN: ${custPin}</span>
-                <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Stage: ${stageText}</span>
+                <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Stage: ${escapeHtml(stageText)}</span>
               </div>
-              <h3 class="text-lg font-extrabold">${o.product_title} — ₹${o.price}</h3>
-              <p><strong>Customer:</strong> ${o.customer_name} · <strong>WhatsApp:</strong> ${cleanPhone}</p>
-              <p><strong>Spec:</strong> ${o.color} · ${o.size} · ${o.placement} · ${o.finish}</p>
+              <h3 class="text-lg font-extrabold">${escapeHtml(o.product_title)} — ₹${escapeHtml(o.price)}</h3>
+              <p><strong>Customer:</strong> ${escapeHtml(o.customer_name)} · <strong>WhatsApp:</strong> ${escapeHtml(cleanPhone)}</p>
+              <p><strong>Spec:</strong> ${escapeHtml(o.color)} · ${escapeHtml(o.size)} · ${escapeHtml(o.placement)} · ${escapeHtml(o.finish)}</p>
               <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
-              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Delivery Address (For Qikink):</strong> ${deliveryAddress}</p>
+              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Delivery Address:</strong> ${escapeHtml(deliveryAddress)}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
             </div>
 
@@ -935,8 +944,8 @@
                 <div class="flex flex-wrap gap-3">
                   ${custPhotos.map((ph, idx) => `
                     <div class="text-center">
-                      <img src="${resolveImgUrl(ph)}" class="w-20 h-20 rounded-xl object-cover border border-neutral-300 mb-1" />
-                      <button type="button" onclick="downloadOriginalPhoto('${ph}', '${o.order_code}-original-${idx+1}.jpg', this)" class="block w-full bg-black text-white rounded-lg px-2 py-1 text-[9px] font-bold uppercase">
+                      <img src="${escapeHtml(resolveImgUrl(ph))}" class="w-20 h-20 rounded-xl object-cover border border-neutral-300 mb-1" />
+                      <button type="button" onclick="downloadOriginalPhoto('${escapeHtml(ph)}', '${escapeHtml(o.order_code)}-original-${idx+1}.jpg', this)" class="block w-full bg-black text-white rounded-lg px-2 py-1 text-[9px] font-bold uppercase">
                         Download HD #${idx+1}
                       </button>
                     </div>
@@ -946,17 +955,17 @@
             ` : ''}
 
             <div class="pt-2 border-t border-neutral-100 flex flex-wrap gap-2 items-center">
-              <button onclick="setOrderPaymentDecision(${o.id}, 'SUCCESS')" class="bg-emerald-900 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
+              <button onclick="setOrderPaymentDecision(${Number(o.id)}, 'SUCCESS')" class="bg-emerald-900 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
                 ✓ Payment Successful
               </button>
-              <button onclick="setOrderPaymentDecision(${o.id}, 'CANCELLED')" class="bg-red-700 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
+              <button onclick="setOrderPaymentDecision(${Number(o.id)}, 'CANCELLED')" class="bg-red-700 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
                 ✕ Payment Cancelled
               </button>
-              <button onclick="updateOrderStageAdmin(${o.id})" class="bg-neutral-100 text-black rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
+              <button onclick="updateOrderStageAdmin(${Number(o.id)})" class="bg-neutral-100 text-black rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
                 Update Stage / Tracking
               </button>
               <a href="https://wa.me/91${cleanPhone}?text=${waMsg}" target="_blank" class="border border-black rounded-full px-3.5 py-1 text-[10px] font-bold uppercase">WhatsApp →</a>
-              <button onclick="deleteOrderFromCloud(${o.id})" class="text-[10px] text-neutral-400 underline ml-1">Delete</button>
+              <button onclick="deleteOrderFromCloud(${Number(o.id)})" class="text-[10px] text-neutral-400 underline ml-1">Delete</button>
             </div>
           </div>`;
         }).join('');
@@ -972,19 +981,19 @@
         return `
         <div class="border border-neutral-200 rounded-2xl p-3.5 flex flex-col sm:flex-row justify-between sm:items-center bg-white gap-3">
           <div class="flex items-center gap-3">
-            <img src="${resolveImgUrl(firstAngle)}" class="w-14 h-14 rounded-xl object-cover border border-neutral-200 shrink-0" />
+            <img src="${escapeHtml(resolveImgUrl(firstAngle))}" class="w-14 h-14 rounded-xl object-cover border border-neutral-200 shrink-0" />
             <div>
               <div class="flex items-center gap-2">
-                <p class="font-extrabold text-sm">${conf.pinned ? '📌 ' : ''}${p.title} — ₹${p.base_price}</p>
+                <p class="font-extrabold text-sm">${conf.pinned ? '📌 ' : ''}${escapeHtml(p.title)} — ₹${escapeHtml(p.base_price)}</p>
                 <span class="text-[10px] font-bold bg-neutral-100 px-2 py-0.5 rounded-full">${stockLabel}</span>
               </div>
-              <p class="text-[11px] text-neutral-500 mt-0.5"><strong>${exBlocks.length} Example(s)</strong> · ${cleanSpec}</p>
+              <p class="text-[11px] text-neutral-500 mt-0.5"><strong>${exBlocks.length} Example(s)</strong> · ${escapeHtml(cleanSpec)}</p>
             </div>
           </div>
           <div class="flex flex-wrap gap-1.5 shrink-0">
-            <button onclick="openInventoryModal(${p.id})" class="bg-black text-white rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Edit Inventory</button>
-            <button onclick="openAddSlideModal(${p.id})" class="bg-neutral-100 text-black rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Slides & Angles</button>
-            <button onclick="deleteProdFromCloud(${p.id})" class="bg-red-50 text-red-700 rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Delete</button>
+            <button onclick="openInventoryModal(${Number(p.id)})" class="bg-black text-white rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Edit Inventory</button>
+            <button onclick="openAddSlideModal(${Number(p.id)})" class="bg-neutral-100 text-black rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Slides & Angles</button>
+            <button onclick="deleteProdFromCloud(${Number(p.id)})" class="bg-red-50 text-red-700 rounded-full px-3 py-1.5 font-bold uppercase text-[10px]">Delete</button>
           </div>
         </div>`;
       }).join('');
