@@ -4,46 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="W87l4ZPHJR-KDDOqgl10y2Tzss8wiyGe0lS7y6qwcTw" />
-  <title>SKIA Studio Indore — Custom Apparel, Ceramic Cups & Everyday Objects</title>
+ <title>SKIA Studio | Custom Apparel, Ceramic Cups & Everyday Objects — Indore</title>
   <meta name="application-name" content="SKIA Studio" />
   <meta name="apple-mobile-web-app-title" content="SKIA Studio" />
-  <meta name="description" content="Bring any photo from your phone and tell us your idea. Custom 240–400 GSM heavy cotton tees, hoodies, varsity jackets, ceramic cups & crew drops in Indore. Free WhatsApp preview before print." />
-  <meta name="keywords" content="SKIA, SKIA Studio, SKIA Studio Indore, custom t-shirt printing Indore, custom mug Indore, custom hoodie India, personalized gifts Indore, Ronak Sem" />
+  <meta name="description" content="SKIA Studio Indore — Bring any photo from your phone and tell us your idea. Custom 240–400 GSM heavy cotton tees, hoodies, varsity jackets, ceramic cups & crew drops. Free WhatsApp preview before print." />
+  <meta name="keywords" content="SKIA Studio, SKIA, SKIA Studio Indore, custom t-shirt printing Indore, custom mug Indore, custom hoodie India, personalized gifts Indore, Ronak Sem" />
   <link rel="canonical" href="https://skia-studio.vercel.app/" />
 
-  <!-- Circular Pitch-Black Flame Favicon (With sizes="any" for Google Search Bot) -->
   <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/favicon.svg" />
 
-  <!-- OpenGraph Rich Preview (Matches 'SKIA Studio' Site Name) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SKIA Studio" />
-  <meta property="og:title" content="SKIA Studio Indore — Custom Apparel, Ceramic Cups & Everyday Objects" />
-  <meta property="og:description" content="1-of-1 Custom 240–400 GSM Apparel, Ceramic Cups & Objects. Approve your digital preview on WhatsApp before we print." />
+  <meta property="og:title" content="SKIA Studio | Custom Apparel, Ceramic Cups & Everyday Objects — Indore" />
+  <meta property="og:description" content="1-of-1 Custom 240–400 GSM Apparel, Ceramic Cups & Objects by SKIA Studio Indore. Approve your digital preview on WhatsApp before we print." />
   <meta property="og:url" content="https://skia-studio.vercel.app/" />
 
-  <!-- 1. Standalone WebSite Schema (Forces Google to Replace 'Vercel' with 'SKIA Studio') -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "SKIA Studio",
-    "alternateName": ["SKIA Studio Indore", "SKIA"],
-    "url": "https://skia-studio.vercel.app/"
-  }
-  </script>
-
-  <!-- 2. Organization & Sitelinks Schema -->
+  <!-- Unified WebSite + Organization Schema with Subdomain Fallback -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
+        "@type": "WebSite",
+        "@id": "https://skia-studio.vercel.app/#website",
         "name": "SKIA Studio",
+        "alternateName": [
+          "SKIA Studio Indore",
+          "SKIA",
+          "skia-studio.vercel.app"
+        ],
         "url": "https://skia-studio.vercel.app/",
-        "logo": "https://skia-studio.vercel.app/favicon.svg",
+        "publisher": {
+          "@id": "https://skia-studio.vercel.app/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://skia-studio.vercel.app/#organization",
+        "name": "SKIA Studio",
+        "alternateName": "SKIA Studio Indore",
+        "url": "https://skia-studio.vercel.app/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://skia-studio.vercel.app/favicon.svg"
+        },
         "founder": "Ronak Sem",
         "telephone": "+91-8103423011",
         "email": "semronak26@gmail.com",
@@ -85,8 +91,7 @@
       }
     ]
   }
-  </script>
-  
+  </script> 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
