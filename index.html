@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="W87l4ZPHJR-KDDOqgl10y2Tzss8wiyGe0lS7y6qwcTw" />
- <title>SKIA Studio | Custom Apparel, Ceramic Cups & Everyday Objects — Indore</title>
+  <title>SKIA Studio | Custom Apparel, Ceramic Cups & Everyday Objects — Indore</title>
   <meta name="application-name" content="SKIA Studio" />
   <meta name="apple-mobile-web-app-title" content="SKIA Studio" />
   <meta name="description" content="SKIA Studio Indore — Bring any photo from your phone and tell us your idea. Custom 240–400 GSM heavy cotton tees, hoodies, varsity jackets, ceramic cups & crew drops. Free WhatsApp preview before print." />
@@ -50,11 +50,12 @@
           "@type": "ImageObject",
           "url": "https://skia-studio.vercel.app/favicon.svg"
         },
-     "founder": "Ronak Sem",
+        "founder": "Ronak Sem",
         "sameAs": [
           "https://www.instagram.com/skia_studio/"
         ],
-        "telephone": "+91-8103423011",   "email": "semronak26@gmail.com",
+        "telephone": "+91-8103423011",
+        "email": "semronak26@gmail.com",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Indore",
@@ -93,7 +94,7 @@
       }
     ]
   }
-  </script> 
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
@@ -220,7 +221,7 @@
     </nav>
   </header>
 
-  <!-- 2. SLIDE-OUT LEFT NAVIGATION MENU DRAWER (UNTOUCHED) -->
+  <!-- 2. SLIDE-OUT LEFT NAVIGATION MENU DRAWER -->
   <div id="side-menu-overlay" onclick="closeSideMenu()" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden">
     <aside onclick="event.stopPropagation()" class="animate-menu-slide bg-white w-72 sm:w-80 h-full flex flex-col justify-between p-6 shadow-2xl overflow-y-auto">
       <div>
@@ -258,11 +259,11 @@
             <button onclick="navigateMenu('HOW')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
               <span>How SKIA Works & Privacy</span><span>→</span>
             </button>
-        <button onclick="navigateMenu('STUDIO_CHAT')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+            <button onclick="navigateMenu('STUDIO_CHAT')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
               <span>Direct Studio Chat</span><span>→</span>
             </button>
             <a href="https://www.instagram.com/skia_studio/" target="_blank" rel="noopener noreferrer" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
-              <span>Instagram · @skia_studio</span><span>↗</span>
+              <span>Instagram</span><span>↗</span>
             </a>
           </div>
         </div>
@@ -283,13 +284,14 @@
   <!-- 3. MAIN CONTENT AREA -->
   <main class="max-w-6xl mx-auto px-3.5 sm:px-6 pt-5 pb-16 w-full flex-1">
 
-    <!-- PAGE 1: MAIN CATALOG GRID (100% UNTOUCHED!) -->
+    <!-- PAGE 1: MAIN CATALOG GRID -->
     <div id="storefront-view" class="animate-view-enter">
-     <section class="text-center max-w-xl mx-auto pt-2 pb-6">
+      <section class="text-center max-w-xl mx-auto pt-2 pb-6">
         <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400 mb-1.5">SKIA Studio · 1-of-1 Custom Studio Indore</p>
         <h1 id="catalog-heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
           <span class="sr-only">SKIA Studio Indore — </span>Bring your photos. <span class="font-normal italic text-neutral-500">Cast them in form.</span>
-        </h1>   <p class="text-xs text-neutral-500 mt-1.5">
+        </h1>
+        <p class="text-xs text-neutral-500 mt-1.5">
           Tap any piece below to view its full specifications & examples.
         </p>
       </section>
@@ -317,16 +319,18 @@
       <section id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6"></section>
     </div>
 
-    <!-- PAGE 1B: REDESIGNED INSIDE PRODUCT PAGE (CLEAN ALIGNMENT + 2-LEVEL SLIDES!) -->
+    <!-- PAGE 1B: INSIDE PRODUCT PAGE (WITH SHARE LINK BUTTON) -->
     <div id="product-detail-view" class="hidden animate-view-enter max-w-5xl mx-auto pt-1 pb-10">
       
-      <!-- Clean Minimal Breadcrumb Navigation Row -->
+   <!-- Clean Minimal Breadcrumb Navigation Row -->
       <div class="flex items-center justify-between mb-4 px-1">
         <button onclick="navigateMenu('CATALOG', currentCategory)" class="tactile-btn inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-black py-1.5">
           <span class="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-sm">←</span>
           <span>Catalog</span>
         </button>
-        <span id="pdp-cat-tag" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 bg-neutral-100 px-3 py-1 rounded-full">STUDIO PIECE</span>
+        <button type="button" onclick="shareCurrentProductLink(this)" class="tactile-btn text-[10px] font-bold uppercase tracking-wider bg-neutral-100 hover:bg-black hover:text-white text-black px-3.5 py-1.5 rounded-full">
+          Share Link ↗
+        </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-10 items-start">
@@ -334,26 +338,23 @@
         <!-- Left 7 Columns: 2-Level Interactive Visual Showcase -->
         <div class="md:col-span-7 space-y-3">
           
-          <!-- Main Mockup Viewer (Swipes through Mockup Angles of Current Example) -->
+          <!-- Main Mockup Viewer -->
           <div ontouchstart="handlePdpTouchStart(event)" ontouchend="handlePdpTouchEnd(event)" class="relative aspect-[4/5] w-full rounded-3xl overflow-hidden bg-[#F4F4F4] select-none">
             <img id="pdp-main-img" src="" alt="Product Preview" class="img-crossfade w-full h-full object-cover" />
 
-            <!-- Top-Left Spec Pill -->
             <span id="pdp-spec-pill" class="absolute top-3.5 left-3.5 bg-black/80 backdrop-blur-xs text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
               240 GSM Cotton
             </span>
 
-            <!-- Top-Right Mockup Angle Counter Badge -->
             <span id="pdp-angle-badge" class="hidden absolute top-3.5 right-3.5 bg-white/90 backdrop-blur-xs text-black text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">
               View 1 / 2
             </span>
 
-            <!-- Left/Right Arrows for Mockup Angles of Current Example -->
             <button id="pdp-prev-btn" type="button" onclick="changePdpAngle(-1)" class="hidden tactile-btn absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-8 h-8 font-bold text-sm flex items-center justify-center shadow-md">‹</button>
             <button id="pdp-next-btn" type="button" onclick="changePdpAngle(1)" class="hidden tactile-btn absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-8 h-8 font-bold text-sm flex items-center justify-center shadow-md">›</button>
           </div>
 
-          <!-- LEVEL 2 BAR: Mockup Angles of the Current Original Photo + Raw Photo Compare -->
+          <!-- LEVEL 2 BAR: Mockup Angles + Raw Photo Compare -->
           <div class="bg-neutral-100 rounded-2xl p-3 flex items-center justify-between gap-3">
             <div onclick="swapPdpImage()" class="tactile-btn cursor-pointer flex items-center gap-2.5 bg-white rounded-xl p-1.5 pr-3 shadow-xs shrink-0">
               <img id="pdp-badge-img" src="" class="w-10 h-10 rounded-lg object-cover border border-neutral-200" />
@@ -363,11 +364,10 @@
               </div>
             </div>
 
-            <!-- Mockup Angle Thumbnails for THIS Original Photo -->
             <div id="pdp-angles-list" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
           </div>
 
-          <!-- LEVEL 1 BAR: Switch Between Different Template Examples (Different Original Photos!) -->
+          <!-- LEVEL 1 BAR: Switch Between Different Template Examples -->
           <div id="pdp-examples-row" class="hidden bg-neutral-50 border border-neutral-200/80 rounded-2xl p-3.5">
             <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">
               Switch Template Example (Different Customer Photos):
@@ -376,13 +376,13 @@
           </div>
         </div>
 
-        <!-- Right 5 Columns: Symmetrical, Clean Product Info & Specifications -->
+        <!-- Right 5 Columns: Product Info & Specifications -->
         <div class="md:col-span-5 space-y-5">
           
-          <!-- Title & Price Header Block -->
-          <div class="border-b border-neutral-100 pb-4">
-            <div class="flex items-start justify-between gap-3">
-              <h1 id="pdp-title" class="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 leading-snug">
+        <div class="border-b border-neutral-100 pb-4">
+                <p id="pdp-cat-tag" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">STUDIO PIECE</p>
+                <div class="flex items-start justify-between gap-3">
+                  <h1 id="pdp-title" class="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 leading-snug">
                 Product Title
               </h1>
               <span class="text-xl sm:text-2xl font-extrabold text-black shrink-0">₹<span id="pdp-price">899</span></span>
@@ -393,14 +393,12 @@
             </div>
           </div>
 
-          <!-- Primary CTA Button (Placed High & Accessible) -->
           <div>
             <button id="pdp-customize-btn" type="button" onclick="openModalFromProductPage()" class="tactile-btn w-full bg-black text-white rounded-full py-4 text-xs font-extrabold uppercase tracking-widest shadow-md">
               Customize & Upload Your Photo(s) →
             </button>
           </div>
 
-          <!-- Cleanly Aligned Specifications Card -->
           <div class="bg-neutral-50 border border-neutral-200/80 rounded-2xl p-4 space-y-4 text-xs">
             <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Product Specifications</p>
             
@@ -562,10 +560,11 @@
       <p class="tracking-[0.4em] font-extrabold text-sm mb-1">SKIA</p>
       <p class="text-neutral-400 text-[11px]">To Wear · To Hold & Keep · Studio Indore</p>
     </div>
-   <div class="flex flex-wrap justify-center gap-4 text-[11px] text-neutral-300 underline pt-1">
-      <a href="https://www.instagram.com/skia_studio/" target="_blank" rel="noopener noreferrer" class="font-bold text-white">Instagram (@skia_studio) ↗</a>
+    <div class="flex flex-wrap justify-center gap-4 text-[11px] text-neutral-300 underline pt-1">
+      <a href="https://www.instagram.com/skia_studio/" target="_blank" rel="noopener noreferrer">Instagram</a>
       <button onclick="openPolicyModal('contact')">Contact Us</button>
-      <button onclick="openPolicyModal('privacy')">Privacy Policy</button>   <button onclick="openPolicyModal('terms')">Terms & Conditions</button>
+      <button onclick="openPolicyModal('privacy')">Privacy Policy</button>
+      <button onclick="openPolicyModal('terms')">Terms & Conditions</button>
       <button onclick="openPolicyModal('shipping')">Shipping & Refund Policy</button>
     </div>
     <p class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011</p>
@@ -810,6 +809,7 @@
 
     </div>
   </div>
+  
   <script>
     const SUPABASE_URL = window.location.hostname.includes('vercel.app')
       ? window.location.origin + "/supaproxy"
@@ -845,16 +845,19 @@
 
     function openSideMenu() {
       document.getElementById('side-menu-overlay').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      history.pushState({ modal: 'MENU' }, '');
     }
     function closeSideMenu() {
       document.getElementById('side-menu-overlay').classList.add('hidden');
+      document.body.style.overflow = '';
     }
     function hideAllMainViews() {
       ['storefront-view', 'product-detail-view', 'how-it-works-view', 'studio-chat-view', 'customer-orders-view'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
       });
     }
-    async function navigateMenu(page, subParam) {
+    async function navigateMenu(page, subParam, skipHistory = false) {
       closeSideMenu();
       hideAllMainViews();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -862,6 +865,9 @@
       if (page === 'CATALOG') {
         document.getElementById('storefront-view').classList.remove('hidden');
         filterCategory(subParam || 'ALL');
+        if (!skipHistory && window.location.search.includes('piece=')) {
+          history.pushState({ page: 'CATALOG' }, '', window.location.pathname);
+        }
       } else if (page === 'HOW') {
         document.getElementById('how-it-works-view').classList.remove('hidden');
       } else if (page === 'STUDIO_CHAT') {
@@ -922,7 +928,7 @@
       return { cleanSpec, conf };
     }
 
-    // OPEN DEDICATED PRODUCT PAGE (WITH 2-LEVEL SLIDES & CLEAN ALIGNMENT)
+    // OPEN DEDICATED PRODUCT PAGE (WITH 2-LEVEL SLIDES & SHAREABLE URL)
     function openProductPage(prodId) {
       const p = products.find(x => x.id === prodId);
       if (!p) return;
@@ -976,6 +982,17 @@
       hideAllMainViews();
       document.getElementById('product-detail-view').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.location.search !== `?piece=${p.id}`) {
+        history.pushState({ page: 'PRODUCT', id: p.id }, '', `?piece=${p.id}`);
+      }
+    }
+
+    function shareCurrentProductLink(btn) {
+      if (!activePdpProduct) return;
+      const url = `${window.location.origin}${window.location.pathname}?piece=${activePdpProduct.id}`;
+      navigator.clipboard.writeText(url);
+      btn.innerText = "✓ Link Copied!";
+      setTimeout(() => { btn.innerText = "Share Link ↗"; }, 2000);
     }
 
     function renderPdpGalleryState() {
@@ -1133,6 +1150,15 @@
       document.getElementById('loading-status').classList.add('hidden');
       renderProducts();
 
+      const sharedPieceId = new URLSearchParams(window.location.search).get('piece');
+      if (sharedPieceId) {
+        const targetProd = products.find(p => String(p.id) === String(sharedPieceId));
+        if (targetProd) {
+          history.replaceState({ page: 'CATALOG' }, '', window.location.pathname);
+          openProductPage(targetProd.id);
+        }
+      }
+
       const savedPhone = localStorage.getItem('skia_customer_phone') || '';
       const savedPin = localStorage.getItem('skia_customer_pin') || '';
       const savedName = localStorage.getItem('skia_customer_name') || '';
@@ -1225,8 +1251,8 @@
         return false;
       }
 
-     const lockedKey = `${phone}#${pin}`;
-        const { data } = await db.rpc('skia_get_my_orders', { p_locked_key: lockedKey });
+      const lockedKey = `${phone}#${pin}`;
+      const { data } = await db.rpc('skia_get_my_orders', { p_locked_key: lockedKey });
 
       customerOrders = data || [];
       await checkCodEligibilityByPhone(phone);
@@ -1355,6 +1381,8 @@
       await choosePayNowAndMoveToProcessing();
       goToStep(4);
       document.getElementById('custom-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      history.pushState({ modal: 'CUSTOM' }, '');
     }
 
     async function choosePayNowAndMoveToProcessing() {
@@ -1588,6 +1616,11 @@
 
       document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
       chosenPlacementLabel = activeProduct.is_apparel ? 'Front' : 'Object Layout';
+      document.querySelectorAll('.place-pill').forEach((b, i) => {
+        b.className = i === 0
+          ? "place-pill tactile-btn py-2.5 rounded-xl bg-black text-white"
+          : "place-pill tactile-btn py-2.5 rounded-xl bg-neutral-100 text-black";
+      });
 
       const finBox = document.getElementById('dynamic-finishes');
       finBox.innerHTML = conf.finishes.map((fn, i) => {
@@ -1600,9 +1633,14 @@
       updatePrice();
       goToStep(1);
       document.getElementById('custom-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      history.pushState({ modal: 'CUSTOM' }, '');
     }
 
-    function closeModal() { document.getElementById('custom-modal').classList.add('hidden'); }
+    function closeModal() {
+      document.getElementById('custom-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
 
     function goToStep(stepNum) {
       [1, 2, 3, 4].forEach(n => document.getElementById('step-' + n).classList.add('hidden'));
@@ -1610,6 +1648,8 @@
       document.getElementById('step-indicator').innerText = stepNum <= 3 ? `Step ${stepNum} of 3` : 'Next Step';
       const pctMap = { 1: '33%', 2: '66%', 3: '100%', 4: '100%' };
       document.getElementById('step-progress-bar').style.width = pctMap[stepNum] || '100%';
+      const dbx = document.getElementById('drawer-box');
+      if (dbx) dbx.scrollTop = 0;
     }
 
     function validateStep2AndContinue() {
@@ -1777,14 +1817,14 @@
           photo_data: uploadedUrls.join('|||SLIDE|||')
         };
 
-   const { error } = await db.from('skia_orders').insert([orderPayload]);
-          btn.disabled = false;
-          btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
-          if (error) {
-            alert("Could not send order: " + error.message);
-          } else {
-            await fetchCustomerOrdersFromCloud(phone, pin, true);
-            lastCreatedOrder = customerOrders[0] || orderPayload;
+        const { error } = await db.from('skia_orders').insert([orderPayload]);
+        btn.disabled = false;
+        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
+        if (error) {
+          alert("Could not send order: " + error.message);
+        } else {
+          await fetchCustomerOrdersFromCloud(phone, pin, true);
+          lastCreatedOrder = customerOrders[0] || orderPayload;
 
           document.getElementById('ticket-code').innerText = orderPayload.order_code;
           document.getElementById('ticket-item').innerText = `${orderPayload.product_title}`;
@@ -1855,11 +1895,26 @@
       titleEl.innerText = map[type].title;
       bodyEl.innerHTML = map[type].body;
       document.getElementById('policy-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      history.pushState({ modal: 'POLICY' }, '');
     }
 
     function closePolicyModal() {
       document.getElementById('policy-modal').classList.add('hidden');
+      document.body.style.overflow = '';
     }
+
+    window.addEventListener('popstate', () => {
+      if (!document.getElementById('custom-modal').classList.contains('hidden')) {
+        closeModal();
+      } else if (!document.getElementById('policy-modal').classList.contains('hidden')) {
+        closePolicyModal();
+      } else if (!document.getElementById('side-menu-overlay').classList.contains('hidden')) {
+        closeSideMenu();
+      } else if (document.getElementById('storefront-view').classList.contains('hidden')) {
+        navigateMenu('CATALOG', currentCategory, true);
+      }
+    });
 
     loadCatalogFromCloud();
   </script>
