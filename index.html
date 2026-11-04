@@ -29,11 +29,12 @@
       {
         "@type": "WebSite",
         "@id": "https://skia-studio.vercel.app/#website",
-        "name": "SKIA Studio Indore",
-        "alternateName": [
-          "SKIA Indore",
-          "SKIA Studio"
-        ],
+     "name": "SKIA Studio Indore",
+      "alternateName": [
+        "SKIA Studio",
+        "SKIA",
+        "skia-studio.vercel.app"
+      ],
         "url": "https://skia-studio.vercel.app/",
         "publisher": {
           "@id": "https://skia-studio.vercel.app/#organization"
@@ -174,9 +175,9 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between fire-bg-pattern">
 
-  <!-- 0. SUBTLE TOP STUDIO TICKER (UNTOUCHED) -->
+  <!-- 0. TOP STUDIO TICKER (CONTROLLABLE FROM ADMIN) -->
   <div class="bg-black text-white py-2 overflow-hidden select-none">
-    <div class="animate-marquee text-[10px] font-bold uppercase tracking-[0.22em]">
+    <div id="top-ticker-track" class="animate-marquee text-[10px] font-bold uppercase tracking-[0.22em]">
       <span class="mx-6">1-of-1 Custom Studio · Indore</span>
       <span class="mx-6">•</span>
       <span class="mx-6">Approve Your Digital Preview on WhatsApp Before Print</span>
@@ -191,7 +192,7 @@
     </div>
   </div>
 
-  <!-- 1. HEADER (UNTOUCHED) -->
+  <!-- 1. HEADER -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-neutral-100">
     <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 grid grid-cols-3 items-center" aria-label="Main Navigation">
       <div class="flex items-center">
@@ -236,18 +237,20 @@
 
         <div class="py-6 space-y-1">
           <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 mb-2">Collections</p>
-          <button onclick="navigateMenu('CATALOG', 'ALL')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-extrabold flex justify-between items-center">
-            <span>All Custom Pieces</span><span>→</span>
-          </button>
-          <button onclick="navigateMenu('CATALOG', 'WEAR')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
-            <span>To Wear · Apparel</span><span>→</span>
-          </button>
-          <button onclick="navigateMenu('CATALOG', 'HOLD')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
-            <span>To Hold & Keep · Objects</span><span>→</span>
-          </button>
-          <button onclick="navigateMenu('CATALOG', 'CREWS')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
-            <span>For Crews · Bulk (5+)</span><span>→</span>
-          </button>
+          <div id="menu-collections-list" class="space-y-1">
+            <button onclick="navigateMenu('CATALOG', 'ALL')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-extrabold flex justify-between items-center">
+              <span>All Custom Pieces</span><span>→</span>
+            </button>
+            <button onclick="navigateMenu('CATALOG', 'WEAR')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+              <span>To Wear · Apparel</span><span>→</span>
+            </button>
+            <button onclick="navigateMenu('CATALOG', 'HOLD')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+              <span>To Hold & Keep · Objects</span><span>→</span>
+            </button>
+            <button onclick="navigateMenu('CATALOG', 'CREWS')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm font-bold text-neutral-700 flex justify-between items-center">
+              <span>For Crews · Bulk (5+)</span><span>→</span>
+            </button>
+          </div>
 
           <div class="pt-5">
             <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 mb-2">Studio & Tracking</p>
@@ -285,18 +288,30 @@
 
     <!-- PAGE 1: MAIN CATALOG GRID -->
     <div id="storefront-view" class="animate-view-enter">
+      
+      <!-- LIVE OFFER / ANNOUNCEMENT BANNER (CONTROLLABLE FROM ADMIN TAB 4) -->
+      <div id="live-offer-banner" class="hidden mb-4 bg-black text-white rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs shadow-sm">
+        <div class="flex items-center gap-2 text-center sm:text-left">
+          <span class="text-sm">🔥</span>
+          <span id="live-offer-text" class="font-bold tracking-wide"></span>
+        </div>
+        <button type="button" id="live-offer-code-btn" onclick="copyBannerPromoCode(this)" class="hidden tactile-btn bg-white text-black px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shrink-0">
+          Use Code: <span id="live-offer-code-val"></span>
+        </button>
+      </div>
+
       <section class="text-center max-w-xl mx-auto pt-2 pb-6">
-        <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400 mb-1.5">SKIA Studio · 1-of-1 Custom Studio Indore</p>
+        <p id="hero-kicker" class="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400 mb-1.5">SKIA Studio · 1-of-1 Custom Studio Indore</p>
         <h1 id="catalog-heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-          <span class="sr-only">SKIA Studio Indore — </span>Bring your photos. <span class="font-normal italic text-neutral-500">Cast them in form.</span>
+          <span class="sr-only">SKIA Studio Indore — </span><span id="hero-main-text">Bring your photos.</span> <span id="hero-italic-text" class="font-normal italic text-neutral-500">Cast them in form.</span>
         </h1>
-        <p class="text-xs text-neutral-500 mt-1.5">
+        <p id="hero-subtext" class="text-xs text-neutral-500 mt-1.5">
           Tap any piece below to view its full specifications & examples.
         </p>
       </section>
 
       <section class="pb-5">
-        <div class="flex overflow-x-auto no-scrollbar justify-start sm:justify-center gap-2 pb-1">
+        <div id="category-tabs-bar" class="flex overflow-x-auto no-scrollbar justify-start sm:justify-center gap-2 pb-1">
           <button onclick="filterCategory('ALL')" id="tab-ALL" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider bg-black text-white rounded-full">
             All Pieces
           </button>
@@ -318,10 +333,10 @@
       <section id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6"></section>
     </div>
 
-    <!-- PAGE 1B: INSIDE PRODUCT PAGE (WITH SHARE LINK BUTTON) -->
+    <!-- PAGE 1B: INSIDE PRODUCT PAGE -->
     <div id="product-detail-view" class="hidden animate-view-enter max-w-5xl mx-auto pt-1 pb-10">
       
-   <!-- Clean Minimal Breadcrumb Navigation Row -->
+      <!-- Clean Minimal Breadcrumb Navigation Row -->
       <div class="flex items-center justify-between mb-4 px-1">
         <button onclick="navigateMenu('CATALOG', currentCategory)" class="tactile-btn inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-black py-1.5">
           <span class="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-sm">←</span>
@@ -337,7 +352,6 @@
         <!-- Left 7 Columns: 2-Level Interactive Visual Showcase -->
         <div class="md:col-span-7 space-y-3">
           
-          <!-- Main Mockup Viewer -->
           <div ontouchstart="handlePdpTouchStart(event)" ontouchend="handlePdpTouchEnd(event)" class="relative aspect-[4/5] w-full rounded-3xl overflow-hidden bg-[#F4F4F4] select-none">
             <img id="pdp-main-img" src="" alt="Product Preview" class="img-crossfade w-full h-full object-cover" />
 
@@ -378,17 +392,26 @@
         <!-- Right 5 Columns: Product Info & Specifications -->
         <div class="md:col-span-5 space-y-5">
           
-        <div class="border-b border-neutral-100 pb-4">
-                <p id="pdp-cat-tag" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">STUDIO PIECE</p>
-                <div class="flex items-start justify-between gap-3">
-                  <h1 id="pdp-title" class="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 leading-snug">
+          <div class="border-b border-neutral-100 pb-4">
+            <p id="pdp-cat-tag" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">STUDIO PIECE</p>
+            <div class="flex items-start justify-between gap-3">
+              <h1 id="pdp-title" class="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 leading-snug">
                 Product Title
               </h1>
-              <span class="text-xl sm:text-2xl font-extrabold text-black shrink-0">₹<span id="pdp-price">899</span></span>
+              <div class="text-right shrink-0">
+                <span id="pdp-mrp" class="hidden text-xs text-neutral-400 line-through mr-1"></span>
+                <span class="text-xl sm:text-2xl font-extrabold text-black">₹<span id="pdp-price">899</span></span>
+                <span id="pdp-save-badge" class="hidden block text-[10px] font-extrabold uppercase text-emerald-800"></span>
+              </div>
             </div>
             <p id="pdp-prompt" class="text-xs text-neutral-500 mt-1.5 leading-relaxed"></p>
-            <div id="pdp-stock-badge" class="mt-2.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-              <span>●</span><span>In Stock · Free WhatsApp Preview Included</span>
+            <div class="mt-2.5 flex flex-wrap items-center justify-between gap-2">
+              <div id="pdp-stock-badge" class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                <span>●</span><span>In Stock · Free WhatsApp Preview Included</span>
+              </div>
+              <button type="button" id="pdp-size-guide-btn" onclick="openSizeGuideModal()" class="hidden tactile-btn text-[11px] font-bold underline text-black">
+                📏 Size & Fit Guide
+              </button>
             </div>
           </div>
 
@@ -497,7 +520,7 @@
           Whether you want a custom edit that isn't listed in the catalog, or need 5 to 100+ custom hoodies, tees, or cups for your college society, gym, cafe, or team in Indore—chat directly with us on WhatsApp.
         </p>
         <div class="pt-2">
-          <a href="https://wa.me/918103423011?text=Hi%20SKIA%20Studio!%20I%20have%20a%20custom%20idea%20I'd%20like%20to%20discuss." target="_blank" class="tactile-btn inline-block bg-black text-white px-6 py-3.5 rounded-full text-xs font-extrabold uppercase tracking-wider">
+          <a id="direct-wa-chat-link" href="https://wa.me/918103423011?text=Hi%20SKIA%20Studio!%20I%20have%20a%20custom%20idea%20I'd%20like%20to%20discuss." target="_blank" class="tactile-btn inline-block bg-black text-white px-6 py-3.5 rounded-full text-xs font-extrabold uppercase tracking-wider">
             Chat on WhatsApp (+91 81034 23011) →
           </a>
         </div>
@@ -566,12 +589,24 @@
       <button onclick="openPolicyModal('terms')">Terms & Conditions</button>
       <button onclick="openPolicyModal('shipping')">Shipping & Refund Policy</button>
     </div>
-    <p class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011</p>
+    <p id="footer-copy-line" class="text-[10px] text-neutral-500">© 2026 SKIA Studio Indore (Ronak Sem) · +91 81034 23011</p>
   </footer>
 
+  <!-- SIZE & FIT GUIDE MODAL -->
+  <div id="size-guide-modal" onclick="closeSizeGuideModal()" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="animate-drawer-up bg-white rounded-3xl max-w-md w-full p-6 max-h-[85vh] overflow-y-auto shadow-2xl text-xs space-y-4">
+      <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+        <h3 id="sg-modal-title" class="text-base font-extrabold">Size & Fit Guide</h3>
+        <button onclick="closeSizeGuideModal()" class="font-bold uppercase text-neutral-500 hover:text-black">Close ✕</button>
+      </div>
+      <div id="sg-modal-table" class="space-y-2"></div>
+      <p id="sg-modal-note" class="text-[11px] text-neutral-500 pt-1"></p>
+    </div>
+  </div>
+
   <!-- LEGAL POLICIES MODAL -->
-  <div id="policy-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="animate-drawer-up bg-white rounded-3xl max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-2xl text-xs space-y-4">
+  <div id="policy-modal" onclick="closePolicyModal()" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="animate-drawer-up bg-white rounded-3xl max-w-lg w-full p-6 max-h-[85vh] overflow-y-auto shadow-2xl text-xs space-y-4">
       <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
         <h3 id="policy-title" class="text-xl font-extrabold">Studio Policy</h3>
         <button onclick="closePolicyModal()" class="font-bold uppercase text-neutral-500 hover:text-black">Close ✕</button>
@@ -612,7 +647,10 @@
           <div id="dynamic-shades" class="flex flex-wrap gap-2"></div>
         </div>
         <div>
-          <p id="size-label" class="text-xs font-semibold text-neutral-500 mb-2">2. Pick Size / Edition *</p>
+          <div class="flex items-center justify-between mb-2">
+            <p id="size-label" class="text-xs font-semibold text-neutral-500">2. Pick Size / Edition *</p>
+            <button type="button" id="step1-size-guide-btn" onclick="openSizeGuideModal()" class="hidden text-[11px] font-bold underline text-black">📏 Size Guide</button>
+          </div>
           <div id="dynamic-sizes" class="flex flex-wrap gap-2"></div>
         </div>
         <div id="placement-box">
@@ -699,6 +737,20 @@
           <textarea id="cust-address" rows="2" placeholder="House/Flat No, Building, Area, City & 6-digit Pincode" class="w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3.5 py-2.5 text-xs focus:outline-none focus:border-black"></textarea>
         </div>
 
+        <!-- PROMO / COUPON CODE BOX (CONTROLLABLE FROM ADMIN TAB 4) -->
+        <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 space-y-2">
+          <div class="flex gap-2">
+            <input type="text" id="cust-coupon-input" placeholder="Have a Promo / Offer Code?" class="flex-1 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs uppercase font-mono focus:outline-none focus:border-black" />
+            <button type="button" onclick="applyCustomerCoupon()" class="tactile-btn bg-black text-white rounded-xl px-4 py-2 text-[11px] font-bold uppercase tracking-wider">
+              Apply
+            </button>
+          </div>
+          <div id="applied-coupon-banner" class="hidden flex items-center justify-between bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl px-3 py-1.5 text-[11px] font-bold">
+            <span id="applied-coupon-text">✓ Code Applied</span>
+            <button type="button" onclick="removeCustomerCoupon()" class="text-red-700 underline text-[10px] uppercase">✕ Remove</button>
+          </div>
+        </div>
+
         <div>
           <p class="text-xs font-semibold text-neutral-500 mb-1.5">Choose payment method:</p>
           <div class="grid grid-cols-2 gap-2 text-xs font-bold">
@@ -771,18 +823,18 @@
             <button type="button" onclick="openUpiAppLink()" class="tactile-btn w-full bg-black text-white rounded-full py-3 text-xs font-extrabold uppercase tracking-widest">
               Open PhonePe / UPI App →
             </button>
-            <p class="text-[10px] text-neutral-500">Official Studio UPI: <strong>skiastudio@ybl</strong></p>
+            <p class="text-[10px] text-neutral-500">Official Studio UPI: <strong id="display-upi-1">skiastudio@ybl</strong></p>
           </div>
 
           <div id="pm-box-QR" class="hidden rounded-2xl bg-neutral-50 border border-neutral-200 p-4 text-center space-y-2">
             <p class="text-xs font-semibold">Scan with PhonePe, GPay, or Paytm (or screenshot & scan):</p>
             <img id="dynamic-upi-qr" src="" alt="SKIA UPI QR" class="w-44 h-44 mx-auto rounded-xl border border-neutral-200 p-1 bg-white" />
-            <p class="text-[10px] text-neutral-500">UPI ID: <strong>skiastudio@ybl</strong></p>
+            <p class="text-[10px] text-neutral-500">UPI ID: <strong id="display-upi-2">skiastudio@ybl</strong></p>
           </div>
 
           <div id="pm-box-ID" class="hidden rounded-2xl bg-neutral-50 border border-neutral-200 p-4 text-center space-y-2.5">
             <p class="text-xs font-semibold">Copy our Studio UPI ID & pay inside your UPI app:</p>
-            <div class="rounded-xl bg-white border border-neutral-200 p-2.5 font-mono text-sm font-bold">
+            <div id="display-upi-3" class="rounded-xl bg-white border border-neutral-200 p-2.5 font-mono text-sm font-bold">
               skiastudio@ybl
             </div>
             <button type="button" onclick="copyStudioUpiId()" class="tactile-btn rounded-full bg-black text-white px-5 py-2 text-xs font-bold uppercase">
@@ -816,7 +868,36 @@
     const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const OWNER_UPI_ID = "skiastudio@ybl";
+    const CONFIG_ROW_TITLE = "__SKIA_STORE_CONFIG__";
+    const DEFAULT_STUDIO_CONFIG = {
+      tickerText: "1-of-1 Custom Studio · Indore • Approve Your Digital Preview on WhatsApp Before Print • 240–400 GSM Heavy Combed Cotton & Infused Objects",
+      heroKicker: "SKIA Studio · 1-of-1 Custom Studio Indore",
+      heroHeadingMain: "Bring your photos.",
+      heroHeadingItalic: "Cast them in form.",
+      heroSubtext: "Tap any piece below to view its full specifications & examples.",
+      bannerEnabled: false,
+      bannerText: "",
+      bannerCode: "",
+      codMode: "AFTER_FIRST",
+      codFee: 50,
+      upiId: "skiastudio@ybl",
+      whatsappNumber: "8103423011",
+      sizeGuideEnabled: true,
+      sizeGuideTitle: "SKIA Heavyweight Apparel · Size & Fit Guide (Inches)",
+      sizeGuideRows: [
+        "S | Chest: 40\" | Length: 27\" | Shoulder: 19\"",
+        "M | Chest: 42\" | Length: 28\" | Shoulder: 20\"",
+        "L | Chest: 44\" | Length: 29\" | Shoulder: 21\"",
+        "XL | Chest: 46\" | Length: 30\" | Shoulder: 22\"",
+        "XXL | Chest: 48\" | Length: 31\" | Shoulder: 23\""
+      ],
+      sizeGuideNote: "Crafted from 240–400 GSM pre-shrunk combed cotton. Relaxed studio drop-shoulder fit.",
+      customCategories: [],
+      coupons: []
+    };
+
+    let studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+    let OWNER_UPI_ID = "skiastudio@ybl";
 
     let products = [];
     let customerOrders = [];
@@ -827,20 +908,31 @@
     let currentCustomerTab = 'PREVIEW';
     let activeProduct = null;
     let activePdpProduct = null;
-    let activePdpExampleIdx = 0; // Level 1: Which Original Photo Example
-    let activePdpAngleIdx = 0;   // Level 2: Which Mockup Angle of that Example
+    let activePdpExampleIdx = 0;
+    let activePdpAngleIdx = 0;
     let lastCreatedOrder = null;
     let isCustomerCodEligible = false;
     let extraSizeCost = 0;
     let extraPlacement = 0;
     let extraFinish = 0;
     let extraCodCost = 0;
+    let appliedCoupon = null;
+    let currentDiscountAmount = 0;
     let chosenColor = 'Pitch Black';
     let chosenSize = 'M';
     let chosenPlacementLabel = 'Front';
     let chosenFinishLabel = 'HD Ink';
     let chosenPaymentMode = 'UPI';
     let selectedRawFiles = [];
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
     function openSideMenu() {
       document.getElementById('side-menu-overlay').classList.remove('hidden');
@@ -885,14 +977,139 @@
     }
 
     function normalizeCat(p) {
+      if (p.category && (studioConfig.customCategories || []).some(c => c.id === p.category)) {
+        return p.category;
+      }
       if (p.category === 'HOLD' || p.is_apparel === false) return 'HOLD';
       if (p.category === 'CREWS' || p.category === 'KAFILA') return 'CREWS';
       return 'WEAR';
     }
 
-    // 2-LEVEL SLIDES PARSER:
-    // Level 1 (Examples with different Original Photos) separated by |||SLIDE|||
-    // Level 2 (Multiple Mockup Angles of the SAME Original Photo) separated by ||ANGLE||
+    function applyStudioConfigToStorefront() {
+      OWNER_UPI_ID = studioConfig.upiId || DEFAULT_STUDIO_CONFIG.upiId;
+      ['display-upi-1', 'display-upi-2', 'display-upi-3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = OWNER_UPI_ID;
+      });
+
+      const waNum = studioConfig.whatsappNumber || DEFAULT_STUDIO_CONFIG.whatsappNumber;
+      const waLink = document.getElementById('direct-wa-chat-link');
+      if (waLink) {
+        waLink.href = `https://wa.me/91${waNum}?text=Hi%20SKIA%20Studio!%20I%20have%20a%20custom%20idea%20I'd%20like%20to%20discuss.`;
+        waLink.innerText = `Chat on WhatsApp (+91 ${waNum.slice(0,5)} ${waNum.slice(5)}) →`;
+      }
+      const footCopy = document.getElementById('footer-copy-line');
+      if (footCopy) {
+        footCopy.innerText = `© 2026 SKIA Studio Indore (Ronak Sem) · +91 ${waNum.slice(0,5)} ${waNum.slice(5)}`;
+      }
+
+      // Top Moving Ticker
+      const tickerStr = studioConfig.tickerText || DEFAULT_STUDIO_CONFIG.tickerText;
+      const tickerParts = tickerStr.split('•').map(s => s.trim()).filter(Boolean);
+      const track = document.getElementById('top-ticker-track');
+      if (track && tickerParts.length) {
+        const doubled = tickerParts.concat(tickerParts);
+        track.innerHTML = doubled.map(pt => `<span class="mx-6">${escapeHtml(pt)}</span><span class="mx-6">•</span>`).join('');
+      }
+
+      // Hero Headings
+      document.getElementById('hero-kicker').innerText = studioConfig.heroKicker || DEFAULT_STUDIO_CONFIG.heroKicker;
+      document.getElementById('hero-main-text').innerText = studioConfig.heroHeadingMain || DEFAULT_STUDIO_CONFIG.heroHeadingMain;
+      document.getElementById('hero-italic-text').innerText = studioConfig.heroHeadingItalic || DEFAULT_STUDIO_CONFIG.heroHeadingItalic;
+      document.getElementById('hero-subtext').innerText = studioConfig.heroSubtext || DEFAULT_STUDIO_CONFIG.heroSubtext;
+
+      // Live Offer Banner
+      const bannerBox = document.getElementById('live-offer-banner');
+      const bannerTextEl = document.getElementById('live-offer-text');
+      const bannerCodeBtn = document.getElementById('live-offer-code-btn');
+      const bannerCodeVal = document.getElementById('live-offer-code-val');
+
+      if (studioConfig.bannerEnabled && studioConfig.bannerText) {
+        bannerBox.classList.remove('hidden');
+        bannerTextEl.innerText = studioConfig.bannerText;
+        if (studioConfig.bannerCode) {
+          bannerCodeBtn.classList.remove('hidden');
+          bannerCodeVal.innerText = studioConfig.bannerCode;
+        } else {
+          bannerCodeBtn.classList.add('hidden');
+        }
+      } else {
+        bannerBox.classList.add('hidden');
+      }
+
+      // Dynamic Category Tabs
+      const baseTabs = [
+        { id: 'ALL', label: 'All Pieces', menuLabel: 'All Custom Pieces' },
+        { id: 'WEAR', label: 'To Wear', menuLabel: 'To Wear · Apparel' },
+        { id: 'HOLD', label: 'To Hold & Keep', menuLabel: 'To Hold & Keep · Objects' },
+        { id: 'CREWS', label: 'For Crews', menuLabel: 'For Crews · Bulk (5+)' }
+      ];
+      const customTabs = (studioConfig.customCategories || []).map(c => ({
+        id: c.id,
+        label: c.label,
+        menuLabel: c.label
+      }));
+      const allTabs = baseTabs.concat(customTabs);
+
+      const tabsBar = document.getElementById('category-tabs-bar');
+      if (tabsBar) {
+        tabsBar.innerHTML = allTabs.map(t => `
+          <button onclick="filterCategory('${escapeHtml(t.id)}')" id="tab-${escapeHtml(t.id)}" class="cat-pill tactile-btn whitespace-nowrap px-4 py-2 text-xs font-bold uppercase tracking-wider ${currentCategory === t.id ? 'bg-black text-white' : 'bg-neutral-100 text-neutral-700'} rounded-full">
+            ${escapeHtml(t.label)}
+          </button>
+        `).join('');
+      }
+
+      const menuColList = document.getElementById('menu-collections-list');
+      if (menuColList) {
+        menuColList.innerHTML = allTabs.map((t, i) => `
+          <button onclick="navigateMenu('CATALOG', '${escapeHtml(t.id)}')" class="w-full text-left px-3 py-3 rounded-xl hover:bg-neutral-100 text-sm ${i === 0 ? 'font-extrabold' : 'font-bold text-neutral-700'} flex justify-between items-center">
+            <span>${escapeHtml(t.menuLabel)}</span><span>→</span>
+          </button>
+        `).join('');
+      }
+
+      updateCodButtonUI();
+    }
+
+    function copyBannerPromoCode(btn) {
+      const code = studioConfig.bannerCode;
+      if (!code) return;
+      navigator.clipboard.writeText(code);
+      const cpnInput = document.getElementById('cust-coupon-input');
+      if (cpnInput) cpnInput.value = code;
+      const oldHtml = btn.innerHTML;
+      btn.innerText = `✓ Copied ${code}!`;
+      setTimeout(() => { btn.innerHTML = oldHtml; }, 2000);
+    }
+
+    function openSizeGuideModal() {
+      document.getElementById('sg-modal-title').innerText = studioConfig.sizeGuideTitle || DEFAULT_STUDIO_CONFIG.sizeGuideTitle;
+      const rows = studioConfig.sizeGuideRows && studioConfig.sizeGuideRows.length
+        ? studioConfig.sizeGuideRows
+        : DEFAULT_STUDIO_CONFIG.sizeGuideRows;
+      document.getElementById('sg-modal-table').innerHTML = rows.map(r => {
+        const cols = r.split('|').map(c => c.trim()).filter(Boolean);
+        return `
+          <div class="bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2.5 flex flex-wrap justify-between items-center gap-2">
+            <span class="font-extrabold bg-black text-white px-2.5 py-0.5 rounded-lg">${escapeHtml(cols[0] || '')}</span>
+            <span class="text-neutral-700 font-semibold">${escapeHtml(cols.slice(1).join(' · '))}</span>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('sg-modal-note').innerText = studioConfig.sizeGuideNote || DEFAULT_STUDIO_CONFIG.sizeGuideNote;
+      document.getElementById('size-guide-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      history.pushState({ modal: 'SIZE_GUIDE' }, '');
+    }
+
+    function closeSizeGuideModal() {
+      document.getElementById('size-guide-modal').classList.add('hidden');
+      if (document.getElementById('custom-modal').classList.contains('hidden')) {
+        document.body.style.overflow = '';
+      }
+    }
+
     function getProductSlides(p) {
       const exampleBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
       const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean).map(resolveImgUrl);
@@ -919,15 +1136,15 @@
       }
       if (!conf) {
         conf = p.is_apparel
-          ? { sizes: ['S','M','L','XL','XXL'], shades: ['Pitch Black','Pure White','Charcoal Acid'], finishes: ['HD Ink|0','3D Puff|100','Stitch|150'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150 }
-          : { sizes: ['Classic 325ml Cup','Black Contrast Cup (+₹50)','Magic Heat Cup (+₹120)'], shades: ['Pure White','Pitch Black'], finishes: ['Center Focus|0','Full Wrap|0'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150 };
+          ? { sizes: ['S','M','L','XL','XXL'], shades: ['Pitch Black','Pure White','Charcoal Acid'], finishes: ['HD Ink|0','3D Puff|100','Stitch|150'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150, mrp: 0 }
+          : { sizes: ['Classic 325ml Cup','Black Contrast Cup (+₹50)','Magic Heat Cup (+₹120)'], shades: ['Pure White','Pitch Black'], finishes: ['Center Focus|0','Full Wrap|0'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150, mrp: 0 };
       }
       conf.stockStatus = conf.stockStatus || 'IN_STOCK';
-      conf.bothCost = (conf.bothCost !== undefined) ? Number(conf.bothCost) : 150;
+      conf.bothCost = (conf.bothCost !== undefined) ? Math.max(0, Number(conf.bothCost) || 0) : 150;
+      conf.mrp = Math.max(0, Number(conf.mrp) || 0);
       return { cleanSpec, conf };
     }
 
-    // OPEN DEDICATED PRODUCT PAGE (WITH 2-LEVEL SLIDES & SHAREABLE URL)
     function openProductPage(prodId) {
       const p = products.find(x => x.id === prodId);
       if (!p) return;
@@ -936,44 +1153,61 @@
       activePdpAngleIdx = 0;
 
       const { cleanSpec, conf } = parseProductConfig(p);
-      const slides = getProductSlides(p);
-
+      const catId = normalizeCat(p);
+      const customCat = (studioConfig.customCategories || []).find(c => c.id === catId);
       const catNames = { 'WEAR': 'To Wear · Heavy Apparel', 'HOLD': 'To Hold & Keep · Objects', 'CREWS': 'For Crews · Bulk Drops' };
-      document.getElementById('pdp-cat-tag').innerText = catNames[normalizeCat(p)] || 'SKIA Studio Piece';
+      document.getElementById('pdp-cat-tag').innerText = customCat ? customCat.label : (catNames[catId] || 'SKIA Studio Piece');
       document.getElementById('pdp-spec-pill').innerText = cleanSpec;
       document.getElementById('pdp-spec-line').innerText = cleanSpec;
       document.getElementById('pdp-title').innerText = p.title;
       document.getElementById('pdp-price').innerText = p.base_price;
       document.getElementById('pdp-prompt').innerText = p.prompt;
 
-      // Inventory Stock Status Control
+      const mrpEl = document.getElementById('pdp-mrp');
+      const saveEl = document.getElementById('pdp-save-badge');
+      if (conf.mrp && conf.mrp > Number(p.base_price)) {
+        mrpEl.innerText = `₹${conf.mrp}`;
+        mrpEl.classList.remove('hidden');
+        saveEl.innerText = `Save ₹${conf.mrp - Number(p.base_price)}`;
+        saveEl.classList.remove('hidden');
+      } else {
+        mrpEl.classList.add('hidden');
+        saveEl.classList.add('hidden');
+      }
+
+      const sgBtn = document.getElementById('pdp-size-guide-btn');
+      if (p.is_apparel && studioConfig.sizeGuideEnabled !== false) {
+        sgBtn.classList.remove('hidden');
+      } else {
+        sgBtn.classList.add('hidden');
+      }
+
       const stockBadge = document.getElementById('pdp-stock-badge');
       const custBtn = document.getElementById('pdp-customize-btn');
       if (conf.stockStatus === 'SOLD_OUT') {
-        stockBadge.className = "mt-2.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-red-700 bg-red-50 px-2.5 py-0.5 rounded-full";
+        stockBadge.className = "inline-flex items-center gap-1.5 text-[11px] font-bold text-red-700 bg-red-50 px-2.5 py-0.5 rounded-full";
         stockBadge.innerHTML = `<span>●</span><span>Currently Out of Stock</span>`;
         custBtn.innerText = "Sold Out · Temporarily Unavailable";
         custBtn.disabled = true;
         custBtn.className = "w-full bg-neutral-200 text-neutral-500 rounded-full py-4 text-xs font-extrabold uppercase tracking-widest cursor-not-allowed";
       } else {
-        stockBadge.className = "mt-2.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full";
+        stockBadge.className = "inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full";
         stockBadge.innerHTML = `<span>●</span><span>In Stock · Free WhatsApp Preview Included</span>`;
         custBtn.innerText = "Customize & Upload Your Photo(s) →";
         custBtn.disabled = false;
         custBtn.className = "tactile-btn w-full bg-black text-white rounded-full py-4 text-xs font-extrabold uppercase tracking-widest shadow-md";
       }
 
-      // Render Specification Pills
       document.getElementById('pdp-shades-list').innerHTML = (conf.shades || []).map(sh =>
-        `<span class="bg-white border border-neutral-200 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${sh}</span>`
+        `<span class="bg-white border border-neutral-200 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${escapeHtml(sh)}</span>`
       ).join('');
       document.getElementById('pdp-sizes-list').innerHTML = (conf.sizes || []).map(sz =>
-        `<span class="bg-white border border-neutral-200 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${sz}</span>`
+        `<span class="bg-white border border-neutral-200 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${escapeHtml(sz)}</span>`
       ).join('');
       document.getElementById('pdp-finishes-list').innerHTML = (conf.finishes || []).map(fn => {
         const [label, costStr] = fn.split('|');
         const c = Number(costStr || 0);
-        return `<span class="bg-white border border-neutral-200 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${label}${c > 0 ? ' (+₹'+c+')' : ''}</span>`;
+        return `<span class="bg-white border border-neutral-200 text-neutral-800 px-3 py-1 rounded-full text-[11px] font-semibold">${escapeHtml(label)}${c > 0 ? ' (+₹'+c+')' : ''}</span>`;
       }).join('');
 
       renderPdpGalleryState();
@@ -1004,7 +1238,6 @@
       document.getElementById('pdp-main-img').src = currAngleUrl;
       document.getElementById('pdp-badge-img').src = currEx.rawImg;
 
-      // Level 2: Mockup Angles of Current Example
       const prevBtn = document.getElementById('pdp-prev-btn');
       const nextBtn = document.getElementById('pdp-next-btn');
       const angleBadge = document.getElementById('pdp-angle-badge');
@@ -1027,7 +1260,6 @@
         </button>
       `).join('');
 
-      // Level 1: Different Template Examples (Different Original Customer Photos)
       const exRow = document.getElementById('pdp-examples-row');
       const exList = document.getElementById('pdp-examples-list');
       if (slides.length > 1) {
@@ -1110,7 +1342,9 @@
         payment: 'Unpaid · Awaiting WhatsApp Preview',
         payStatus: 'UNPAID',
         address: 'Not provided',
-        stage: 'Studio Crafting Preview'
+        stage: 'Studio Crafting Preview',
+        previewImg: '',
+        coupon: ''
       };
       if (parts[1]) {
         try { meta = { ...meta, ...JSON.parse(parts[1]) }; } catch(e) {}
@@ -1137,9 +1371,29 @@
     async function loadCatalogFromCloud() {
       const { data } = await db.from('skia_products').select('*').order('id', { ascending: false });
       const rawList = data || [];
-      // Filter out HIDDEN items & put Pinned items at the top!
+
+      const cfgRow = rawList.find(r => r.title === CONFIG_ROW_TITLE);
+      if (cfgRow) {
+        try {
+          const parsed = JSON.parse(cfgRow.prompt || '{}');
+          studioConfig = {
+            ...JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG)),
+            ...parsed,
+            customCategories: Array.isArray(parsed.customCategories) ? parsed.customCategories : [],
+            coupons: Array.isArray(parsed.coupons) ? parsed.coupons : [],
+            sizeGuideRows: Array.isArray(parsed.sizeGuideRows) && parsed.sizeGuideRows.length ? parsed.sizeGuideRows : DEFAULT_STUDIO_CONFIG.sizeGuideRows
+          };
+        } catch(e) {
+          studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+        }
+      } else {
+        studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+      }
+
+      applyStudioConfigToStorefront();
+
       products = rawList
-        .filter(p => parseProductConfig(p).conf.stockStatus !== 'HIDDEN')
+        .filter(p => p.title !== CONFIG_ROW_TITLE && parseProductConfig(p).conf.stockStatus !== 'HIDDEN')
         .sort((a, b) => {
           const pinA = parseProductConfig(a).conf.pinned ? 1 : 0;
           const pinB = parseProductConfig(b).conf.pinned ? 1 : 0;
@@ -1199,34 +1453,88 @@
       updateCodButtonUI();
     }
 
+    function isCodAllowedNow() {
+      const mode = studioConfig.codMode || 'AFTER_FIRST';
+      if (mode === 'DISABLED') return false;
+      if (mode === 'ALL') return true;
+      return isCustomerCodEligible;
+    }
+
     function updateCodButtonUI() {
       const codBtn = document.getElementById('pay-cod-btn');
       const hint = document.getElementById('cod-hint-text');
       const badge = document.getElementById('cod-eligibility-badge');
-      if (isCustomerCodEligible) {
-        codBtn.innerText = "Cash on Delivery (+₹50)";
-        codBtn.className = chosenPaymentMode === 'COD'
-          ? "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white"
-          : "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-neutral-100 text-black";
-        hint.innerText = "✓ Cash on Delivery is unlocked for your verified number!";
-        if (badge) badge.innerText = "✓ Verified Member: Cash on Delivery (COD) is unlocked for your number!";
+      const mode = studioConfig.codMode || 'AFTER_FIRST';
+      const fee = Math.max(0, Number(studioConfig.codFee !== undefined ? studioConfig.codFee : 50));
+
+      if (!codBtn) return;
+
+      if (mode === 'DISABLED') {
+        chosenPaymentMode = 'UPI';
+        extraCodCost = 0;
+        codBtn.innerText = "Prepaid UPI Only";
+        codBtn.className = "pay-pill py-2.5 px-2 rounded-xl bg-neutral-100 text-neutral-400 cursor-not-allowed";
+        document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white";
+        hint.innerText = "* Custom commissions are currently accepted via online UPI only.";
+        if (badge) badge.innerText = "Online UPI is active for all studio commissions.";
+      } else if (isCodAllowedNow()) {
+        codBtn.innerText = `Cash on Delivery (+₹${fee})`;
+        if (chosenPaymentMode === 'COD') {
+          extraCodCost = fee;
+          codBtn.className = "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white";
+        } else {
+          codBtn.className = "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-neutral-100 text-black";
+        }
+        hint.innerText = `✓ Cash on Delivery (+₹${fee}) is available for your order!`;
+        if (badge) badge.innerText = `✓ Cash on Delivery (COD) is unlocked for your number!`;
       } else {
         chosenPaymentMode = 'UPI';
         extraCodCost = 0;
         codBtn.innerText = "🔒 COD (After 1st Order)";
         codBtn.className = "pay-pill py-2.5 px-2 rounded-xl bg-neutral-100 text-neutral-400";
         document.getElementById('pay-upi-btn').className = "pay-pill tactile-btn py-2.5 px-2 rounded-xl bg-black text-white";
-        hint.innerText = "* Cash on Delivery (+₹50) unlocks automatically after you complete 1 online paid order.";
+        hint.innerText = `* Cash on Delivery (+₹${fee}) unlocks automatically after you complete 1 online paid order.`;
         if (badge) badge.innerText = "Complete 1 online order to unlock Cash on Delivery (COD) for your number.";
-        if (activeProduct) updatePrice();
       }
+      if (activeProduct) updatePrice();
     }
 
     function trySelectCod(btn) {
-      if (!isCustomerCodEligible) {
+      const mode = studioConfig.codMode || 'AFTER_FIRST';
+      if (mode === 'DISABLED') {
+        return alert("Cash on Delivery is currently disabled. Please choose Online UPI!");
+      }
+      if (!isCodAllowedNow()) {
         return alert("🔒 Cash on Delivery unlocks automatically after you complete 1 online paid order with SKIA Studio!");
       }
-      selectPayment(50, 'COD', btn);
+      const fee = Math.max(0, Number(studioConfig.codFee !== undefined ? studioConfig.codFee : 50));
+      selectPayment(fee, 'COD', btn);
+    }
+
+    function applyCustomerCoupon() {
+      const inputEl = document.getElementById('cust-coupon-input');
+      const code = (inputEl.value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (!code) return alert("Please enter a promo code first!");
+
+      const found = (studioConfig.coupons || []).find(c => c.code === code && c.active);
+      if (!found) {
+        return alert("❌ Invalid or expired promo code.");
+      }
+
+      const subtotal = Number(activeProduct ? activeProduct.base_price : 0) + extraSizeCost + extraPlacement + extraFinish;
+      if (subtotal < Number(found.minOrder || 0)) {
+        return alert(`This promo code requires a minimum item value of ₹${found.minOrder}.`);
+      }
+
+      appliedCoupon = found;
+      updatePrice();
+    }
+
+    function removeCustomerCoupon() {
+      appliedCoupon = null;
+      currentDiscountAmount = 0;
+      document.getElementById('applied-coupon-banner').classList.add('hidden');
+      updatePrice();
     }
 
     async function verifyPhonePinOnCloud(phone, pin) {
@@ -1336,28 +1644,41 @@
 
         return `
         <div class="rounded-2xl bg-neutral-50 border border-neutral-200 p-4 flex flex-col sm:flex-row justify-between gap-4 text-xs">
-          <div class="space-y-1.5">
+          <div class="space-y-1.5 flex-1">
             <div class="flex flex-wrap gap-2 items-center">
-              <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${o.order_code}</span>
-              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${statusStyle}">${meta.payment}</span>
-              <span class="bg-white border border-neutral-200 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">${meta.stage || 'In Studio'}</span>
+              <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${escapeHtml(o.order_code)}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${statusStyle}">${escapeHtml(meta.payment)}</span>
+              <span class="bg-white border border-neutral-200 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">${escapeHtml(meta.stage || 'In Studio')}</span>
+              ${meta.coupon ? `<span class="bg-emerald-50 text-emerald-900 border border-emerald-200 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Promo: ${escapeHtml(meta.coupon)}</span>` : ''}
             </div>
-            <h3 class="text-lg font-extrabold pt-1">${o.product_title} — ₹${o.price}</h3>
-            <p class="text-neutral-600"><strong>Spec:</strong> ${o.color} · ${o.size} · ${o.placement} · ${o.finish}</p>
-            <p class="text-neutral-600"><strong>Your Note:</strong> "${cleanNotes}"</p>
-            <p class="text-neutral-500 text-[11px]"><strong>Delivery Address:</strong> ${meta.address}</p>
+            <h3 class="text-lg font-extrabold pt-1">${escapeHtml(o.product_title)} — ₹${escapeHtml(o.price)}</h3>
+            <p class="text-neutral-600"><strong>Spec:</strong> ${escapeHtml(o.color)} · ${escapeHtml(o.size)} · ${escapeHtml(o.placement)} · ${escapeHtml(o.finish)}</p>
+            <p class="text-neutral-600"><strong>Your Note:</strong> "${escapeHtml(cleanNotes)}"</p>
+            <p class="text-neutral-500 text-[11px]"><strong>Delivery Address:</strong> ${escapeHtml(meta.address)}</p>
+
+            ${meta.previewImg ? `
+              <div class="mt-3 bg-white border-2 border-black rounded-2xl p-3 flex items-center gap-3">
+                <a href="${escapeHtml(resolveImgUrl(meta.previewImg))}" target="_blank">
+                  <img src="${escapeHtml(resolveImgUrl(meta.previewImg))}" class="w-16 h-16 rounded-xl object-cover border border-neutral-200 shrink-0" />
+                </a>
+                <div>
+                  <span class="bg-black text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">✨ Studio Preview Ready</span>
+                  <p class="text-[11px] font-bold text-black mt-1">Tap the image to view your full digital preview!</p>
+                </div>
+              </div>
+            ` : ''}
 
             ${meta.bucket === 'PREVIEW' || meta.payStatus === 'CANCELLED' || meta.payStatus === 'PROCESSING' ? `
               <div class="pt-3">
-                <button onclick="openPayModalForExistingOrder(${o.id})" class="tactile-btn bg-black text-white rounded-full px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider">
-                  ${meta.payStatus === 'PROCESSING' ? 'Open Payment Options (PhonePe / QR / UPI) →' : 'Pay ₹' + o.price + ' Now (Move to Processing) →'}
+                <button onclick="openPayModalForExistingOrder(${Number(o.id)})" class="tactile-btn bg-black text-white rounded-full px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider">
+                  ${meta.payStatus === 'PROCESSING' ? 'Open Payment Options (PhonePe / QR / UPI) →' : 'Approve & Pay ₹' + escapeHtml(o.price) + ' Now →'}
                 </button>
               </div>
             ` : ''}
           </div>
           ${photos.length > 0 ? `
             <div class="flex gap-1.5 shrink-0 flex-wrap">
-              ${photos.map(ph => `<img src="${ph}" class="w-16 h-16 rounded-xl object-cover border border-neutral-200" />`).join('')}
+              ${photos.map(ph => `<img src="${escapeHtml(ph)}" class="w-16 h-16 rounded-xl object-cover border border-neutral-200" />`).join('')}
             </div>
           ` : ''}
         </div>`;
@@ -1493,27 +1814,28 @@
         const idx = cardSlideState[p.id] || 0;
         const activeSlide = slides[idx] || slides[0];
         const isSoldOut = conf.stockStatus === 'SOLD_OUT';
+        const hasMrp = conf.mrp && conf.mrp > Number(p.base_price);
 
         return `
-        <div onclick="openProductPage(${p.id})" class="reveal-card group cursor-pointer flex flex-col justify-between">
+        <div onclick="openProductPage(${Number(p.id)})" class="reveal-card group cursor-pointer flex flex-col justify-between">
           <div>
-            <div ontouchstart="handleTouchStart(event, ${p.id})" ontouchend="handleTouchEnd(event, ${p.id})" class="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-[#F4F4F4] mb-2.5 select-none">
-              <img id="main-img-${p.id}" src="${activeSlide.finalImg}" alt="${p.title}" class="img-crossfade w-full h-full object-cover group-hover:scale-105 ${isSoldOut ? 'opacity-65' : ''}" />
+            <div ontouchstart="handleTouchStart(event, ${Number(p.id)})" ontouchend="handleTouchEnd(event, ${Number(p.id)})" class="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-[#F4F4F4] mb-2.5 select-none">
+              <img id="main-img-${Number(p.id)}" src="${escapeHtml(activeSlide.finalImg)}" alt="${escapeHtml(p.title)}" class="img-crossfade w-full h-full object-cover group-hover:scale-105 ${isSoldOut ? 'opacity-65' : ''}" />
               
               <span class="absolute top-2.5 left-2.5 ${isSoldOut ? 'bg-red-700' : 'bg-black/80'} backdrop-blur-xs text-white text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full max-w-[80%] truncate">
-                ${isSoldOut ? 'Sold Out' : cleanSpec}
+                ${isSoldOut ? 'Sold Out' : escapeHtml(cleanSpec)}
               </span>
 
               ${slides.length > 1 ? `
-                <button type="button" onclick="changeCardSlide(event, ${p.id}, -1)" class="tactile-btn absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-6 h-6 sm:w-7 sm:h-7 font-bold text-xs flex items-center justify-center shadow-sm">‹</button>
-                <button type="button" onclick="changeCardSlide(event, ${p.id}, 1)" class="tactile-btn absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-6 h-6 sm:w-7 sm:h-7 font-bold text-xs flex items-center justify-center shadow-sm">›</button>
-                <div id="dots-box-${p.id}" class="absolute top-2.5 right-2.5 flex items-center gap-1 bg-white/90 backdrop-blur-xs rounded-full px-2 py-1">
+                <button type="button" onclick="changeCardSlide(event, ${Number(p.id)}, -1)" class="tactile-btn absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-6 h-6 sm:w-7 sm:h-7 font-bold text-xs flex items-center justify-center shadow-sm">‹</button>
+                <button type="button" onclick="changeCardSlide(event, ${Number(p.id)}, 1)" class="tactile-btn absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-6 h-6 sm:w-7 sm:h-7 font-bold text-xs flex items-center justify-center shadow-sm">›</button>
+                <div id="dots-box-${Number(p.id)}" class="absolute top-2.5 right-2.5 flex items-center gap-1 bg-white/90 backdrop-blur-xs rounded-full px-2 py-1">
                   ${slides.map((_, i) => `<span class="h-1.5 rounded-full transition-all duration-300 ${i === idx ? 'w-4 bg-black' : 'w-1.5 bg-neutral-300'}"></span>`).join('')}
                 </div>
               ` : ''}
 
-              <div onclick="swapCardImage(event, ${p.id})" class="tactile-btn absolute bottom-2 left-2 bg-white/95 backdrop-blur-xs rounded-xl p-1 pr-2 flex items-center gap-1.5 shadow-md hover:bg-black hover:text-white">
-                <img id="badge-img-${p.id}" src="${activeSlide.rawImg}" class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg object-cover" />
+              <div onclick="swapCardImage(event, ${Number(p.id)})" class="tactile-btn absolute bottom-2 left-2 bg-white/95 backdrop-blur-xs rounded-xl p-1 pr-2 flex items-center gap-1.5 shadow-md hover:bg-black hover:text-white">
+                <img id="badge-img-${Number(p.id)}" src="${escapeHtml(activeSlide.rawImg)}" class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg object-cover" />
                 <div>
                   <span class="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider block leading-none">Raw Photo</span>
                   <span class="text-[8px] sm:text-[9px] text-neutral-500 block leading-none mt-0.5">⇄ Swap</span>
@@ -1526,9 +1848,12 @@
             </div>
 
             <div class="px-0.5">
-              <h3 class="text-xs sm:text-sm font-extrabold text-neutral-900 leading-snug line-clamp-1">${p.title}</h3>
-              <p class="text-[10px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">${p.prompt}</p>
-              <p class="text-xs sm:text-sm font-extrabold text-black mt-1">₹${p.base_price}</p>
+              <h3 class="text-xs sm:text-sm font-extrabold text-neutral-900 leading-snug line-clamp-1">${escapeHtml(p.title)}</h3>
+              <p class="text-[10px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">${escapeHtml(p.prompt)}</p>
+              <p class="text-xs sm:text-sm font-extrabold text-black mt-1">
+                ${hasMrp ? `<span class="line-through text-neutral-400 font-normal mr-1.5">₹${escapeHtml(conf.mrp)}</span>` : ''}₹${escapeHtml(p.base_price)}
+                ${hasMrp ? `<span class="text-[10px] font-bold text-emerald-800 ml-1">Save ₹${conf.mrp - Number(p.base_price)}</span>` : ''}
+              </p>
             </div>
           </div>
         </div>`;
@@ -1555,6 +1880,11 @@
       extraPlacement = 0;
       extraFinish = 0;
       extraCodCost = 0;
+      appliedCoupon = null;
+      currentDiscountAmount = 0;
+      document.getElementById('applied-coupon-banner').classList.add('hidden');
+      document.getElementById('cust-coupon-input').value = studioConfig.bannerCode || '';
+
       chosenPaymentMode = 'UPI';
       selectedRawFiles = [];
       renderCustomerUploadedThumbnails();
@@ -1562,7 +1892,13 @@
       document.getElementById('cust-notes').value = '';
       document.getElementById('modal-title').innerText = activeProduct.title;
 
-      // Dynamic Front+Back placement price from Admin inventory config
+      const sgStep1Btn = document.getElementById('step1-size-guide-btn');
+      if (activeProduct.is_apparel && studioConfig.sizeGuideEnabled !== false) {
+        sgStep1Btn.classList.remove('hidden');
+      } else {
+        sgStep1Btn.classList.add('hidden');
+      }
+
       const bothCost = conf.bothCost !== undefined ? Number(conf.bothCost) : 150;
       const bothBtn = document.getElementById('both-place-btn');
       if (bothBtn) {
@@ -1602,15 +1938,17 @@
       const shadesBox = document.getElementById('dynamic-shades');
       chosenColor = conf.shades[0] || 'Standard';
       shadesBox.innerHTML = conf.shades.map((sh, i) => `
-        <button type="button" onclick="selectColor('${sh}', this)" class="shade-btn tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${sh}</button>
+        <button type="button" onclick="selectColor('${escapeHtml(sh)}', this)" class="shade-btn tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${escapeHtml(sh)}</button>
       `).join('');
 
       const sizesBox = document.getElementById('dynamic-sizes');
       chosenSize = conf.sizes[0] || 'Standard';
+      const firstSizeMatch = chosenSize.match(/\+₹(\d+)/);
+      extraSizeCost = firstSizeMatch ? Number(firstSizeMatch[1]) : 0;
       sizesBox.innerHTML = conf.sizes.map((sz, i) => {
         const match = sz.match(/\+₹(\d+)/);
         const addCost = match ? Number(match[1]) : 0;
-        return `<button type="button" onclick="selectSize('${sz}', ${addCost}, this)" class="size-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${sz}</button>`;
+        return `<button type="button" onclick="selectSize('${escapeHtml(sz)}', ${addCost}, this)" class="size-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${escapeHtml(sz)}</button>`;
       }).join('');
 
       document.getElementById('placement-box').style.display = activeProduct.is_apparel ? 'block' : 'none';
@@ -1625,8 +1963,11 @@
       finBox.innerHTML = conf.finishes.map((fn, i) => {
         const [label, costStr] = fn.split('|');
         const cost = Number(costStr || 0);
-        if (i === 0) chosenFinishLabel = label;
-        return `<button type="button" onclick="selectFinish(${cost}, '${label}', this)" class="finish-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${label}${cost > 0 ? ' +₹'+cost : ''}</button>`;
+        if (i === 0) {
+          chosenFinishLabel = label;
+          extraFinish = cost;
+        }
+        return `<button type="button" onclick="selectFinish(${cost}, '${escapeHtml(label)}', this)" class="finish-pill tactile-btn px-3.5 py-2 rounded-xl text-xs font-bold ${i===0 ? 'bg-black text-white' : 'bg-neutral-100 text-black'}">${escapeHtml(label)}${cost > 0 ? ' +₹'+cost : ''}</button>`;
       }).join('');
 
       updatePrice();
@@ -1693,8 +2034,32 @@
       updateCodButtonUI();
       updatePrice();
     }
+
+    function getCalculatedTotal() {
+      if (!activeProduct) return 0;
+      const subtotal = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish;
+      currentDiscountAmount = 0;
+
+      if (appliedCoupon) {
+        if (subtotal < Number(appliedCoupon.minOrder || 0)) {
+          appliedCoupon = null;
+          document.getElementById('applied-coupon-banner').classList.add('hidden');
+        } else {
+          const rawDisc = appliedCoupon.type === 'PERCENT'
+            ? Math.round(subtotal * (Number(appliedCoupon.value) / 100))
+            : Number(appliedCoupon.value);
+          currentDiscountAmount = Math.min(rawDisc, Math.max(0, subtotal - 1));
+          const cpnBanner = document.getElementById('applied-coupon-banner');
+          const cpnText = document.getElementById('applied-coupon-text');
+          cpnBanner.classList.remove('hidden');
+          cpnText.innerText = `✓ ${appliedCoupon.code} Applied (-₹${currentDiscountAmount})`;
+        }
+      }
+      return Math.max(1, subtotal - currentDiscountAmount + extraCodCost);
+    }
+
     function updatePrice() {
-      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
+      const total = getCalculatedTotal();
       document.getElementById('live-price').innerText = total;
       document.getElementById('final-btn-price').innerText = total;
       document.getElementById('upi-now-amount').innerText = total;
@@ -1761,6 +2126,7 @@
       if (!/^\d{4}$/.test(pin)) return alert("Please set an exact 4-digit numeric Privacy PIN.");
       if (address.length < 8) return alert("Please enter your complete delivery address and 6-digit Pincode.");
 
+      const total = getCalculatedTotal();
       const btn = document.getElementById('submit-btn');
       btn.innerText = "Uploading Original HD Photo(s)...";
       btn.disabled = true;
@@ -1768,8 +2134,7 @@
       const pinCheck = await verifyPhonePinOnCloud(phone, pin);
       if (!pinCheck.valid) {
         btn.disabled = false;
-        const t = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
-        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${t}</span>`;
+        btn.innerHTML = `Send Commission · ₹<span id="final-btn-price">${total}</span>`;
         unlockIdentityFields();
         return alert("❌ Wrong 4-Digit Privacy PIN for this WhatsApp number!");
       }
@@ -1782,7 +2147,6 @@
       document.getElementById('lookup-pin-input').value = pin;
       lockIdentityFields(phone);
 
-      const total = Number(activeProduct.base_price) + extraSizeCost + extraPlacement + extraFinish + extraCodCost;
       const rawNotes = document.getElementById('cust-notes').value.trim();
 
       try {
@@ -1792,13 +2156,15 @@
           uploadedUrls.push(url);
         }
 
-        const isCod = (chosenPaymentMode === 'COD' && isCustomerCodEligible);
+        const isCod = (chosenPaymentMode === 'COD' && isCodAllowedNow());
+        const fee = Math.max(0, Number(studioConfig.codFee !== undefined ? studioConfig.codFee : 50));
         const metaObj = {
           bucket: isCod ? 'ORDER' : 'PREVIEW',
           payStatus: isCod ? 'COD' : 'UNPAID',
-          payment: isCod ? '✓ Confirmed · Cash on Delivery (+₹50)' : 'Unpaid · Awaiting WhatsApp Preview',
+          payment: isCod ? `✓ Confirmed · Cash on Delivery (+₹${fee})` : 'Unpaid · Awaiting WhatsApp Preview',
           address: address,
-          stage: isCod ? 'Confirmed COD · Crafting Preview' : 'Awaiting WhatsApp Preview'
+          stage: isCod ? 'Confirmed COD · Crafting Preview' : 'Awaiting WhatsApp Preview',
+          coupon: (appliedCoupon && currentDiscountAmount > 0) ? `${appliedCoupon.code} (-₹${currentDiscountAmount})` : ''
         };
 
         const orderPayload = {
@@ -1855,13 +2221,14 @@
     function openPolicyModal(type) {
       const titleEl = document.getElementById('policy-title');
       const bodyEl = document.getElementById('policy-body');
+      const waNum = studioConfig.whatsappNumber || DEFAULT_STUDIO_CONFIG.whatsappNumber;
       const map = {
         contact: {
           title: "Contact SKIA Studio",
           body: `
             <p><strong>Brand & Studio Name:</strong> SKIA Studio (Owned & Operated by Ronak Sem)</p>
             <p><strong>Location:</strong> Indore, Madhya Pradesh, India</p>
-            <p><strong>Phone & WhatsApp Support:</strong> +91 81034 23011</p>
+            <p><strong>Phone & WhatsApp Support:</strong> +91 ${escapeHtml(waNum)}</p>
             <p><strong>Official Email:</strong> semronak26@gmail.com</p>
             <p><strong>Operating Hours:</strong> Monday to Saturday, 10:00 AM – 8:00 PM IST</p>
           `
@@ -1871,14 +2238,14 @@
           body: `
             <p><strong>1. 100% Customer Photo Confidentiality:</strong> Every photograph uploaded to SKIA Studio is used strictly to craft your custom piece. Your personal photos are protected by your 4-Digit Privacy PIN, are never shared publicly, and are deleted after printing.</p>
             <p><strong>2. Data Collected:</strong> We only collect your Name, 10-digit WhatsApp number, and Delivery Address to send your digital preview and deliver your physical order.</p>
-            <p><strong>3. Contact for Privacy Queries:</strong> Reach out to Ronak Sem at semronak26@gmail.com or +91 81034 23011.</p>
+            <p><strong>3. Contact for Privacy Queries:</strong> Reach out to Ronak Sem at semronak26@gmail.com or +91 ${escapeHtml(waNum)}.</p>
           `
         },
         terms: {
           title: "Terms & Conditions",
           body: `
             <p><strong>1. Custom 1-of-1 Commissions:</strong> Every item on SKIA is custom-made based on your uploaded photo and styling instructions. We provide a digital preview on WhatsApp prior to final printing.</p>
-            <p><strong>2. Payment & Cash on Delivery Eligibility:</strong> First-time orders require online UPI payment (to skiastudio@ybl). Once you complete 1 verified online order with SKIA, Cash on Delivery (+₹50 courier handling fee) automatically unlocks for your phone number.</p>
+            <p><strong>2. Payment & Cash on Delivery Eligibility:</strong> Online UPI payments go to ${escapeHtml(OWNER_UPI_ID)}. Cash on Delivery rules and handling fees are displayed transparently at checkout.</p>
             <p><strong>3. Content Ownership:</strong> By uploading an image, you confirm you have the right to print that photo.</p>
           `
         },
@@ -1887,7 +2254,7 @@
           body: `
             <p><strong>1. Shipping Timeline:</strong> Custom orders are crafted in 2–4 business days and delivered across Indore and Pan-India in 4–7 business days via BlueDart, Delhivery, or Xpressbees.</p>
             <p><strong>2. Cancellations:</strong> You may cancel or modify your order anytime <em>before</em> approving the digital preview for printing.</p>
-            <p><strong>3. Damaged / Misprinted Items (100% Free Replacement):</strong> Because each item is custom-printed with your personal photo, returns for wrong size selection are not accepted. However, if your item arrives damaged or misprinted, share a 10-second parcel unboxing video on WhatsApp (+91 81034 23011) within 48 hours of delivery for a 100% free replacement or refund.</p>
+            <p><strong>3. Damaged / Misprinted Items (100% Free Replacement):</strong> Because each item is custom-printed with your personal photo, returns for wrong size selection are not accepted. However, if your item arrives damaged or misprinted, share a 10-second parcel unboxing video on WhatsApp (+91 ${escapeHtml(waNum)}) within 48 hours of delivery for a 100% free replacement or refund.</p>
           `
         }
       };
@@ -1904,7 +2271,9 @@
     }
 
     window.addEventListener('popstate', () => {
-      if (!document.getElementById('custom-modal').classList.contains('hidden')) {
+      if (!document.getElementById('size-guide-modal').classList.contains('hidden')) {
+        closeSizeGuideModal();
+      } else if (!document.getElementById('custom-modal').classList.contains('hidden')) {
         closeModal();
       } else if (!document.getElementById('policy-modal').classList.contains('hidden')) {
         closePolicyModal();
