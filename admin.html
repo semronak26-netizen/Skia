@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { background-color: #FFFFFF; color: #0F0F0F; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="min-h-screen p-4 sm:p-8 max-w-4xl mx-auto">
@@ -29,10 +31,10 @@
   </div>
 
   <!-- HEADER -->
-  <header class="border-b border-neutral-200 pb-4 mb-6 flex justify-between items-center">
+  <header class="border-b border-neutral-200 pb-4 mb-5 flex justify-between items-center">
     <div>
       <span class="text-[10px] font-bold uppercase tracking-widest bg-black text-white px-2.5 py-0.5 rounded-full">Encrypted Mumbai Cloud</span>
-      <h1 class="text-2xl sm:text-3xl font-extrabold mt-1">SKIA Inventory & Orders</h1>
+      <h1 class="text-2xl sm:text-3xl font-extrabold mt-1">SKIA Master Admin</h1>
     </div>
     <div class="flex gap-2">
       <button onclick="loadAllCloudData()" class="rounded-full border border-black px-3.5 py-1.5 text-xs font-bold uppercase hover:bg-black hover:text-white">↻ Refresh</button>
@@ -40,19 +42,52 @@
     </div>
   </header>
 
-  <!-- TABS -->
-  <div class="flex gap-2 mb-6 overflow-x-auto">
-    <button onclick="showTab('orders')" id="btn-orders" class="px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-black text-white">1. Previews & Orders (<span id="order-badge">0</span>)</button>
-    <button onclick="showTab('add')" id="btn-add" class="px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">2. + Upload New Piece</button>
-    <button onclick="showTab('manage')" id="btn-manage" class="px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">3. Inventory & Slides (<span id="prod-badge">0</span>)</button>
+  <!-- MAIN ADMIN TABS -->
+  <div class="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
+    <button onclick="showTab('orders')" id="btn-orders" class="whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-black text-white">1. Previews & Orders (<span id="order-badge">0</span>)</button>
+    <button onclick="showTab('add')" id="btn-add" class="whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">2. + Upload Piece</button>
+    <button onclick="showTab('manage')" id="btn-manage" class="whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">3. Inventory & Slides (<span id="prod-badge">0</span>)</button>
+    <button onclick="showTab('settings')" id="btn-settings" class="whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black">4. ⚙️ Studio & Offers Control</button>
   </div>
 
-  <!-- TAB 1: ORDERS & PREVIEWS -->
+  <!-- TAB 1: ORDERS & PREVIEWS (WITH FILTERS, SEARCH & REVENUE STATS) -->
   <section id="tab-orders" class="space-y-4">
+    <!-- Live Studio Metrics Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+      <div class="bg-neutral-100 rounded-2xl p-3.5">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Confirmed Revenue</span>
+        <span class="text-lg font-extrabold text-black mt-0.5 block">₹<span id="stat-revenue">0</span></span>
+      </div>
+      <div class="bg-neutral-100 rounded-2xl p-3.5">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Unpaid Previews</span>
+        <span class="text-lg font-extrabold text-black mt-0.5 block" id="stat-previews">0</span>
+      </div>
+      <div class="bg-neutral-100 rounded-2xl p-3.5">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Verify Payment</span>
+        <span class="text-lg font-extrabold text-amber-700 mt-0.5 block" id="stat-processing">0</span>
+      </div>
+      <div class="bg-neutral-100 rounded-2xl p-3.5">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Paid / COD Ready</span>
+        <span class="text-lg font-extrabold text-emerald-800 mt-0.5 block" id="stat-confirmed">0</span>
+      </div>
+    </div>
+
+    <!-- Filter Pills & Search Bar -->
+    <div class="flex flex-col sm:flex-row justify-between gap-2.5 bg-neutral-50 border border-neutral-200 rounded-2xl p-3 text-xs">
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar">
+        <button type="button" onclick="setAdminOrderFilter('ALL')" id="ord-filter-ALL" class="whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-black text-white">All</button>
+        <button type="button" onclick="setAdminOrderFilter('UNPAID')" id="ord-filter-UNPAID" class="whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-white border border-neutral-200 text-black">Unpaid Previews</button>
+        <button type="button" onclick="setAdminOrderFilter('PROCESSING')" id="ord-filter-PROCESSING" class="whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-white border border-neutral-200 text-black">Verify Payment</button>
+        <button type="button" onclick="setAdminOrderFilter('CONFIRMED')" id="ord-filter-CONFIRMED" class="whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-white border border-neutral-200 text-black">Paid / COD</button>
+        <button type="button" onclick="setAdminOrderFilter('CANCELLED')" id="ord-filter-CANCELLED" class="whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-white border border-neutral-200 text-black">Cancelled</button>
+      </div>
+      <input type="text" id="admin-order-search" oninput="renderAdmin()" placeholder="Search SKIA-XXXX, Name or Phone..." class="rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs sm:w-56 focus:outline-none focus:border-black" />
+    </div>
+
     <div id="orders-container" class="space-y-4 text-xs">Loading orders...</div>
   </section>
 
-  <!-- TAB 2: UPLOAD NEW PIECE (WITH 2-LEVEL SLIDES & CUSTOM OPTIONS!) -->
+  <!-- TAB 2: UPLOAD NEW PIECE -->
   <section id="tab-add" class="hidden border border-neutral-200 rounded-3xl p-5 sm:p-6 bg-neutral-50/50 space-y-5 text-xs">
     <h2 class="text-xl font-extrabold">Publish a New Piece to SKIA</h2>
     <form onsubmit="publishProductToCloud(event)" class="space-y-5">
@@ -113,11 +148,12 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="font-bold block mb-1.5">Allowed Print Finishes:</label>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 mb-2">
               <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="HD Ink|0" checked /> HD Ink</label>
               <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="3D Puff|100" checked /> 3D Puff (+₹100)</label>
               <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="w-finish accent-black" value="Stitch|150" checked /> Stitch (+₹150)</label>
             </div>
+            <input type="text" id="w-custom-finishes" placeholder="Extra finishes (e.g. Metallic Ink|120)" class="w-full rounded-xl border border-neutral-300 p-2" />
           </div>
           <div>
             <label class="font-bold block mb-1.5">Front + Back Extra Price (₹):</label>
@@ -130,14 +166,14 @@
       <div id="hold-config-box" class="hidden bg-white p-4 rounded-2xl border border-neutral-200 space-y-4">
         <p class="font-bold uppercase tracking-wider text-[10px] bg-black text-white inline-block px-2.5 py-0.5 rounded-full">Object / Cup / Case Options</p>
         <div>
-          <label class="font-bold block mb-1.5">Tick Editions / Sizes (or type custom phone models below):</label>
+          <label class="font-bold block mb-1.5">Tick Editions / Sizes (or type custom models/editions below):</label>
           <div class="flex flex-wrap gap-2 mb-2">
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Classic 325ml Cup" checked /> Classic 325ml Cup</label>
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Black Contrast Cup (+₹50)" checked /> Black Contrast Cup (+₹50)</label>
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Magic Heat Cup (+₹120)" checked /> Magic Heat Cup (+₹120)</label>
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-size accent-black" value="Standard Size" /> Standard Size</label>
           </div>
-          <input type="text" id="h-custom-sizes" placeholder="Or type custom models/editions comma-separated (e.g. iPhone 13, iPhone 14, iPhone 15, iPhone 16 Pro)" class="w-full rounded-xl border border-neutral-300 p-2" />
+          <input type="text" id="h-custom-sizes" placeholder="Or type custom models/sizes comma-separated (e.g. A4 Frame, A3 Frame (+₹200), iPhone 15)" class="w-full rounded-xl border border-neutral-300 p-2" />
         </div>
         <div>
           <label class="font-bold block mb-1.5">Base Shades:</label>
@@ -146,28 +182,33 @@
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Pitch Black" checked /> Pitch Black</label>
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-shade accent-black" value="Clear / Glass" /> Clear / Glass</label>
           </div>
-          <input type="text" id="h-custom-shades" placeholder="Optional extra shades (e.g. Matte Black, Frosted)" class="w-full rounded-xl border border-neutral-300 p-2" />
+          <input type="text" id="h-custom-shades" placeholder="Optional extra shades (e.g. Matte Black, Walnut Wood)" class="w-full rounded-xl border border-neutral-300 p-2" />
         </div>
         <div>
-          <label class="font-bold block mb-1.5">Allowed Print Layouts:</label>
-          <div class="flex flex-wrap gap-2">
+          <label class="font-bold block mb-1.5">Allowed Print Layouts / Add-ons:</label>
+          <div class="flex flex-wrap gap-2 mb-2">
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Center Focus|0" checked /> Center Focus</label>
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="Full Wrap|0" checked /> Full Wrap</label>
             <label class="border border-neutral-300 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="h-finish accent-black" value="2-Sided (Photo + Quote)|50" checked /> 2-Sided (+₹50)</label>
           </div>
+          <input type="text" id="h-custom-finishes" placeholder="Optional extra layouts (e.g. Acrylic Glass|150, Gift Box|99)" class="w-full rounded-xl border border-neutral-300 p-2" />
         </div>
       </div>
 
-      <!-- DETAILS -->
+      <!-- DETAILS & MRP OFFER PRICING -->
       <div class="bg-white p-4 rounded-2xl border border-neutral-200 space-y-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label class="font-bold block mb-1">Product Title *</label>
-            <input type="text" id="p-title" required placeholder="e.g. The Graphite Sketch iPhone Case" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+            <input type="text" id="p-title" required placeholder="e.g. The Graphite Sketch Case" class="w-full rounded-xl border border-neutral-300 p-2.5" />
           </div>
           <div>
-            <label class="font-bold block mb-1">Base Price (₹) *</label>
-            <input type="number" id="p-price" required placeholder="499" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+            <label class="font-bold block mb-1">Selling Price (₹) *</label>
+            <input type="number" id="p-price" required placeholder="899" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1">Strike-Through MRP (₹) <span class="text-neutral-400 font-normal">(Optional)</span></label>
+            <input type="number" id="p-mrp" placeholder="e.g. 1299 (Leave blank for none)" class="w-full rounded-xl border border-neutral-300 p-2.5" />
           </div>
         </div>
         <div>
@@ -180,7 +221,7 @@
         </div>
       </div>
 
-      <!-- 2-LEVEL SLIDES BUILDER: EACH EXAMPLE CAN HAVE MULTIPLE MOCKUP ANGLES! -->
+      <!-- 2-LEVEL SLIDES BUILDER -->
       <div class="space-y-3">
         <label class="font-bold block uppercase tracking-wider text-[10px] text-neutral-500">
           3. Upload Examples (Each Original Photo Can Have Multiple Mockup Angles!)
@@ -202,7 +243,186 @@
     <div id="manage-container" class="space-y-3 text-xs"></div>
   </section>
 
-  <!-- MODAL A: 2-LEVEL SLIDES & ANGLES MANAGER FOR EXISTING PRODUCTS -->
+  <!-- TAB 4: STUDIO & OFFERS MASTER CONTROL CENTER -->
+  <section id="tab-settings" class="hidden space-y-6 text-xs">
+    
+    <!-- A. LIVE PROMO BANNER & STOREFRONT TEXT -->
+    <div class="border border-neutral-200 rounded-3xl p-5 bg-white space-y-4">
+      <div class="flex justify-between items-center border-b border-neutral-100 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Storefront Headlines & Promo Bar</span>
+          <h2 class="text-lg font-extrabold">1. Live Offer Banner & Hero Text</h2>
+        </div>
+      </div>
+
+      <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 space-y-3">
+        <label class="flex items-center gap-2 font-extrabold cursor-pointer">
+          <input type="checkbox" id="cfg-banner-enabled" class="accent-black w-4 h-4" />
+          <span>🔥 Enable Live Homepage Offer Banner (Reversible anytime)</span>
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="font-bold block mb-1 text-neutral-500">Offer Banner Message</label>
+            <input type="text" id="cfg-banner-text" placeholder="e.g. Weekend Studio Drop: Flat ₹100 Off All Hoodies!" class="w-full rounded-xl border border-neutral-300 bg-white p-2.5" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1 text-neutral-500">Tap-to-Copy Coupon (Optional)</label>
+            <input type="text" id="cfg-banner-code" placeholder="e.g. SKIA100" class="w-full rounded-xl border border-neutral-300 bg-white p-2.5 uppercase font-mono" />
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Top Black Moving Ticker Text (Separate points with •)</label>
+          <input type="text" id="cfg-ticker" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="font-bold block mb-1 text-neutral-500">Hero Top Kicker</label>
+            <input type="text" id="cfg-hero-kicker" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1 text-neutral-500">Hero Bold Heading</label>
+            <input type="text" id="cfg-hero-main" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1 text-neutral-500">Hero Italic Heading</label>
+            <input type="text" id="cfg-hero-italic" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+          </div>
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Hero Subtitle Line</label>
+          <input type="text" id="cfg-hero-sub" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+      </div>
+    </div>
+
+    <!-- B. DISCOUNT & COUPON CODES MANAGER -->
+    <div class="border border-neutral-200 rounded-3xl p-5 bg-white space-y-4">
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Checkout Promotions</span>
+        <h2 class="text-lg font-extrabold">2. Discount & Coupon Codes</h2>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 bg-neutral-50 p-3.5 rounded-2xl border border-neutral-200 items-end">
+        <div>
+          <label class="font-bold block mb-1 text-[10px] uppercase">Code *</label>
+          <input type="text" id="new-cpn-code" placeholder="SKIA100" class="w-full rounded-xl border border-neutral-300 bg-white p-2 uppercase font-mono" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-[10px] uppercase">Type</label>
+          <select id="new-cpn-type" class="w-full rounded-xl border border-neutral-300 bg-white p-2 font-bold">
+            <option value="FLAT">Flat ₹ Off</option>
+            <option value="PERCENT">% Percent Off</option>
+          </select>
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-[10px] uppercase">Discount Value *</label>
+          <input type="number" id="new-cpn-val" placeholder="100" class="w-full rounded-xl border border-neutral-300 bg-white p-2" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-[10px] uppercase">Min Order (₹)</label>
+          <input type="number" id="new-cpn-min" value="0" placeholder="500" class="w-full rounded-xl border border-neutral-300 bg-white p-2" />
+        </div>
+        <button type="button" onclick="addCouponAdmin()" class="col-span-2 sm:col-span-1 bg-black text-white rounded-xl py-2 px-3 font-extrabold uppercase">
+          + Add Code
+        </button>
+      </div>
+
+      <div id="coupons-admin-list" class="space-y-2"></div>
+    </div>
+
+    <!-- C. DYNAMIC STOREFRONT CATEGORIES -->
+    <div class="border border-neutral-200 rounded-3xl p-5 bg-white space-y-4">
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Expand Product Lines Without Coding</span>
+        <h2 class="text-lg font-extrabold">3. Custom Category Tabs</h2>
+        <p class="text-[11px] text-neutral-500">Default tabs (All Pieces, To Wear, To Hold & Keep, For Crews) are always active. Add extra tabs below anytime:</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-neutral-50 p-3.5 rounded-2xl border border-neutral-200 items-end">
+        <div>
+          <label class="font-bold block mb-1 text-[10px] uppercase">Category Tab Name *</label>
+          <input type="text" id="new-cat-label" placeholder="e.g. Posters & Frames" class="w-full rounded-xl border border-neutral-300 bg-white p-2" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-[10px] uppercase">Customization Flow</label>
+          <select id="new-cat-type" class="w-full rounded-xl border border-neutral-300 bg-white p-2 font-bold">
+            <option value="HOLD">Object Layout (No Front/Back)</option>
+            <option value="WEAR">Apparel Layout (With Front/Back)</option>
+          </select>
+        </div>
+        <button type="button" onclick="addCustomCategoryAdmin()" class="bg-black text-white rounded-xl py-2 px-3 font-extrabold uppercase">
+          + Add Category Tab
+        </button>
+      </div>
+
+      <div id="custom-cats-admin-list" class="space-y-2"></div>
+    </div>
+
+    <!-- D. CHECKOUT, COD, UPI, WHATSAPP & SIZE GUIDE -->
+    <div class="border border-neutral-200 rounded-3xl p-5 bg-white space-y-4">
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Payments & Fit Guide</span>
+        <h2 class="text-lg font-extrabold">4. Checkout, COD Rules & Size Guide</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Cash on Delivery (COD) Rule</label>
+          <select id="cfg-cod-mode" class="w-full rounded-xl border border-neutral-300 p-2.5 bg-white font-bold">
+            <option value="AFTER_FIRST">🔒 Unlock COD After 1st Paid Online Order (Default)</option>
+            <option value="ALL">🟢 Allow COD for Everyone</option>
+            <option value="DISABLED">🔴 Disable COD Completely (Prepaid UPI Only)</option>
+          </select>
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">COD Handling Fee (₹)</label>
+          <input type="number" id="cfg-cod-fee" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Studio UPI ID</label>
+          <input type="text" id="cfg-upi-id" class="w-full rounded-xl border border-neutral-300 p-2.5 font-mono" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Studio WhatsApp Number (10 Digits)</label>
+          <input type="text" id="cfg-whatsapp" maxlength="10" class="w-full rounded-xl border border-neutral-300 p-2.5 font-mono" />
+        </div>
+      </div>
+
+      <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 space-y-3">
+        <label class="flex items-center gap-2 font-extrabold cursor-pointer">
+          <input type="checkbox" id="cfg-sizeguide-enabled" class="accent-black w-4 h-4" />
+          <span>📏 Show "Size & Fit Guide" Button on Apparel Products</span>
+        </label>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Size Guide Title</label>
+          <input type="text" id="cfg-sizeguide-title" class="w-full rounded-xl border border-neutral-300 bg-white p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Size Chart Rows (1 size per line, separate columns with | )</label>
+          <textarea id="cfg-sizeguide-rows" rows="5" class="w-full rounded-xl border border-neutral-300 bg-white p-2.5 font-mono text-[11px]"></textarea>
+        </div>
+        <div>
+          <label class="font-bold block mb-1 text-neutral-500">Size Guide Bottom Note</label>
+          <input type="text" id="cfg-sizeguide-note" class="w-full rounded-xl border border-neutral-300 bg-white p-2.5" />
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button type="button" id="save-cfg-btn" onclick="saveStudioConfigToCloud()" class="flex-1 bg-black text-white rounded-full py-4 font-extrabold uppercase tracking-widest">
+          Save All Studio Settings Live →
+        </button>
+        <button type="button" onclick="resetStudioConfigToDefault()" class="rounded-full bg-neutral-100 text-neutral-700 hover:bg-red-50 hover:text-red-700 px-6 py-4 font-bold uppercase tracking-wider">
+          ↺ Reset to Base Default
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- MODAL A: 2-LEVEL SLIDES & ANGLES MANAGER (WITH ★ MAKE COVER REORDERING!) -->
   <div id="add-slide-modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto space-y-4 text-xs shadow-2xl">
       <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
@@ -213,10 +433,8 @@
         <button onclick="closeAddSlideModal()" class="font-bold uppercase text-neutral-500">Close ✕</button>
       </div>
 
-      <!-- Existing Examples & Their Multiple Mockup Angles -->
       <div id="existing-slides-list" class="space-y-3"></div>
 
-      <!-- Add a Whole New Template Example (New Original Photo + Multiple Mockups) -->
       <div class="border-t-2 border-black pt-4 space-y-3">
         <p class="text-[10px] font-bold uppercase tracking-wider bg-black text-white inline-block px-2.5 py-0.5 rounded-full">
           + Add a New Template Example (Different Original Photo)
@@ -225,7 +443,7 @@
           <label class="font-bold block mb-1">1. Select 1 or More Mockup Angles for This New Example *</label>
           <input type="file" id="extra-final-files" accept="image/*" multiple class="w-full" />
         </div>
-        <div class="border border-dashed border-black rounded-xl p-3">
+        <div class="border border-dashed border-black rounded-xl rounded-xl p-3">
           <label class="font-bold block mb-1">2. Select the 1 Original Raw Customer Photo *</label>
           <input type="file" id="extra-raw-file" accept="image/*" class="w-full" />
         </div>
@@ -236,13 +454,13 @@
     </div>
   </div>
 
-  <!-- MODAL B: FULL INVENTORY, STOCK, SIZES & DETAILS EDITOR -->
+  <!-- MODAL B: FULL INVENTORY, STOCK, MRP, SIZES & DETAILS EDITOR -->
   <div id="inventory-modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full max-h-[92vh] overflow-y-auto space-y-4 text-xs shadow-2xl">
       <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
         <div>
           <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Full Inventory Control</span>
-          <h3 class="text-lg font-extrabold">Edit Product & Stock</h3>
+          <h3 class="text-lg font-extrabold">Edit Product, MRP & Stock</h3>
         </div>
         <button onclick="closeInventoryModal()" class="font-bold uppercase text-neutral-500">Close ✕</button>
       </div>
@@ -271,14 +489,18 @@
         <span>📌 Pin this product to the top of the storefront</span>
       </label>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
           <label class="font-bold block mb-1">Product Title</label>
           <input type="text" id="inv-title" class="w-full rounded-xl border border-neutral-300 p-2.5" />
         </div>
         <div>
-          <label class="font-bold block mb-1">Base Price (₹)</label>
+          <label class="font-bold block mb-1">Selling Price (₹)</label>
           <input type="number" id="inv-price" class="w-full rounded-xl border border-neutral-300 p-2.5" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Strike-Through MRP (₹)</label>
+          <input type="number" id="inv-mrp" placeholder="0 = None" class="w-full rounded-xl border border-neutral-300 p-2.5" />
         </div>
       </div>
 
@@ -299,7 +521,7 @@
       </div>
 
       <div>
-        <label class="font-bold block mb-1">Active Sizes / Models / Editions (Comma-separated — edit or delete any out-of-stock size!):</label>
+        <label class="font-bold block mb-1">Active Sizes / Models / Editions (Comma-separated):</label>
         <input type="text" id="inv-sizes" class="w-full rounded-xl border border-neutral-300 p-2.5 font-mono" />
       </div>
 
@@ -318,7 +540,7 @@
       </button>
     </div>
   </div>
-
+  
   <script>
     const SUPABASE_URL = window.location.hostname.includes('vercel.app')
       ? window.location.origin + "/supaproxy"
@@ -326,9 +548,39 @@
     const SUPABASE_KEY = "sb_publishable_bYUXJHcnV2v8Ko3bGLcTJg_tQhZcf9_";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    const CONFIG_ROW_TITLE = "__SKIA_STORE_CONFIG__";
+    const DEFAULT_STUDIO_CONFIG = {
+      tickerText: "1-of-1 Custom Studio · Indore • Approve Your Digital Preview on WhatsApp Before Print • 240–400 GSM Heavy Combed Cotton & Infused Objects",
+      heroKicker: "SKIA Studio · 1-of-1 Custom Studio Indore",
+      heroHeadingMain: "Bring your photos.",
+      heroHeadingItalic: "Cast them in form.",
+      heroSubtext: "Tap any piece below to view its full specifications & examples.",
+      bannerEnabled: false,
+      bannerText: "",
+      bannerCode: "",
+      codMode: "AFTER_FIRST",
+      codFee: 50,
+      upiId: "skiastudio@ybl",
+      whatsappNumber: "8103423011",
+      sizeGuideEnabled: true,
+      sizeGuideTitle: "SKIA Heavyweight Apparel · Size & Fit Guide (Inches)",
+      sizeGuideRows: [
+        "S | Chest: 40\" | Length: 27\" | Shoulder: 19\"",
+        "M | Chest: 42\" | Length: 28\" | Shoulder: 20\"",
+        "L | Chest: 44\" | Length: 29\" | Shoulder: 21\"",
+        "XL | Chest: 46\" | Length: 30\" | Shoulder: 22\"",
+        "XXL | Chest: 48\" | Length: 31\" | Shoulder: 23\""
+      ],
+      sizeGuideNote: "Crafted from 240–400 GSM pre-shrunk combed cotton. Relaxed studio drop-shoulder fit.",
+      customCategories: [],
+      coupons: []
+    };
+
+    let studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+    let studioConfigRowId = null;
     let products = [];
     let orders = [];
-    // Each Example row has multiple finalFiles (Mockup Angles) + 1 rawFile (Original Photo)
+    let currentAdminOrderFilter = 'ALL';
     let slidePairsData = [{ finalFiles: [], rawFile: null, finalPreviews: [], rawPreview: "" }];
     let targetSlideProductId = null;
     let targetInvProductId = null;
@@ -341,6 +593,22 @@
       return u;
     }
 
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function isCategoryWearable(catId) {
+      if (catId === 'WEAR' || catId === 'CREWS') return true;
+      if (catId === 'HOLD') return false;
+      const custom = (studioConfig.customCategories || []).find(c => c.id === catId);
+      return custom ? custom.flow === 'WEAR' : false;
+    }
+
     function parseProdConf(p) {
       const parts = (p.spec || '').split('||CONF:');
       const cleanSpec = parts[0];
@@ -350,11 +618,12 @@
       }
       if (!conf) {
         conf = p.is_apparel
-          ? { sizes: ['S','M','L','XL','XXL'], shades: ['Pitch Black','Pure White'], finishes: ['HD Ink|0','3D Puff|100','Stitch|150'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150 }
-          : { sizes: ['Classic 325ml Cup','Black Contrast Cup (+₹50)','Magic Heat Cup (+₹120)'], shades: ['Pure White','Pitch Black'], finishes: ['Center Focus|0','Full Wrap|0'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150 };
+          ? { sizes: ['S','M','L','XL','XXL'], shades: ['Pitch Black','Pure White'], finishes: ['HD Ink|0','3D Puff|100','Stitch|150'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150, mrp: 0 }
+          : { sizes: ['Classic 325ml Cup','Black Contrast Cup (+₹50)','Magic Heat Cup (+₹120)'], shades: ['Pure White','Pitch Black'], finishes: ['Center Focus|0','Full Wrap|0'], stockStatus: 'IN_STOCK', pinned: false, bothCost: 150, mrp: 0 };
       }
       conf.stockStatus = conf.stockStatus || 'IN_STOCK';
-      conf.bothCost = (conf.bothCost !== undefined) ? Number(conf.bothCost) : 150;
+      conf.bothCost = (conf.bothCost !== undefined) ? Math.max(0, Number(conf.bothCost) || 0) : 150;
+      conf.mrp = Math.max(0, Number(conf.mrp) || 0);
       return { cleanSpec, conf };
     }
 
@@ -424,17 +693,17 @@
     }
 
     function showTab(t) {
-      ['orders', 'add', 'manage'].forEach(x => {
+      ['orders', 'add', 'manage', 'settings'].forEach(x => {
         document.getElementById('tab-' + x).classList.add('hidden');
-        document.getElementById('btn-' + x).className = "px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black";
+        document.getElementById('btn-' + x).className = "whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-neutral-100 text-black";
       });
       document.getElementById('tab-' + t).classList.remove('hidden');
-      document.getElementById('btn-' + t).className = "px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-black text-white";
+      document.getElementById('btn-' + t).className = "whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-bold uppercase bg-black text-white";
     }
 
     function toggleModeOptions() {
       const mode = document.getElementById('p-mode').value;
-      if (mode === 'HOLD') {
+      if (!isCategoryWearable(mode)) {
         document.getElementById('wear-config-box').classList.add('hidden');
         document.getElementById('hold-config-box').classList.remove('hidden');
       } else {
@@ -443,7 +712,31 @@
       }
     }
 
-    // 2-Level Builder in Tab 2: Each Example has Multiple Mockup Angles + 1 Original Photo!
+    function syncCategoryDropdownsAdmin() {
+      const baseOptions = [
+        { id: 'WEAR', label: 'To Wear (Clothing)' },
+        { id: 'HOLD', label: 'To Hold & Keep (Cups, Cases, Objects)' },
+        { id: 'CREWS', label: 'For Crews (Bulk 5+ Drops)' }
+      ];
+      const customOpts = (studioConfig.customCategories || []).map(c => ({
+        id: c.id,
+        label: `${c.label} (${c.flow === 'WEAR' ? 'Apparel' : 'Object'})`
+      }));
+      const allOpts = baseOptions.concat(customOpts);
+
+      const pMode = document.getElementById('p-mode');
+      const invCat = document.getElementById('inv-cat');
+      const currP = pMode.value || 'WEAR';
+      const currInv = invCat.value || 'WEAR';
+
+      pMode.innerHTML = allOpts.map(o => `<option value="${escapeHtml(o.id)}">${escapeHtml(o.label)}</option>`).join('');
+      invCat.innerHTML = allOpts.map(o => `<option value="${escapeHtml(o.id)}">${escapeHtml(o.label)}</option>`).join('');
+
+      if (allOpts.some(o => o.id === currP)) pMode.value = currP;
+      if (allOpts.some(o => o.id === currInv)) invCat.value = currInv;
+      toggleModeOptions();
+    }
+
     function renderSlideBuilderRows() {
       const box = document.getElementById('slides-builder-list');
       box.innerHTML = slidePairsData.map((pair, idx) => `
@@ -502,8 +795,228 @@
       const { data: ordData } = await db.from('skia_orders').select('*').order('id', { ascending: false });
       const { data: prodData } = await db.from('skia_products').select('*').order('id', { ascending: false });
       orders = ordData || [];
-      products = prodData || [];
+      const allRows = prodData || [];
+
+      const cfgRow = allRows.find(r => r.title === CONFIG_ROW_TITLE);
+      if (cfgRow) {
+        studioConfigRowId = cfgRow.id;
+        try {
+          const parsed = JSON.parse(cfgRow.prompt || '{}');
+          studioConfig = {
+            ...JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG)),
+            ...parsed,
+            customCategories: Array.isArray(parsed.customCategories) ? parsed.customCategories : [],
+            coupons: Array.isArray(parsed.coupons) ? parsed.coupons : [],
+            sizeGuideRows: Array.isArray(parsed.sizeGuideRows) && parsed.sizeGuideRows.length ? parsed.sizeGuideRows : DEFAULT_STUDIO_CONFIG.sizeGuideRows
+          };
+        } catch (e) {
+          studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+        }
+      } else {
+        studioConfigRowId = null;
+        studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+      }
+
+      products = allRows.filter(r => r.title !== CONFIG_ROW_TITLE);
+      populateStudioSettingsForm();
+      syncCategoryDropdownsAdmin();
       renderAdmin();
+    }
+
+    function populateStudioSettingsForm() {
+      document.getElementById('cfg-banner-enabled').checked = !!studioConfig.bannerEnabled;
+      document.getElementById('cfg-banner-text').value = studioConfig.bannerText || '';
+      document.getElementById('cfg-banner-code').value = studioConfig.bannerCode || '';
+      document.getElementById('cfg-ticker').value = studioConfig.tickerText || DEFAULT_STUDIO_CONFIG.tickerText;
+      document.getElementById('cfg-hero-kicker').value = studioConfig.heroKicker || DEFAULT_STUDIO_CONFIG.heroKicker;
+      document.getElementById('cfg-hero-main').value = studioConfig.heroHeadingMain || DEFAULT_STUDIO_CONFIG.heroHeadingMain;
+      document.getElementById('cfg-hero-italic').value = studioConfig.heroHeadingItalic || DEFAULT_STUDIO_CONFIG.heroHeadingItalic;
+      document.getElementById('cfg-hero-sub').value = studioConfig.heroSubtext || DEFAULT_STUDIO_CONFIG.heroSubtext;
+
+      document.getElementById('cfg-cod-mode').value = studioConfig.codMode || 'AFTER_FIRST';
+      document.getElementById('cfg-cod-fee').value = studioConfig.codFee !== undefined ? studioConfig.codFee : 50;
+      document.getElementById('cfg-upi-id').value = studioConfig.upiId || DEFAULT_STUDIO_CONFIG.upiId;
+      document.getElementById('cfg-whatsapp').value = studioConfig.whatsappNumber || DEFAULT_STUDIO_CONFIG.whatsappNumber;
+
+      document.getElementById('cfg-sizeguide-enabled').checked = studioConfig.sizeGuideEnabled !== false;
+      document.getElementById('cfg-sizeguide-title').value = studioConfig.sizeGuideTitle || DEFAULT_STUDIO_CONFIG.sizeGuideTitle;
+      document.getElementById('cfg-sizeguide-rows').value = (studioConfig.sizeGuideRows || DEFAULT_STUDIO_CONFIG.sizeGuideRows).join('\n');
+      document.getElementById('cfg-sizeguide-note').value = studioConfig.sizeGuideNote || DEFAULT_STUDIO_CONFIG.sizeGuideNote;
+
+      renderCouponsAdminList();
+      renderCustomCatsAdminList();
+    }
+
+    function renderCouponsAdminList() {
+      const box = document.getElementById('coupons-admin-list');
+      const list = studioConfig.coupons || [];
+      if (!list.length) {
+        box.innerHTML = `<p class="text-[11px] text-neutral-400 italic">No promo codes created yet.</p>`;
+        return;
+      }
+      box.innerHTML = list.map((c, idx) => `
+        <div class="flex items-center justify-between border border-neutral-200 rounded-xl p-2.5 bg-neutral-50">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-mono font-extrabold bg-black text-white px-2.5 py-0.5 rounded-lg">${escapeHtml(c.code)}</span>
+            <span class="font-bold">${c.type === 'PERCENT' ? escapeHtml(c.value) + '% OFF' : '₹' + escapeHtml(c.value) + ' OFF'}</span>
+            <span class="text-neutral-500 text-[11px]">(Min Order: ₹${escapeHtml(c.minOrder || 0)})</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${c.active ? 'bg-emerald-100 text-emerald-900' : 'bg-neutral-200 text-neutral-600'}">${c.active ? '● Active' : 'Paused'}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="toggleCouponAdmin(${idx})" class="px-2.5 py-1 rounded-lg border border-neutral-300 bg-white font-bold text-[10px] uppercase">${c.active ? 'Pause' : 'Activate'}</button>
+            <button type="button" onclick="deleteCouponAdmin(${idx})" class="text-red-700 font-bold text-[10px] uppercase underline">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function addCouponAdmin() {
+      const rawCode = document.getElementById('new-cpn-code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const type = document.getElementById('new-cpn-type').value;
+      let val = Math.max(1, Number(document.getElementById('new-cpn-val').value) || 0);
+      const minOrder = Math.max(0, Number(document.getElementById('new-cpn-min').value) || 0);
+
+      if (!rawCode) return alert("Please enter a valid alphanumeric coupon code (e.g. SKIA100).");
+      if (!val || val <= 0) return alert("Please enter a discount value greater than 0.");
+      if (type === 'PERCENT' && val > 95) val = 95;
+
+      studioConfig.coupons = studioConfig.coupons || [];
+      const existingIdx = studioConfig.coupons.findIndex(c => c.code === rawCode);
+      const cpnObj = { code: rawCode, type, value: val, minOrder, active: true };
+      if (existingIdx >= 0) studioConfig.coupons[existingIdx] = cpnObj;
+      else studioConfig.coupons.push(cpnObj);
+
+      document.getElementById('new-cpn-code').value = '';
+      document.getElementById('new-cpn-val').value = '';
+      renderCouponsAdminList();
+      await saveStudioConfigToCloud(true);
+    }
+
+    async function toggleCouponAdmin(idx) {
+      if (!studioConfig.coupons[idx]) return;
+      studioConfig.coupons[idx].active = !studioConfig.coupons[idx].active;
+      renderCouponsAdminList();
+      await saveStudioConfigToCloud(true);
+    }
+
+    async function deleteCouponAdmin(idx) {
+      if (!studioConfig.coupons[idx]) return;
+      studioConfig.coupons.splice(idx, 1);
+      renderCouponsAdminList();
+      await saveStudioConfigToCloud(true);
+    }
+
+    function renderCustomCatsAdminList() {
+      const box = document.getElementById('custom-cats-admin-list');
+      const list = studioConfig.customCategories || [];
+      if (!list.length) {
+        box.innerHTML = `<p class="text-[11px] text-neutral-400 italic">Only base categories active. Add custom tabs above anytime.</p>`;
+        return;
+      }
+      box.innerHTML = list.map((c, idx) => `
+        <div class="flex items-center justify-between border border-neutral-200 rounded-xl p-2.5 bg-neutral-50">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold">${escapeHtml(c.label)}</span>
+            <span class="text-[10px] bg-white border border-neutral-200 px-2 py-0.5 rounded-full font-semibold">${c.flow === 'WEAR' ? 'Apparel Flow' : 'Object Flow'}</span>
+          </div>
+          <button type="button" onclick="deleteCustomCategoryAdmin(${idx})" class="text-red-700 font-bold text-[10px] uppercase underline">Remove Tab</button>
+        </div>
+      `).join('');
+    }
+
+    async function addCustomCategoryAdmin() {
+      const label = document.getElementById('new-cat-label').value.trim();
+      const flow = document.getElementById('new-cat-type').value;
+      if (!label) return alert("Please enter a Category Tab Name!");
+      const cleanId = 'CAT_' + label.toUpperCase().replace(/[^A-Z0-9]/g, '_').slice(0, 18);
+
+      studioConfig.customCategories = studioConfig.customCategories || [];
+      if (studioConfig.customCategories.some(c => c.id === cleanId)) {
+        return alert("This category tab already exists!");
+      }
+      studioConfig.customCategories.push({ id: cleanId, label, flow });
+      document.getElementById('new-cat-label').value = '';
+      renderCustomCatsAdminList();
+      syncCategoryDropdownsAdmin();
+      await saveStudioConfigToCloud(true);
+    }
+
+    async function deleteCustomCategoryAdmin(idx) {
+      if (!studioConfig.customCategories[idx]) return;
+      if (!confirm("Remove this custom category tab? (Products inside it will remain safe in 'All Pieces').")) return;
+      studioConfig.customCategories.splice(idx, 1);
+      renderCustomCatsAdminList();
+      syncCategoryDropdownsAdmin();
+      await saveStudioConfigToCloud(true);
+    }
+
+    async function saveStudioConfigToCloud(silent = false) {
+      const btn = document.getElementById('save-cfg-btn');
+      if (btn) { btn.innerText = "Saving Live..."; btn.disabled = true; }
+
+      const rawPhone = document.getElementById('cfg-whatsapp').value.replace(/\D/g, '');
+      const rawUpi = document.getElementById('cfg-upi-id').value.trim();
+      const rawRows = document.getElementById('cfg-sizeguide-rows').value
+        .split('\n')
+        .map(r => r.trim())
+        .filter(Boolean);
+
+      studioConfig.bannerEnabled = document.getElementById('cfg-banner-enabled').checked;
+      studioConfig.bannerText = document.getElementById('cfg-banner-text').value.trim();
+      studioConfig.bannerCode = document.getElementById('cfg-banner-code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      studioConfig.tickerText = document.getElementById('cfg-ticker').value.trim() || DEFAULT_STUDIO_CONFIG.tickerText;
+      studioConfig.heroKicker = document.getElementById('cfg-hero-kicker').value.trim() || DEFAULT_STUDIO_CONFIG.heroKicker;
+      studioConfig.heroHeadingMain = document.getElementById('cfg-hero-main').value.trim() || DEFAULT_STUDIO_CONFIG.heroHeadingMain;
+      studioConfig.heroHeadingItalic = document.getElementById('cfg-hero-italic').value.trim() || DEFAULT_STUDIO_CONFIG.heroHeadingItalic;
+      studioConfig.heroSubtext = document.getElementById('cfg-hero-sub').value.trim() || DEFAULT_STUDIO_CONFIG.heroSubtext;
+
+      studioConfig.codMode = document.getElementById('cfg-cod-mode').value || 'AFTER_FIRST';
+      studioConfig.codFee = Math.max(0, Number(document.getElementById('cfg-cod-fee').value) || 0);
+      studioConfig.upiId = (rawUpi && rawUpi.includes('@')) ? rawUpi : DEFAULT_STUDIO_CONFIG.upiId;
+      studioConfig.whatsappNumber = (rawPhone.length === 10) ? rawPhone : DEFAULT_STUDIO_CONFIG.whatsappNumber;
+
+      studioConfig.sizeGuideEnabled = document.getElementById('cfg-sizeguide-enabled').checked;
+      studioConfig.sizeGuideTitle = document.getElementById('cfg-sizeguide-title').value.trim() || DEFAULT_STUDIO_CONFIG.sizeGuideTitle;
+      studioConfig.sizeGuideRows = rawRows.length ? rawRows : DEFAULT_STUDIO_CONFIG.sizeGuideRows;
+      studioConfig.sizeGuideNote = document.getElementById('cfg-sizeguide-note').value.trim() || DEFAULT_STUDIO_CONFIG.sizeGuideNote;
+
+      const payload = {
+        title: CONFIG_ROW_TITLE,
+        base_price: 0,
+        category: 'SYSTEM',
+        is_apparel: false,
+        spec: 'SYSTEM||CONF:{"stockStatus":"HIDDEN"}',
+        prompt: JSON.stringify(studioConfig),
+        final_image: '',
+        raw_photo: ''
+      };
+
+      let err = null;
+      if (studioConfigRowId) {
+        const res = await db.from('skia_products').update(payload).eq('id', studioConfigRowId);
+        err = res.error;
+      } else {
+        const res = await db.from('skia_products').insert([payload]).select('id');
+        err = res.error;
+        if (res.data && res.data[0]) studioConfigRowId = res.data[0].id;
+      }
+
+      if (btn) { btn.disabled = false; btn.innerText = "Save All Studio Settings Live →"; }
+      if (err) {
+        alert("Could not save settings: " + err.message);
+      } else if (!silent) {
+        populateStudioSettingsForm();
+        alert("✓ Studio Settings Saved Live to SKIA!");
+      }
+    }
+
+    async function resetStudioConfigToDefault() {
+      if (!confirm("Reset all Studio & Offer Settings back to original SKIA defaults?")) return;
+      studioConfig = JSON.parse(JSON.stringify(DEFAULT_STUDIO_CONFIG));
+      populateStudioSettingsForm();
+      syncCategoryDropdownsAdmin();
+      await saveStudioConfigToCloud(true);
+      alert("↺ All Studio Settings restored to Base Defaults!");
     }
 
     async function publishProductToCloud(e) {
@@ -530,7 +1043,7 @@
         }
 
         const selectedMode = document.getElementById('p-mode').value;
-        const isWearable = (selectedMode !== 'HOLD');
+        const isWearable = isCategoryWearable(selectedMode);
 
         const sizeClass = isWearable ? '.w-size:checked' : '.h-size:checked';
         const shadeClass = isWearable ? '.w-shade:checked' : '.h-shade:checked';
@@ -538,16 +1051,23 @@
 
         let sizes = Array.from(document.querySelectorAll(sizeClass)).map(el => el.value);
         let shades = Array.from(document.querySelectorAll(shadeClass)).map(el => el.value);
-        const finishes = Array.from(document.querySelectorAll(finishClass)).map(el => el.value);
+        let finishes = Array.from(document.querySelectorAll(finishClass)).map(el => el.value);
 
         const customSizesStr = document.getElementById(isWearable ? 'w-custom-sizes' : 'h-custom-sizes').value.trim();
-        if (customSizesStr) {
-          sizes = sizes.concat(customSizesStr.split(',').map(x => x.trim()).filter(Boolean));
-        }
+        if (customSizesStr) sizes = sizes.concat(customSizesStr.split(',').map(x => x.trim()).filter(Boolean));
+
         const customShadesStr = document.getElementById(isWearable ? 'w-custom-shades' : 'h-custom-shades').value.trim();
-        if (customShadesStr) {
-          shades = shades.concat(customShadesStr.split(',').map(x => x.trim()).filter(Boolean));
-        }
+        if (customShadesStr) shades = shades.concat(customShadesStr.split(',').map(x => x.trim()).filter(Boolean));
+
+        const customFinishesStr = document.getElementById(isWearable ? 'w-custom-finishes' : 'h-custom-finishes').value.trim();
+        if (customFinishesStr) finishes = finishes.concat(customFinishesStr.split(',').map(x => x.trim()).filter(Boolean));
+
+        if (!sizes.length) sizes = ['Standard'];
+        if (!shades.length) shades = ['Standard'];
+        if (!finishes.length) finishes = ['Standard|0'];
+
+        const basePrice = Math.max(1, Number(document.getElementById('p-price').value) || 1);
+        const mrpVal = Math.max(0, Number(document.getElementById('p-mrp').value) || 0);
 
         const confObj = {
           sizes,
@@ -555,7 +1075,8 @@
           finishes,
           stockStatus: document.getElementById('p-stock').value,
           pinned: document.getElementById('p-pinned').checked,
-          bothCost: Number(document.getElementById('w-both-cost').value || 150)
+          bothCost: Math.max(0, Number(document.getElementById('w-both-cost').value || 150)),
+          mrp: mrpVal > basePrice ? mrpVal : 0
         };
 
         const cleanSpec = document.getElementById('p-spec').value.trim();
@@ -563,7 +1084,7 @@
 
         const newP = {
           title: document.getElementById('p-title').value.trim(),
-          base_price: Number(document.getElementById('p-price').value),
+          base_price: basePrice,
           category: selectedMode,
           spec: packedSpec,
           prompt: document.getElementById('p-prompt').value.trim(),
@@ -594,7 +1115,6 @@
       }
     }
 
-    // 2-LEVEL SLIDES & ANGLES MANAGER MODAL
     function openAddSlideModal(prodId) {
       const p = products.find(x => x.id === prodId);
       if (!p) return;
@@ -618,24 +1138,25 @@
         const rImg = raws[exIdx] || raws[0] || '';
         return `
         <div class="border border-neutral-300 rounded-2xl p-3 bg-neutral-50 space-y-2.5">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2">
-              <span class="bg-black text-white px-2.5 py-0.5 rounded-full font-bold text-[10px]">Example #${exIdx + 1}</span>
-              <img src="${resolveImgUrl(rImg)}" class="w-8 h-8 rounded-lg object-cover border border-black" title="Original Photo" />
-              <span class="text-[10px] text-neutral-500">Original Photo</span>
+              <span class="bg-black text-white px-2.5 py-0.5 rounded-full font-bold text-[10px]">${exIdx === 0 ? '★ Cover Example #1' : 'Example #' + (exIdx + 1)}</span>
+              <img src="${escapeHtml(resolveImgUrl(rImg))}" class="w-8 h-8 rounded-lg object-cover border border-black" title="Original Photo" />
+              <span class="text-[10px] text-neutral-500">Raw Photo</span>
             </div>
-            <button type="button" onclick="deleteExistingSlideFromProduct(${exIdx})" class="text-red-700 text-[10px] font-bold underline">
-              Delete Example
-            </button>
+            <div class="flex items-center gap-2">
+              ${exIdx > 0 ? `<button type="button" onclick="makeExampleCover(${exIdx})" class="bg-black text-white px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase">★ Make #1 Cover</button>` : ''}
+              <button type="button" onclick="deleteExistingSlideFromProduct(${exIdx})" class="text-red-700 text-[10px] font-bold underline">Delete</button>
+            </div>
           </div>
 
-          <!-- Mockup Angles Inside This Example -->
           <div>
-            <p class="text-[10px] font-bold text-neutral-500 mb-1.5">Mockup Angles for Example #${exIdx + 1} (${angles.length}):</p>
+            <p class="text-[10px] font-bold text-neutral-500 mb-1.5">Mockup Angles (${angles.length}):</p>
             <div class="flex flex-wrap gap-2 items-center">
               ${angles.map((aUrl, aIdx) => `
-                <div class="relative">
-                  <img src="${resolveImgUrl(aUrl)}" class="w-14 h-14 rounded-xl object-cover border border-black" />
+                <div class="relative group">
+                  <img src="${escapeHtml(resolveImgUrl(aUrl))}" class="w-14 h-14 rounded-xl object-cover border ${aIdx === 0 ? 'border-2 border-black' : 'border-neutral-300'}" />
+                  ${aIdx > 0 ? `<button type="button" onclick="makeAngleMain(${exIdx}, ${aIdx})" class="absolute bottom-0.5 left-0.5 bg-black/85 text-white rounded px-1 py-0.5 text-[8px] font-bold">★ 1st</button>` : ''}
                   <button type="button" onclick="deleteMockupAngleFromExample(${exIdx}, ${aIdx})" class="absolute -top-1.5 -right-1.5 bg-red-700 text-white rounded-full w-4 h-4 text-[9px] font-bold flex items-center justify-center">✕</button>
                 </div>
               `).join('')}
@@ -649,7 +1170,43 @@
       }).join('');
     }
 
-    // Add More Mockup Angles to an Existing Example (Same Original Photo!)
+    async function makeExampleCover(exIdx) {
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p || exIdx <= 0) return;
+      const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean);
+      if (exIdx >= finals.length) return;
+
+      const chosenFinal = finals.splice(exIdx, 1)[0];
+      finals.unshift(chosenFinal);
+      if (raws.length > exIdx) {
+        const chosenRaw = raws.splice(exIdx, 1)[0];
+        raws.unshift(chosenRaw);
+      }
+
+      await db.from('skia_products')
+        .update({ final_image: finals.join('|||SLIDE|||'), raw_photo: raws.join('|||SLIDE|||') })
+        .eq('id', p.id);
+      await loadAllCloudData();
+      renderExistingSlidesInModal();
+    }
+
+    async function makeAngleMain(exIdx, angleIdx) {
+      const p = products.find(x => x.id === targetSlideProductId);
+      if (!p || angleIdx <= 0) return;
+      const exBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
+      const currAngles = (exBlocks[exIdx] || '').split('||ANGLE||').filter(Boolean);
+      if (angleIdx >= currAngles.length) return;
+
+      const chosen = currAngles.splice(angleIdx, 1)[0];
+      currAngles.unshift(chosen);
+      exBlocks[exIdx] = currAngles.join('||ANGLE||');
+
+      await db.from('skia_products').update({ final_image: exBlocks.join('|||SLIDE|||') }).eq('id', p.id);
+      await loadAllCloudData();
+      renderExistingSlidesInModal();
+    }
+
     async function addAnglesToExistingExample(event, exIdx) {
       const files = Array.from(event.target.files || []);
       if (!files.length) return;
@@ -673,7 +1230,6 @@
       }
     }
 
-    // Delete 1 Specific Mockup Angle from an Example
     async function deleteMockupAngleFromExample(exIdx, angleIdx) {
       const p = products.find(x => x.id === targetSlideProductId);
       if (!p) return;
@@ -695,9 +1251,7 @@
       const finals = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
       const raws = (p.raw_photo || '').split('|||SLIDE|||').filter(Boolean);
 
-      if (finals.length <= 1) {
-        return alert("A product must have at least 1 Example!");
-      }
+      if (finals.length <= 1) return alert("A product must have at least 1 Example!");
       if (!confirm(`Delete Example #${slideIdx + 1}?`)) return;
 
       finals.splice(slideIdx, 1);
@@ -755,18 +1309,22 @@
       }
     }
 
-    // FULL INVENTORY & SPEC EDITOR MODAL
     function openInventoryModal(prodId) {
       const p = products.find(x => x.id === prodId);
       if (!p) return;
       targetInvProductId = prodId;
       const { cleanSpec, conf } = parseProdConf(p);
+      syncCategoryDropdownsAdmin();
 
       document.getElementById('inv-stock').value = conf.stockStatus || 'IN_STOCK';
-      document.getElementById('inv-cat').value = (p.category === 'HOLD' || !p.is_apparel) ? 'HOLD' : (p.category === 'CREWS' ? 'CREWS' : 'WEAR');
+      const invCatEl = document.getElementById('inv-cat');
+      const fallbackCat = (p.category === 'HOLD' || !p.is_apparel) ? 'HOLD' : (p.category === 'CREWS' ? 'CREWS' : 'WEAR');
+      invCatEl.value = Array.from(invCatEl.options).some(o => o.value === p.category) ? p.category : fallbackCat;
+
       document.getElementById('inv-pinned').checked = !!conf.pinned;
       document.getElementById('inv-title').value = p.title || '';
       document.getElementById('inv-price').value = p.base_price || 0;
+      document.getElementById('inv-mrp').value = conf.mrp || 0;
       document.getElementById('inv-spec').value = cleanSpec || '';
       document.getElementById('inv-both-cost').value = conf.bothCost !== undefined ? conf.bothCost : 150;
       document.getElementById('inv-prompt').value = p.prompt || '';
@@ -789,14 +1347,25 @@
       btn.disabled = true;
 
       const cat = document.getElementById('inv-cat').value;
-      const isWear = (cat !== 'HOLD');
+      const isWear = isCategoryWearable(cat);
+      const basePrice = Math.max(1, Number(document.getElementById('inv-price').value) || 1);
+      const mrpVal = Math.max(0, Number(document.getElementById('inv-mrp').value) || 0);
+
+      let sizes = document.getElementById('inv-sizes').value.split(',').map(x => x.trim()).filter(Boolean);
+      let shades = document.getElementById('inv-shades').value.split(',').map(x => x.trim()).filter(Boolean);
+      let finishes = document.getElementById('inv-finishes').value.split(',').map(x => x.trim()).filter(Boolean);
+      if (!sizes.length) sizes = ['Standard'];
+      if (!shades.length) shades = ['Standard'];
+      if (!finishes.length) finishes = ['Standard|0'];
+
       const confObj = {
         stockStatus: document.getElementById('inv-stock').value,
         pinned: document.getElementById('inv-pinned').checked,
-        bothCost: Number(document.getElementById('inv-both-cost').value || 150),
-        sizes: document.getElementById('inv-sizes').value.split(',').map(x => x.trim()).filter(Boolean),
-        shades: document.getElementById('inv-shades').value.split(',').map(x => x.trim()).filter(Boolean),
-        finishes: document.getElementById('inv-finishes').value.split(',').map(x => x.trim()).filter(Boolean)
+        bothCost: Math.max(0, Number(document.getElementById('inv-both-cost').value || 150)),
+        mrp: mrpVal > basePrice ? mrpVal : 0,
+        sizes,
+        shades,
+        finishes
       };
 
       const cleanSpec = document.getElementById('inv-spec').value.trim();
@@ -804,7 +1373,7 @@
 
       const { error } = await db.from('skia_products').update({
         title: document.getElementById('inv-title').value.trim(),
-        base_price: Number(document.getElementById('inv-price').value),
+        base_price: basePrice,
         category: cat,
         is_apparel: isWear,
         spec: packedSpec,
@@ -821,6 +1390,19 @@
         await loadAllCloudData();
         alert("✓ Inventory & Product Updated!");
       }
+    }
+
+    function setAdminOrderFilter(filter) {
+      currentAdminOrderFilter = filter;
+      ['ALL', 'UNPAID', 'PROCESSING', 'CONFIRMED', 'CANCELLED'].forEach(f => {
+        const el = document.getElementById('ord-filter-' + f);
+        if (el) {
+          el.className = f === filter
+            ? "whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-black text-white"
+            : "whitespace-nowrap px-3 py-1.5 rounded-xl font-bold bg-white border border-neutral-200 text-black";
+        }
+      });
+      renderAdmin();
     }
 
     async function setOrderPaymentDecision(orderId, decision) {
@@ -844,9 +1426,56 @@
         newMeta.payStatus = 'CANCELLED';
         newMeta.payment = '✕ Payment Cancelled / Not Received';
         newMeta.stage = 'Payment Not Received';
+      } else if (decision === 'UNPAID') {
+        newMeta.bucket = 'PREVIEW';
+        newMeta.payStatus = 'UNPAID';
+        newMeta.payment = 'Unpaid · Awaiting WhatsApp Preview';
+        newMeta.stage = newMeta.previewImg ? '✨ Digital Preview Ready · Awaiting Approval' : 'Awaiting WhatsApp Preview';
       }
 
       await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(newMeta) }).eq('id', orderId);
+      await loadAllCloudData();
+    }
+
+    async function uploadOrderPreviewAdmin(event, orderId) {
+      const file = (event.target.files || [])[0];
+      if (!file) return;
+      const target = orders.find(x => x.id === orderId);
+      if (!target) return;
+
+      const parts = (target.notes || '').split('||META:');
+      const cleanNotes = parts[0];
+      let meta = {};
+      if (parts[1]) {
+        try { meta = JSON.parse(parts[1]); } catch(e) {}
+      }
+
+      try {
+        const previewUrl = await uploadFileToSkiaBucket(file, 'previews');
+        meta.previewImg = previewUrl;
+        if (!meta.stage || meta.stage.includes('Awaiting')) {
+          meta.stage = '✨ Digital Preview Ready · Awaiting Approval';
+        }
+        await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(meta) }).eq('id', orderId);
+        await loadAllCloudData();
+        alert("✓ Digital Preview attached to customer's order!");
+      } catch (err) {
+        alert("Preview upload error: " + err.message);
+      }
+    }
+
+    async function removeOrderPreviewAdmin(orderId) {
+      const target = orders.find(x => x.id === orderId);
+      if (!target) return;
+      if (!confirm("Remove the attached preview image from this order?")) return;
+      const parts = (target.notes || '').split('||META:');
+      const cleanNotes = parts[0];
+      let meta = {};
+      if (parts[1]) {
+        try { meta = JSON.parse(parts[1]); } catch(e) {}
+      }
+      delete meta.previewImg;
+      await db.from('skia_orders').update({ notes: cleanNotes + "||META:" + JSON.stringify(meta) }).eq('id', orderId);
       await loadAllCloudData();
     }
 
@@ -878,47 +1507,73 @@
       await loadAllCloudData();
     }
 
-   function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
     function renderAdmin() {
       document.getElementById('order-badge').innerText = orders.length;
       document.getElementById('prod-badge').innerText = products.length;
+
+      let totalRev = 0;
+      let countUnpaid = 0;
+      let countProc = 0;
+      let countConf = 0;
+
+      const parsedOrders = orders.map(o => {
+        const noteParts = (o.notes || '').split('||META:');
+        const cleanNotes = noteParts[0];
+        let meta = {
+          bucket: 'PREVIEW',
+          payStatus: 'UNPAID',
+          payment: 'Unpaid · Preview Requested',
+          address: 'Not provided',
+          stage: 'In Studio',
+          previewImg: '',
+          coupon: ''
+        };
+        if (noteParts[1]) {
+          try { meta = { ...meta, ...JSON.parse(noteParts[1]) }; } catch(e) {}
+        }
+        if (meta.payStatus === 'SUCCESS' || meta.payStatus === 'COD') {
+          totalRev += Number(o.price) || 0;
+          countConf++;
+        } else if (meta.payStatus === 'PROCESSING') {
+          countProc++;
+        } else if (meta.payStatus !== 'CANCELLED') {
+          countUnpaid++;
+        }
+        return { raw: o, cleanNotes, meta };
+      });
+
+      document.getElementById('stat-revenue').innerText = totalRev.toLocaleString('en-IN');
+      document.getElementById('stat-previews').innerText = countUnpaid;
+      document.getElementById('stat-processing').innerText = countProc;
+      document.getElementById('stat-confirmed').innerText = countConf;
+
+      const searchQ = (document.getElementById('admin-order-search').value || '').trim().toLowerCase();
+      const filteredOrders = parsedOrders.filter(({ raw, meta }) => {
+        if (currentAdminOrderFilter === 'UNPAID' && (meta.payStatus !== 'UNPAID' && meta.bucket !== 'PREVIEW')) return false;
+        if (currentAdminOrderFilter === 'PROCESSING' && meta.payStatus !== 'PROCESSING') return false;
+        if (currentAdminOrderFilter === 'CONFIRMED' && (meta.payStatus !== 'SUCCESS' && meta.payStatus !== 'COD')) return false;
+        if (currentAdminOrderFilter === 'CANCELLED' && meta.payStatus !== 'CANCELLED') return false;
+
+        if (searchQ) {
+          const hay = `${raw.order_code} ${raw.customer_name} ${raw.customer_phone} ${raw.product_title}`.toLowerCase();
+          if (!hay.includes(searchQ)) return false;
+        }
+        return true;
+      });
+
       const oBox = document.getElementById('orders-container');
-      if (orders.length === 0) {
-        oBox.innerHTML = `<p class="text-xs text-neutral-500 border border-dashed border-neutral-300 rounded-2xl p-6 text-center">No customer orders yet.</p>`;
+      if (filteredOrders.length === 0) {
+        oBox.innerHTML = `<p class="text-xs text-neutral-500 border border-dashed border-neutral-300 rounded-2xl p-6 text-center">No matching orders in this filter.</p>`;
       } else {
-        oBox.innerHTML = orders.map(o => {
+        oBox.innerHTML = filteredOrders.map(({ raw: o, cleanNotes, meta }) => {
           const phoneParts = (o.customer_phone || '').split('#');
           const cleanPhone = (phoneParts[0] || '').replace(/\D/g, '') || 'N/A';
           const custPin = escapeHtml(phoneParts[1] || 'None');
           const custPhotos = (o.photo_data || '').split('|||SLIDE|||').filter(Boolean);
 
-          const noteParts = (o.notes || '').split('||META:');
-          const cleanNotes = escapeHtml(noteParts[0]);
-          let payStatus = "UNPAID";
-          let paymentMode = "Unpaid · Preview Requested";
-          let deliveryAddress = "Not provided";
-          let stageText = "In Studio";
-          if (noteParts[1]) {
-            try {
-              const meta = JSON.parse(noteParts[1]);
-              payStatus = meta.payStatus || payStatus;
-              paymentMode = meta.payment || paymentMode;
-              deliveryAddress = meta.address || deliveryAddress;
-              stageText = meta.stage || stageText;
-            } catch(e) {}
-          }
-
           let badgeColor = "bg-amber-100 text-black";
-          if (payStatus === 'SUCCESS' || payStatus === 'COD') badgeColor = "bg-emerald-900 text-white";
-          if (payStatus === 'CANCELLED') badgeColor = "bg-red-700 text-white";
+          if (meta.payStatus === 'SUCCESS' || meta.payStatus === 'COD') badgeColor = "bg-emerald-900 text-white";
+          if (meta.payStatus === 'CANCELLED') badgeColor = "bg-red-700 text-white";
 
           const waMsg = encodeURIComponent(`Hi ${o.customer_name}! This is SKIA Studio Indore regarding your custom commission (${o.order_code} - ${o.product_title}, ₹${o.price}).`);
           return `
@@ -926,33 +1581,58 @@
             <div class="space-y-1.5">
               <div class="flex flex-wrap gap-2 items-center">
                 <span class="bg-black text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold">${escapeHtml(o.order_code)}</span>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${badgeColor}">${escapeHtml(paymentMode)}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${badgeColor}">${escapeHtml(meta.payment)}</span>
                 <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-bold">PIN: ${custPin}</span>
-                <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Stage: ${escapeHtml(stageText)}</span>
+                <span class="bg-neutral-100 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Stage: ${escapeHtml(meta.stage)}</span>
+                ${meta.coupon ? `<span class="bg-emerald-50 text-emerald-900 border border-emerald-200 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Promo: ${escapeHtml(meta.coupon)}</span>` : ''}
               </div>
               <h3 class="text-lg font-extrabold">${escapeHtml(o.product_title)} — ₹${escapeHtml(o.price)}</h3>
               <p><strong>Customer:</strong> ${escapeHtml(o.customer_name)} · <strong>WhatsApp:</strong> ${escapeHtml(cleanPhone)}</p>
               <p><strong>Spec:</strong> ${escapeHtml(o.color)} · ${escapeHtml(o.size)} · ${escapeHtml(o.placement)} · ${escapeHtml(o.finish)}</p>
-              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Customer Suggestion:</strong> "${cleanNotes}"</p>
-              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Delivery Address:</strong> ${escapeHtml(deliveryAddress)}</p>
+              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Customer Suggestion:</strong> "${escapeHtml(cleanNotes)}"</p>
+              <p class="bg-neutral-50 rounded-xl p-2.5"><strong>Delivery Address:</strong> ${escapeHtml(meta.address)}</p>
               ${o.urgent_gift ? `<p class="font-bold text-red-700">⚡ URGENT GIFT: Send 2-Hour Digital Reveal Card!</p>` : ''}
             </div>
 
-            ${custPhotos.length > 0 ? `
-              <div class="border-t border-neutral-100 pt-3">
-                <p class="text-[10px] font-bold uppercase tracking-wider mb-2">Customer Original HD Photo(s) (${custPhotos.length}):</p>
-                <div class="flex flex-wrap gap-3">
-                  ${custPhotos.map((ph, idx) => `
-                    <div class="text-center">
-                      <img src="${escapeHtml(resolveImgUrl(ph))}" class="w-20 h-20 rounded-xl object-cover border border-neutral-300 mb-1" />
-                      <button type="button" onclick="downloadOriginalPhoto('${escapeHtml(ph)}', '${escapeHtml(o.order_code)}-original-${idx+1}.jpg', this)" class="block w-full bg-black text-white rounded-lg px-2 py-1 text-[9px] font-bold uppercase">
-                        Download HD #${idx+1}
-                      </button>
-                    </div>
-                  `).join('')}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-neutral-100 pt-3">
+              ${custPhotos.length > 0 ? `
+                <div>
+                  <p class="text-[10px] font-bold uppercase tracking-wider mb-2">Customer Raw HD Photo(s) (${custPhotos.length}):</p>
+                  <div class="flex flex-wrap gap-2.5">
+                    ${custPhotos.map((ph, idx) => `
+                      <div class="text-center">
+                        <img src="${escapeHtml(resolveImgUrl(ph))}" class="w-16 h-16 rounded-xl object-cover border border-neutral-300 mb-1" />
+                        <button type="button" onclick="downloadOriginalPhoto('${escapeHtml(ph)}', '${escapeHtml(o.order_code)}-raw-${idx+1}.jpg', this)" class="block w-full bg-black text-white rounded-lg px-2 py-1 text-[9px] font-bold uppercase">
+                          HD #${idx+1}
+                        </button>
+                      </div>
+                    `).join('')}
+                  </div>
                 </div>
+              ` : ''}
+
+              <div class="bg-neutral-50 rounded-xl p-3 border border-neutral-200 flex flex-col justify-between">
+                <p class="text-[10px] font-bold uppercase tracking-wider mb-1.5">Studio Digital Preview (Visible to Customer):</p>
+                ${meta.previewImg ? `
+                  <div class="flex items-center gap-3">
+                    <img src="${escapeHtml(resolveImgUrl(meta.previewImg))}" class="w-14 h-14 rounded-xl object-cover border border-black" />
+                    <div class="space-y-1">
+                      <span class="text-[10px] font-bold text-emerald-800 block">✓ Preview Attached</span>
+                      <label class="cursor-pointer inline-block bg-black text-white rounded-lg px-2.5 py-1 text-[9px] font-bold uppercase">
+                        Replace
+                        <input type="file" accept="image/*" onchange="uploadOrderPreviewAdmin(event, ${Number(o.id)})" class="hidden" />
+                      </label>
+                      <button type="button" onclick="removeOrderPreviewAdmin(${Number(o.id)})" class="text-red-700 text-[9px] font-bold uppercase underline ml-2">✕ Remove</button>
+                    </div>
+                  </div>
+                ` : `
+                  <label class="cursor-pointer border border-dashed border-black rounded-xl py-2.5 px-3 text-center font-bold text-[10px] uppercase hover:bg-black hover:text-white transition">
+                    + Attach Finished Digital Preview Image
+                    <input type="file" accept="image/*" onchange="uploadOrderPreviewAdmin(event, ${Number(o.id)})" class="hidden" />
+                  </label>
+                `}
               </div>
-            ` : ''}
+            </div>
 
             <div class="pt-2 border-t border-neutral-100 flex flex-wrap gap-2 items-center">
               <button onclick="setOrderPaymentDecision(${Number(o.id)}, 'SUCCESS')" class="bg-emerald-900 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
@@ -960,6 +1640,9 @@
               </button>
               <button onclick="setOrderPaymentDecision(${Number(o.id)}, 'CANCELLED')" class="bg-red-700 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
                 ✕ Payment Cancelled
+              </button>
+              <button onclick="setOrderPaymentDecision(${Number(o.id)}, 'UNPAID')" class="bg-neutral-100 text-black rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
+                ↺ Move to Unpaid Preview
               </button>
               <button onclick="updateOrderStageAdmin(${Number(o.id)})" class="bg-neutral-100 text-black rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase">
                 Update Stage / Tracking
@@ -977,14 +1660,18 @@
         const exBlocks = (p.final_image || '').split('|||SLIDE|||').filter(Boolean);
         const firstAngle = (exBlocks[0] || '').split('||ANGLE||')[0] || '';
         const stockLabel = conf.stockStatus === 'SOLD_OUT' ? '🔴 Sold Out' : (conf.stockStatus === 'HIDDEN' ? '⚪ Hidden' : '🟢 In Stock');
+        const hasMrp = conf.mrp && Number(conf.mrp) > Number(p.base_price);
 
         return `
         <div class="border border-neutral-200 rounded-2xl p-3.5 flex flex-col sm:flex-row justify-between sm:items-center bg-white gap-3">
           <div class="flex items-center gap-3">
             <img src="${escapeHtml(resolveImgUrl(firstAngle))}" class="w-14 h-14 rounded-xl object-cover border border-neutral-200 shrink-0" />
             <div>
-              <div class="flex items-center gap-2">
-                <p class="font-extrabold text-sm">${conf.pinned ? '📌 ' : ''}${escapeHtml(p.title)} — ₹${escapeHtml(p.base_price)}</p>
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="font-extrabold text-sm">
+                  ${conf.pinned ? '📌 ' : ''}${escapeHtml(p.title)} — 
+                  ${hasMrp ? `<span class="line-through text-neutral-400 font-normal mr-1">₹${escapeHtml(conf.mrp)}</span>` : ''}₹${escapeHtml(p.base_price)}
+                </p>
                 <span class="text-[10px] font-bold bg-neutral-100 px-2 py-0.5 rounded-full">${stockLabel}</span>
               </div>
               <p class="text-[11px] text-neutral-500 mt-0.5"><strong>${exBlocks.length} Example(s)</strong> · ${escapeHtml(cleanSpec)}</p>
